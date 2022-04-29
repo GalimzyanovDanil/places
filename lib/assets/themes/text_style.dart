@@ -7,7 +7,7 @@ import 'package:places/assets/colors/colors.dart';
 
 const TextStyle _text = TextStyle(
   fontStyle: FontStyle.normal,
-  color: textColorPrimary,
+  color: AppColors.whiteSecondary,
 );
 
 //Light
@@ -17,8 +17,9 @@ TextStyle textLight = _text.copyWith(fontWeight: FontWeight.w300);
 TextStyle textRegular = _text.copyWith(fontWeight: FontWeight.normal);
 TextStyle textRegular16 = textRegular.copyWith(fontSize: 16.0);
 TextStyle textRegular16Secondary =
-    textRegular16.copyWith(color: textColorSecondary);
-TextStyle textRegular16Grey = textRegular16.copyWith(color: textColorGrey);
+    textRegular16.copyWith(color: AppColors.whiteSecondary);
+TextStyle textRegular16Grey =
+    textRegular16.copyWith(color: AppColors.whiteSecondary);
 
 //Medium
 TextStyle textMedium = _text.copyWith(fontWeight: FontWeight.w500);
