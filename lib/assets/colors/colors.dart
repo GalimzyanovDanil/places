@@ -2,28 +2,29 @@ import 'package:flutter/material.dart';
 
 //ignore_for_file: public_member_api_docs
 
-/// Semantic aliases.
-/// Replenished as needed.
-/// Use only the main palette.
-const Color colorAccent = _purple;
-const Color colorError = _freeSpeechRed;
-const Color btnColor = _alizarin;
-const Color hintColor = _darkGrey;
-const Color backgroundColor = _pastelWhite;
-const Color appBarColor = _white;
-const Color white = _white;
-const Color dividerColor = _solitude;
-const Color textColorSecondary = _darkGrey;
-const Color textColorPrimary = _oxfordBlue;
-const Color textColorGrey = _black54;
+class AppColors {
+  // Одинаковые цвета для обоих тем
+  static const Color whiteBase = Colors.white;
+  static const Color background = Color(0xFFF5F5F5);
+  static const Color yellowSplash = Color(0xFFFCDD3D);
+  static const Color inactiveBlack = Color.fromRGBO(124, 126, 146, 0.56);
 
-// Main palette (http://www.color-blindness.com/color-name-hue/).
-const Color _oxfordBlue = Color(0xFF263238);
-const Color _purple = Color(0xFF7A3E93);
-const Color _freeSpeechRed = Color(0xFFB00000);
-const Color _alizarin = Color(0xFFE31E24);
-const Color _white = Colors.white;
-const Color _pastelWhite = Color(0xFFFAFAFA);
-const Color _solitude = Color(0xFFE5E8EB);
-const Color _darkGrey = Color(0xFFA7A7A7);
-const Color _black54 = Colors.black54;
+  // Светлая тема
+  static const Color whiteGreen = Color(0xFF4CAF50);
+  static const Color whiteYellow = Color(0xFFFBC02D);
+  static const Color whiteRed = Color(0xFFEF4343);
+  static const Color whiteMain = Color(0xFF252849);
+  static const Color whiteSecondary = Color(0xFF3B3E5B);
+  static const Color whiteSecondary2 = Color(0xFF7C7E92);
+
+  //Темная тема
+  static const Color blackGreen = Color(0xFF6ADA6F);
+  static const Color blackYellow = Color(0xFFFFE769);
+  static const Color blackRed = Color(0xFFCF2A2A);
+  static const Color blackDark = Color(0xFF1A1A20);
+  static const Color blackMain = Color(0xFF21222C);
+  static const Color blackSecondary = Color(0xFF3B3E5B);
+  static const Color blackSecondary2 = Color(0xFF7C7E92);
+
+  AppColors._();
+}
