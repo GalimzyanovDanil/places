@@ -1,6 +1,6 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
-import 'package:places/assets/themes/text_style.dart';
+import 'package:places/assets/themes/app_typography.dart';
 import 'package:places/config/debug_options.dart';
 import 'package:places/config/urls.dart';
 import 'package:places/features/debug/screens/debug_screen/debug_screen_widget_model.dart';
@@ -19,7 +19,7 @@ class DebugScreen extends ElementaryWidget<IDebugScreenWidgetModel> {
       appBar: AppBar(
         title: Text(
           'Экран отладки',
-          style: textMedium20,
+          style: AppTypography.text,
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),

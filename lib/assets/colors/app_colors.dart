@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 //ignore_for_file: public_member_api_docs
 
+/// Цвета
 class AppColors {
   // Одинаковые цвета для обоих тем
   static const Color whiteBase = Colors.white;

@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:places/features/temp/screens/temp_screen/temp_screen.dart';
@@ -14,9 +16,16 @@ TempScreenWidgetModel initScreenWidgetModelFactory(
 /// Widget model for [TempScreen].
 class TempScreenWidgetModel extends WidgetModel<TempScreen, TempScreenModel>
     implements IDebugWidgetModel {
+  // final BuildContext context;
+  @override
+  TextStyle get style1 =>
+      Theme.of(context).textTheme.headline2 ?? const TextStyle();
+
   /// Create an instance [TempScreenWidgetModel].
   TempScreenWidgetModel(TempScreenModel model) : super(model);
 }
 
 /// Interface of [TempScreenWidgetModel].
-abstract class IDebugWidgetModel extends IWidgetModel {}
+abstract class IDebugWidgetModel extends IWidgetModel {
+  TextStyle get style1;
+}
