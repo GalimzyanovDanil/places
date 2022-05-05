@@ -12,9 +12,12 @@ class TempScreen extends ElementaryWidget<TempScreenWidgetModel> {
 
   @override
   Widget build(TempScreenWidgetModel wm) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text('Hello'),
+        child: Text(
+          'Hello',
+          style: wm.style1,
+        ),
       ),
     );
   }
