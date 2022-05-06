@@ -6,7 +6,8 @@ import 'package:places/features/onboarding/screen/onboarding_screen.dart';
 abstract class IOnboardingWidgetModel extends IWidgetModel {}
 
 OnboardingWidgetModel defaultOnboardingWidgetModelFactory(
-    BuildContext context) {
+  BuildContext context,
+) {
   return OnboardingWidgetModel(OnboardingModel());
 }
 
