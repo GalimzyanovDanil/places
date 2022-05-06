@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class StartButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
   const StartButton({
+    required this.onPressed,
     Key? key,
   }) : super(key: key);
 
@@ -11,7 +14,7 @@ class StartButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       width: double.infinity,
       child: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: onPressed,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(12),

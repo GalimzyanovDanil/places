@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:places/assets/res/app_assets.dart';
 import 'package:places/features/onboarding/screen/onboarding_wm.dart';
 import 'package:places/features/onboarding/widgets/onboarding_page.dart';
+import 'package:places/features/onboarding/widgets/page_selector.dart';
 import 'package:places/features/onboarding/widgets/skip_button.dart';
 import 'package:places/features/onboarding/widgets/start_button.dart';
 import 'package:surf_util/surf_util.dart';
@@ -16,13 +17,15 @@ class OnboardingScreen extends ElementaryWidget<IOnboardingWidgetModel> {
 
   @override
   Widget build(IOnboardingWidgetModel wm) {
-    final pageController = PageController();
     return Scaffold(
       appBar: AppBar(
-        actions: const [
-          Visibility(
-            // visible: ,
-            child: SkipButton(),
+        actions: [
+          StateNotifierBuilder<int>(
+            listenableState: wm.currentPageState,
+            builder: (_, index) => Visibility(
+              visible: index != 2,
+              child: SkipButton(onPressed: wm.onSkipButton),
+            ),
           ),
         ],
       ),
@@ -31,8 +34,8 @@ class OnboardingScreen extends ElementaryWidget<IOnboardingWidgetModel> {
           child: Stack(
             children: [
               PageView(
-                onPageChanged: (value) {},
-                controller: pageController,
+                onPageChanged: wm.onPageChanged,
+                controller: wm.pageController,
                 children: const <Widget>[
                   OnboardingPage(
                     iconPath: AppAssets.iconOnboard1,
@@ -51,17 +54,25 @@ class OnboardingScreen extends ElementaryWidget<IOnboardingWidgetModel> {
                   ),
                 ],
               ),
-              const Positioned(
-                left: 100,
-                bottom: 100,
-                child: SizedBox.shrink(),
+              Positioned.fill(
+                bottom: 80,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: PageSelector(
+                    tabController: wm.tabController,
+                  ),
+                ),
               ),
             ],
           ),
         ),
       ),
-      floatingActionButton: const Visibility(
-        child: StartButton(),
+      floatingActionButton: StateNotifierBuilder<int>(
+        listenableState: wm.currentPageState,
+        builder: (_, index) => Visibility(
+          visible: index == 2,
+          child: StartButton(onPressed: wm.onStartButton),
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       resizeToAvoidBottomInset: false,

@@ -26,6 +26,8 @@ class AppTheme {
         elevation: 0,
       ),
       scaffoldBackgroundColor: AppColors.whiteBase,
+      indicatorColor: AppColors.whiteGreen,
+      disabledColor: AppColors.inactiveBlack,
     );
   }
 
@@ -36,6 +38,7 @@ class AppTheme {
         // background: AppColors.blackMain,
         // primary: AppColors.whiteBase,
         // onPrimary: AppColors.blackGreen,
+
         );
   }
 
@@ -76,6 +79,8 @@ class AppTheme {
         elevation: 0,
       ),
       scaffoldBackgroundColor: AppColors.blackMain,
+      indicatorColor: AppColors.blackGreen,
+      disabledColor: AppColors.inactiveBlack,
     );
   }
 
