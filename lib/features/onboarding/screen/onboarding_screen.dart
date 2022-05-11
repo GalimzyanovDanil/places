@@ -23,10 +23,12 @@ class OnboardingScreen extends ElementaryWidget<IOnboardingWidgetModel> {
         actions: [
           StateNotifierBuilder<bool>(
             listenableState: wm.isLastPage,
-            builder: (_, isLastPage) => SkipButton(
-              onPressed: wm.onSkipButton,
-              visible: !(isLastPage ?? false),
-            ),
+            builder: (_, isLastPage) => (!(isLastPage ?? false))
+                ? SkipButton(
+                    key: const ValueKey('SkipButton'),
+                    onPressed: wm.onSkipButton,
+                  )
+                : const SizedBox.shrink(),
           ),
         ],
       ),
@@ -67,10 +69,12 @@ class OnboardingScreen extends ElementaryWidget<IOnboardingWidgetModel> {
       ),
       floatingActionButton: StateNotifierBuilder<bool>(
         listenableState: wm.isLastPage,
-        builder: (_, isLastPage) => StartButton(
-          onPressed: wm.onStartButton,
-          visible: isLastPage ?? false,
-        ),
+        builder: (_, isLastPage) => (isLastPage ?? false)
+            ? StartButton(
+                key: const ValueKey('StartButton'),
+                onPressed: wm.onStartButton,
+              )
+            : const SizedBox.shrink(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       resizeToAvoidBottomInset: false,
