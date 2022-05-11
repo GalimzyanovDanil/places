@@ -6,7 +6,7 @@ import 'package:places/features/onboarding/screen/onboarding_screen.dart';
 abstract class IOnboardingWidgetModel extends IWidgetModel {
   PageController get pageController;
   TabController get tabController;
-  ListenableState<int> get currentPageState;
+  ListenableState<bool> get isLastPage;
   void onPageChanged(int index);
   void onSkipButton();
   void onStartButton();
@@ -25,7 +25,9 @@ class OnboardingWidgetModel
     implements IOnboardingWidgetModel {
   late final PageController _pageController;
   late final TabController _tabController;
-  final StateNotifier<int> _currentPageState = StateNotifier<int>();
+  final StateNotifier<bool> _isLastPage = StateNotifier<bool>(initValue: false);
+  // Количество страниц онбординга
+  final int _pageCount = 3;
 
   @override
   PageController get pageController => _pageController;
@@ -34,14 +36,14 @@ class OnboardingWidgetModel
   TabController get tabController => _tabController;
 
   @override
-  ListenableState<int> get currentPageState => _currentPageState;
+  ListenableState<bool> get isLastPage => _isLastPage;
 
   OnboardingWidgetModel(OnboardingModel model) : super(model);
 
   @override
   void initWidgetModel() {
     _pageController = PageController();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: _pageCount, vsync: this);
     super.initWidgetModel();
   }
 
@@ -54,7 +56,8 @@ class OnboardingWidgetModel
 
   @override
   void onPageChanged(int index) {
-    _currentPageState.accept(index);
+    _isLastPage.accept(_pageCount - 1 == index);
+
     _tabController.animateTo(index);
   }
 

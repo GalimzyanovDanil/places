@@ -34,7 +34,7 @@ class AppTheme {
   //Получение цветовой палитры для светлой темы
   static ColorScheme _ligthColorScheme(ThemeData base) {
     return base.colorScheme.copyWith(
-        //!
+        //TODO
         // background: AppColors.blackMain,
         // primary: AppColors.whiteBase,
         // onPrimary: AppColors.blackGreen,
@@ -72,7 +72,7 @@ class AppTheme {
         color: AppColors.whiteBase,
       ),
       floatingActionButtonTheme: base.floatingActionButtonTheme.copyWith(
-        backgroundColor: AppColors.whiteGreen,
+        backgroundColor: AppColors.blackGreen,
       ),
       appBarTheme: base.appBarTheme.copyWith(
         backgroundColor: AppColors.blackMain,
@@ -87,7 +87,7 @@ class AppTheme {
   //Получение цветовой палитры для темной темы
   static ColorScheme _darkColorScheme(ThemeData base) {
     return base.colorScheme.copyWith(
-        //!
+        //TODO
         // background: AppColors.blackMain,
         // primary: AppColors.whiteBase,
         // onPrimary: AppColors.blackGreen,

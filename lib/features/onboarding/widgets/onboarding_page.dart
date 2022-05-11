@@ -15,16 +15,15 @@ class OnboardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Spacer(
-            flex: 4,
-          ),
+          const Spacer(flex: 4),
           SvgPicture.asset(
             iconPath,
-            color: Theme.of(context).iconTheme.color,
+            color: theme.iconTheme.color,
             height: 125,
             width: 125,
           ),
@@ -34,7 +33,7 @@ class OnboardingPage extends StatelessWidget {
             child: Text(
               tittle,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline2,
+              style: theme.textTheme.headline2,
             ),
           ),
           const SizedBox(height: 8),
@@ -43,7 +42,7 @@ class OnboardingPage extends StatelessWidget {
             child: Text(
               text,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.subtitle1,
+              style: theme.textTheme.subtitle1,
             ),
           ),
           const Spacer(flex: 5),

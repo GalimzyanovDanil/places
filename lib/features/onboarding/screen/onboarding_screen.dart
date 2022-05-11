@@ -2,8 +2,9 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:places/assets/res/app_assets.dart';
 import 'package:places/features/onboarding/screen/onboarding_wm.dart';
+import 'package:places/features/onboarding/strings/onboarding_strings.dart';
 import 'package:places/features/onboarding/widgets/onboarding_page.dart';
-import 'package:places/features/onboarding/widgets/page_selector.dart';
+import 'package:places/features/onboarding/widgets/page_indicator.dart';
 import 'package:places/features/onboarding/widgets/skip_button.dart';
 import 'package:places/features/onboarding/widgets/start_button.dart';
 import 'package:surf_util/surf_util.dart';
@@ -17,65 +18,61 @@ class OnboardingScreen extends ElementaryWidget<IOnboardingWidgetModel> {
 
   @override
   Widget build(IOnboardingWidgetModel wm) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          StateNotifierBuilder<int>(
-            listenableState: wm.currentPageState,
-            builder: (_, index) => Visibility(
-              visible: index != 2,
-              child: SkipButton(onPressed: wm.onSkipButton),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            StateNotifierBuilder<bool>(
+              listenableState: wm.isLastPage,
+              builder: (_, isLastPage) => SkipButton(
+                onPressed: wm.onSkipButton,
+                visible: !(isLastPage ?? false),
+              ),
+            ),
+          ],
+        ),
+        body: Center(
+          child: DisableOverscroll(
+            child: Stack(
+              children: [
+                PageView(
+                  onPageChanged: wm.onPageChanged,
+                  controller: wm.pageController,
+                  children: const <Widget>[
+                    OnboardingPage(
+                      iconPath: AppAssets.iconOnboard1,
+                      tittle: OnboardingStrings.title1,
+                      text: OnboardingStrings.text1,
+                    ),
+                    OnboardingPage(
+                      iconPath: AppAssets.iconOnboard2,
+                      tittle: OnboardingStrings.title2,
+                      text: OnboardingStrings.text2,
+                    ),
+                    OnboardingPage(
+                      iconPath: AppAssets.iconOnboard3,
+                      tittle: OnboardingStrings.title3,
+                      text: OnboardingStrings.text3,
+                    ),
+                  ],
+                ),
+                PageIndicator(
+                  tabController: wm.tabController,
+                ),
+              ],
             ),
           ),
-        ],
-      ),
-      body: Center(
-        child: DisableOverscroll(
-          child: Stack(
-            children: [
-              PageView(
-                onPageChanged: wm.onPageChanged,
-                controller: wm.pageController,
-                children: const <Widget>[
-                  OnboardingPage(
-                    iconPath: AppAssets.iconOnboard1,
-                    tittle: 'Добро пожаловать в Путеводитель',
-                    text: 'Ищи новые локации и сохраняй самые любимые.',
-                  ),
-                  OnboardingPage(
-                    iconPath: AppAssets.iconOnboard2,
-                    tittle: 'Построй маршрут и отправляйся в путь',
-                    text: 'Достигай цели максимально быстро и комфортно.',
-                  ),
-                  OnboardingPage(
-                    iconPath: AppAssets.iconOnboard3,
-                    tittle: 'Добавляй места, которые нашёл сам',
-                    text: 'Делись самыми интересными и помоги нам стать лучше!',
-                  ),
-                ],
-              ),
-              Positioned.fill(
-                bottom: 80,
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: PageSelector(
-                    tabController: wm.tabController,
-                  ),
-                ),
-              ),
-            ],
+        ),
+        floatingActionButton: StateNotifierBuilder<bool>(
+          listenableState: wm.isLastPage,
+          builder: (_, isLastPage) => StartButton(
+            onPressed: wm.onStartButton,
+            visible: isLastPage ?? false,
           ),
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        resizeToAvoidBottomInset: false,
       ),
-      floatingActionButton: StateNotifierBuilder<int>(
-        listenableState: wm.currentPageState,
-        builder: (_, index) => Visibility(
-          visible: index == 2,
-          child: StartButton(onPressed: wm.onStartButton),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      resizeToAvoidBottomInset: false,
     );
   }
 }

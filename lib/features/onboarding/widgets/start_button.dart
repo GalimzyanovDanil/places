@@ -1,31 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:places/features/onboarding/strings/onboarding_strings.dart';
 
 class StartButton extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback _onPressed;
+  final bool _visible;
 
   const StartButton({
-    required this.onPressed,
+    required VoidCallback onPressed,
+    required bool visible,
     Key? key,
-  }) : super(key: key);
+  })  : _onPressed = onPressed,
+        _visible = visible,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      width: double.infinity,
-      child: FloatingActionButton.extended(
-        onPressed: onPressed,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(12),
+    final theme = Theme.of(context);
+    return Visibility(
+      visible: _visible,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        width: double.infinity,
+        child: FloatingActionButton.extended(
+          onPressed: _onPressed,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(12),
+            ),
           ),
+          label: Text(
+            OnboardingStrings.startButton,
+            style: theme.textTheme.button,
+          ),
+          backgroundColor: theme.floatingActionButtonTheme.backgroundColor,
         ),
-        label: Text(
-          'НА СТАРТ',
-          style: Theme.of(context).textTheme.button,
-        ),
-        backgroundColor:
-            Theme.of(context).floatingActionButtonTheme.backgroundColor,
       ),
     );
   }
