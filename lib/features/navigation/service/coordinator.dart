@@ -3,7 +3,7 @@ import 'package:places/features/navigation/domain/entity/coordinate.dart';
 import 'package:places/features/navigation/domain/entity/coordinate_key.dart';
 import 'package:places/features/navigation/domain/entity/coordinate_route.dart';
 import 'package:places/features/navigation/domain/entity/coordinator_exceptions.dart';
-import 'package:places/features/temp/screens/temp_screen/temp_screen.dart';
+import 'package:places/features/onboarding/screen/onboarding_screen.dart';
 
 /// Class that coordinates navigation for the whole app and provides
 /// methods for navigation.
@@ -14,7 +14,7 @@ class Coordinator extends ChangeNotifier {
     const MaterialPage<void>(
       key: ValueKey('/init'),
       name: '/init',
-      child: TempScreen(),
+      child: OnboardingScreen(),
     ),
   ];
 

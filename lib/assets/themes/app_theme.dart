@@ -1,5 +1,3 @@
-// ignore_for_file: public_member_api_docs
-
 import 'package:flutter/material.dart';
 import 'package:places/assets/colors/app_colors.dart';
 import 'package:places/assets/themes/app_typography.dart';
@@ -20,8 +18,46 @@ class AppTheme {
       iconTheme: base.iconTheme.copyWith(
         color: AppColors.whiteMain,
       ),
-      buttonTheme: base.buttonTheme.copyWith(
-        buttonColor: AppColors.whiteGreen,
+      floatingActionButtonTheme: base.floatingActionButtonTheme.copyWith(
+        backgroundColor: AppColors.whiteGreen,
+      ),
+      appBarTheme: base.appBarTheme.copyWith(
+        backgroundColor: AppColors.whiteBase,
+        elevation: 0,
+      ),
+      scaffoldBackgroundColor: AppColors.whiteBase,
+      indicatorColor: AppColors.whiteGreen,
+      disabledColor: AppColors.inactiveBlack,
+    );
+  }
+
+  //Получение цветовой палитры для светлой темы
+  static ColorScheme _ligthColorScheme(ThemeData base) {
+    return base.colorScheme.copyWith(
+        //TODO
+        // background: AppColors.blackMain,
+        // primary: AppColors.whiteBase,
+        // onPrimary: AppColors.blackGreen,
+
+        );
+  }
+
+  // Получение цветовой палитры текстов для светлой темы
+  static TextTheme _lightTextTheme(ThemeData base) {
+    return base.textTheme.copyWith(
+      headline2: AppTypography.title.copyWith(
+        color: AppColors.whiteMain,
+      ),
+      subtitle1: AppTypography.small.copyWith(
+        color: AppColors.whiteSecondary2,
+      ),
+      button: AppTypography.button.copyWith(
+        color: AppColors.whiteBase,
+      ),
+
+      /// TextButton
+      caption: AppTypography.text.copyWith(
+        color: AppColors.whiteGreen,
       ),
     );
   }
@@ -35,40 +71,27 @@ class AppTheme {
       iconTheme: base.iconTheme.copyWith(
         color: AppColors.whiteBase,
       ),
-      buttonTheme: base.buttonTheme.copyWith(
-        buttonColor: AppColors.blackGreen,
+      floatingActionButtonTheme: base.floatingActionButtonTheme.copyWith(
+        backgroundColor: AppColors.blackGreen,
       ),
-    );
-  }
-
-  //Получение цветовой палитры для светлой темы
-  static ColorScheme _ligthColorScheme(ThemeData base) {
-    return base.colorScheme.copyWith(
-      background: AppColors.whiteBase,
-      primary: AppColors.whiteBase,
-      onPrimary: AppColors.whiteGreen,
-    );
-  }
-
-  // Получение цветовой палитры текстов для светлой темы
-  static TextTheme _lightTextTheme(ThemeData base) {
-    return base.textTheme.copyWith(
-      headline2: AppTypography.title.copyWith(
-        color: AppColors.whiteMain,
+      appBarTheme: base.appBarTheme.copyWith(
+        backgroundColor: AppColors.blackMain,
+        elevation: 0,
       ),
-      subtitle1: AppTypography.small.copyWith(
-        color: AppColors.whiteSecondary2,
-      ),
+      scaffoldBackgroundColor: AppColors.blackMain,
+      indicatorColor: AppColors.blackGreen,
+      disabledColor: AppColors.inactiveBlack,
     );
   }
 
   //Получение цветовой палитры для темной темы
   static ColorScheme _darkColorScheme(ThemeData base) {
     return base.colorScheme.copyWith(
-      background: AppColors.blackMain,
-      primary: AppColors.blackMain,
-      onPrimary: AppColors.blackGreen,
-    );
+        //TODO
+        // background: AppColors.blackMain,
+        // primary: AppColors.whiteBase,
+        // onPrimary: AppColors.blackGreen,
+        );
   }
 
   // Получение цветовой палитры текстов для темной темы
@@ -79,6 +102,14 @@ class AppTheme {
       ),
       subtitle1: AppTypography.small.copyWith(
         color: AppColors.blackSecondary2,
+      ),
+      button: AppTypography.button.copyWith(
+        color: AppColors.whiteBase,
+      ),
+
+      /// TextButton
+      caption: AppTypography.text.copyWith(
+        color: AppColors.blackGreen,
       ),
     );
   }

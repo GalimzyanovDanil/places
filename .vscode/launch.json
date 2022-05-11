@@ -1,0 +1,40 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    // flutter run --flavor dev
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Flutter -release",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main_release.dart",
+            "flutterMode": "release",
+            "args": [
+                "--flavor",
+                "prod"
+            ]
+        },
+        {
+            "name": "Flutter -dev",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+                "--flavor",
+                "dev"
+            ]
+        },
+        {
+            "name": "Flutter -qa",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main_qa.dart",
+            "args": [
+                "--flavor",
+                "dev"
+            ]
+        }
+    ]
+}
