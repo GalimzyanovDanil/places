@@ -18,61 +18,62 @@ class OnboardingScreen extends ElementaryWidget<IOnboardingWidgetModel> {
 
   @override
   Widget build(IOnboardingWidgetModel wm) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          actions: [
-            StateNotifierBuilder<bool>(
-              listenableState: wm.isLastPage,
-              builder: (_, isLastPage) => SkipButton(
-                onPressed: wm.onSkipButton,
-                visible: !(isLastPage ?? false),
-              ),
-            ),
-          ],
-        ),
-        body: Center(
-          child: DisableOverscroll(
-            child: Stack(
-              children: [
-                PageView(
-                  onPageChanged: wm.onPageChanged,
-                  controller: wm.pageController,
-                  children: const <Widget>[
-                    OnboardingPage(
-                      iconPath: AppAssets.iconOnboard1,
-                      tittle: OnboardingStrings.title1,
-                      text: OnboardingStrings.text1,
-                    ),
-                    OnboardingPage(
-                      iconPath: AppAssets.iconOnboard2,
-                      tittle: OnboardingStrings.title2,
-                      text: OnboardingStrings.text2,
-                    ),
-                    OnboardingPage(
-                      iconPath: AppAssets.iconOnboard3,
-                      tittle: OnboardingStrings.title3,
-                      text: OnboardingStrings.text3,
-                    ),
-                  ],
-                ),
-                PageIndicator(
-                  tabController: wm.tabController,
-                ),
-              ],
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          StateNotifierBuilder<bool>(
+            listenableState: wm.isLastPage,
+            builder: (_, isLastPage) => SkipButton(
+              onPressed: wm.onSkipButton,
+              visible: !(isLastPage ?? false),
             ),
           ),
-        ),
-        floatingActionButton: StateNotifierBuilder<bool>(
-          listenableState: wm.isLastPage,
-          builder: (_, isLastPage) => StartButton(
-            onPressed: wm.onStartButton,
-            visible: isLastPage ?? false,
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        resizeToAvoidBottomInset: false,
+        ],
       ),
+      body: Center(
+        child: DisableOverscroll(
+          child: Stack(
+            children: [
+              PageView(
+                onPageChanged: wm.onPageChanged,
+                controller: wm.pageController,
+                children: const <Widget>[
+                  OnboardingPage(
+                    iconPath: AppAssets.iconOnboard1,
+                    tittle: OnboardingStrings.title1,
+                    text: OnboardingStrings.text1,
+                  ),
+                  OnboardingPage(
+                    iconPath: AppAssets.iconOnboard2,
+                    tittle: OnboardingStrings.title2,
+                    text: OnboardingStrings.text2,
+                  ),
+                  OnboardingPage(
+                    iconPath: AppAssets.iconOnboard3,
+                    tittle: OnboardingStrings.title3,
+                    text: OnboardingStrings.text3,
+                  ),
+                ],
+              ),
+              StateNotifierBuilder<int>(
+                listenableState: wm.currentPage,
+                builder: (context, value) => PageIndicator(
+                  currentPage: value ?? 0,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: StateNotifierBuilder<bool>(
+        listenableState: wm.isLastPage,
+        builder: (_, isLastPage) => StartButton(
+          onPressed: wm.onStartButton,
+          visible: isLastPage ?? false,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      resizeToAvoidBottomInset: false,
     );
   }
 }

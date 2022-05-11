@@ -1,44 +1,80 @@
 import 'package:flutter/material.dart';
 
 class PageIndicator extends StatelessWidget {
-  final TabController _tabController;
+  final int _currentPage;
 
   const PageIndicator({
-    required TabController tabController,
+    required int currentPage,
     Key? key,
-  })  : _tabController = tabController,
+  })  : _currentPage = currentPage,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Positioned.fill(
-      top: 600,
+      top: 400,
       child: Align(
-        child: TabPageSelector(
-          controller: _tabController,
-          color: theme.disabledColor,
-          selectedColor: theme.indicatorColor,
+        child: Indicator(
+          currentPage: _currentPage,
         ),
       ),
     );
   }
 }
 
-class Name extends StatelessWidget {
-  const Name({Key? key}) : super(key: key);
+class Indicator extends StatelessWidget {
+  final int currentPage;
+  const Indicator({required this.currentPage, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            
+    final theme = Theme.of(context);
+    const size = 8.0;
+    final Widget active = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: Container(
+        width: 24,
+        height: size,
+        decoration: BoxDecoration(
+          color: theme.indicatorColor,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(size),
           ),
         ),
-      ],
+      ),
+    );
+
+    final children = <Widget>[
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        child: Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            color: theme.disabledColor,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(size),
+            ),
+          ),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        child: Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            color: theme.disabledColor,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(size),
+            ),
+          ),
+        ),
+      ),
+    ]..insert(currentPage, active);
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: children,
     );
   }
 }

@@ -5,8 +5,8 @@ import 'package:places/features/onboarding/screen/onboarding_screen.dart';
 
 abstract class IOnboardingWidgetModel extends IWidgetModel {
   PageController get pageController;
-  TabController get tabController;
   ListenableState<bool> get isLastPage;
+  ListenableState<int> get currentPage;
   void onPageChanged(int index);
   void onSkipButton();
   void onStartButton();
@@ -21,11 +21,11 @@ OnboardingWidgetModel defaultOnboardingWidgetModelFactory(
 /// Default widget model for OnboardingWidget
 class OnboardingWidgetModel
     extends WidgetModel<OnboardingScreen, OnboardingModel>
-    with SingleTickerProviderWidgetModelMixin
     implements IOnboardingWidgetModel {
   late final PageController _pageController;
-  late final TabController _tabController;
+
   final StateNotifier<bool> _isLastPage = StateNotifier<bool>(initValue: false);
+  final StateNotifier<int> _currentPage = StateNotifier<int>(initValue: 0);
   // Количество страниц онбординга
   final int _pageCount = 3;
 
@@ -33,17 +33,16 @@ class OnboardingWidgetModel
   PageController get pageController => _pageController;
 
   @override
-  TabController get tabController => _tabController;
+  ListenableState<bool> get isLastPage => _isLastPage;
 
   @override
-  ListenableState<bool> get isLastPage => _isLastPage;
+  ListenableState<int> get currentPage => _currentPage;
 
   OnboardingWidgetModel(OnboardingModel model) : super(model);
 
   @override
   void initWidgetModel() {
     _pageController = PageController();
-    _tabController = TabController(length: _pageCount, vsync: this);
     super.initWidgetModel();
   }
 
@@ -51,14 +50,12 @@ class OnboardingWidgetModel
   void dispose() {
     super.dispose();
     _pageController.dispose();
-    _tabController.dispose();
   }
 
   @override
   void onPageChanged(int index) {
     _isLastPage.accept(_pageCount - 1 == index);
-
-    _tabController.animateTo(index);
+    _currentPage.accept(index);
   }
 
   @override
