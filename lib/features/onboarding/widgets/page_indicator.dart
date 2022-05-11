@@ -12,7 +12,7 @@ class PageIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned.fill(
-      top: 400,
+      top: 500,
       child: Align(
         child: Indicator(
           currentPage: _currentPage,
@@ -30,6 +30,7 @@ class Indicator extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     const size = 8.0;
+
     final Widget active = Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4),
       child: Container(
@@ -72,6 +73,7 @@ class Indicator extends StatelessWidget {
         ),
       ),
     ]..insert(currentPage, active);
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: children,
