@@ -15,19 +15,22 @@ abstract class IOnboardingWidgetModel extends IWidgetModel {
 OnboardingWidgetModel defaultOnboardingWidgetModelFactory(
   BuildContext context,
 ) {
-  return OnboardingWidgetModel(OnboardingModel());
+  final model = OnboardingModel();
+  return OnboardingWidgetModel(model);
 }
 
 /// Default widget model for OnboardingWidget
 class OnboardingWidgetModel
     extends WidgetModel<OnboardingScreen, OnboardingModel>
     implements IOnboardingWidgetModel {
+  // Количество страниц онбординга
+  @visibleForTesting
+  final int pageCount = 3;
+
   late final PageController _pageController;
 
   final StateNotifier<bool> _isLastPage = StateNotifier<bool>(initValue: false);
   final StateNotifier<int> _currentPage = StateNotifier<int>(initValue: 0);
-  // Количество страниц онбординга
-  final int _pageCount = 3;
 
   @override
   PageController get pageController => _pageController;
@@ -54,7 +57,7 @@ class OnboardingWidgetModel
 
   @override
   void onPageChanged(int index) {
-    _isLastPage.accept(_pageCount - 1 == index);
+    _isLastPage.accept(pageCount - 1 == index);
     _currentPage.accept(index);
   }
 
