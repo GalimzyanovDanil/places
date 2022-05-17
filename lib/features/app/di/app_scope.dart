@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:elementary/elementary.dart';
+import 'package:places/api/service/place_api.dart';
 import 'package:places/config/app_config.dart';
 import 'package:places/config/environment/environment.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
@@ -14,6 +15,7 @@ class AppScope implements IAppScope {
   late final ErrorHandler _errorHandler;
   late final VoidCallback _applicationRebuilder;
   late final Coordinator _coordinator;
+  late final PlaceApi _placeApi;
 
   @override
   Dio get dio => _dio;
@@ -27,6 +29,9 @@ class AppScope implements IAppScope {
   @override
   Coordinator get coordinator => _coordinator;
 
+  @override
+  PlaceApi get placeApi => _placeApi;
+
   /// Create an instance [AppScope].
   AppScope({
     required VoidCallback applicationRebuilder,
@@ -37,6 +42,8 @@ class AppScope implements IAppScope {
     _dio = _initDio(additionalInterceptors);
     _errorHandler = DefaultErrorHandler();
     _coordinator = Coordinator();
+
+    _placeApi = PlaceApi(dio);
   }
 
   Dio _initDio(Iterable<Interceptor> additionalInterceptors) {
@@ -88,4 +95,7 @@ abstract class IAppScope {
 
   /// Class that coordinates navigation for the whole app.
   Coordinator get coordinator;
+
+  /// API client
+  PlaceApi get placeApi;
 }

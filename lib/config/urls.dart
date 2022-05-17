@@ -13,7 +13,7 @@ abstract class Url {
   static String get devProxyUrl => '';
 
   /// TRest url.
-  static String get testUrl => 'http://uinames.com/api/';
+  static String get testUrl => 'https://test-backend-flutter.surfstudio.ru';
 
   /// Prod url.
   static String get prodUrl => 'https://prod.surfstudio.ru/api';
