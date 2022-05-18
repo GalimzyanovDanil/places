@@ -2,6 +2,7 @@ import 'package:elementary_test/elementary_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:places/features/navigation/service/coordinator.dart';
 import 'package:places/features/onboarding/screen/onboarding_model.dart';
 import 'package:places/features/onboarding/screen/onboarding_screen.dart';
 import 'package:places/features/onboarding/screen/onboarding_wm.dart';
@@ -32,7 +33,11 @@ Future<void> onboardingWidgetModelTest() async {
 
       OnboardingWidgetModel setupWM() {
         onboardingModelMock = OnboardingModelMock();
-        return OnboardingWidgetModel(onboardingModelMock);
+        final coordinator = Coordinator();
+        return OnboardingWidgetModel(
+          model: onboardingModelMock,
+          coordinator: coordinator,
+        );
       }
 
       testWidgetModel<OnboardingWidgetModel, OnboardingScreen>(

@@ -1,5 +1,12 @@
 include: package:surf_lint_rules/analysis_options.yaml
 
+analyzer:
+  exclude:
+    - "build/**"
+    - "script/**"
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+
 dart_code_metrics:
   metrics:
     cyclomatic-complexity: 20

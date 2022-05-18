@@ -3,9 +3,12 @@ import 'dart:ui';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:elementary/elementary.dart';
+import 'package:places/api/service/place_api.dart';
 import 'package:places/config/app_config.dart';
 import 'package:places/config/environment/environment.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
+import 'package:places/features/places_list/domain/repository/places_repository.dart';
+import 'package:places/features/places_list/service/places_service.dart';
 import 'package:places/util/default_error_handler.dart';
 
 /// Scope of dependencies which need through all app's life.
@@ -14,6 +17,10 @@ class AppScope implements IAppScope {
   late final ErrorHandler _errorHandler;
   late final VoidCallback _applicationRebuilder;
   late final Coordinator _coordinator;
+  late final PlacesService _placesService;
+
+  late final PlaceApi _placeApi;
+  late final PlacesRepository _placesRepository;
 
   @override
   Dio get dio => _dio;
@@ -27,16 +34,28 @@ class AppScope implements IAppScope {
   @override
   Coordinator get coordinator => _coordinator;
 
+  @override
+  PlacesService get placesService => _placesService;
+
   /// Create an instance [AppScope].
   AppScope({
     required VoidCallback applicationRebuilder,
   }) : _applicationRebuilder = applicationRebuilder {
     /// List interceptor. Fill in as needed.
-    final additionalInterceptors = <Interceptor>[];
+    final additionalInterceptors = <Interceptor>[
+      InterceptorsWrapper(
+        onError: (e, handler) {
+          handler.reject(e);
+        },
+      )
+    ];
 
     _dio = _initDio(additionalInterceptors);
     _errorHandler = DefaultErrorHandler();
     _coordinator = Coordinator();
+
+    _placeApi = PlaceApi(dio);
+    _placesService = _initPlacesService();
   }
 
   Dio _initDio(Iterable<Interceptor> additionalInterceptors) {
@@ -73,6 +92,11 @@ class AppScope implements IAppScope {
 
     return dio;
   }
+
+  PlacesService _initPlacesService() {
+    _placesRepository = PlacesRepository(_placeApi);
+    return PlacesService(_placesRepository);
+  }
 }
 
 /// App dependencies.
@@ -88,4 +112,7 @@ abstract class IAppScope {
 
   /// Class that coordinates navigation for the whole app.
   Coordinator get coordinator;
+
+  /// Places service
+  PlacesService get placesService;
 }
