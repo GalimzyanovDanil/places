@@ -6,6 +6,8 @@ part of 'place_api.dart';
 // RetrofitGenerator
 // **************************************************************************
 
+// ignore_for_file: unnecessary_brace_in_string_interps
+
 class _PlaceApi implements PlaceApi {
   _PlaceApi(this._dio, {this.baseUrl});
 
@@ -14,7 +16,7 @@ class _PlaceApi implements PlaceApi {
   String? baseUrl;
 
   @override
-  Future<List<PlaceResponse>> _getPlaces(queries) async {
+  Future<List<PlaceResponse>> getPlaces(queries) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.addAll(queries);

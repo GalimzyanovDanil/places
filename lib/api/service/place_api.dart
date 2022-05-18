@@ -10,17 +10,8 @@ part 'place_api.g.dart';
 abstract class PlaceApi {
   factory PlaceApi(Dio dio, {String baseUrl}) = _PlaceApi;
 
-  /// Запросить [count] количество мест с отступом [offset] от первого элемента в базе
-  Future<List<PlaceResponse>> getPlaces(int count, [int offset = 0]) {
-    final queries = <String, dynamic>{
-      'count': '$count',
-      'offset': '$offset',
-    };
-    return _getPlaces(queries);
-  }
-
   @GET(PlaceApiStrings.place)
-  Future<List<PlaceResponse>> _getPlaces(
+  Future<List<PlaceResponse>> getPlaces(
     @Queries() Map<String, dynamic> queries,
   );
 }
