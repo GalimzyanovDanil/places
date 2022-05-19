@@ -1,4 +1,4 @@
-import 'package:places/features/places_list/strings/place_type_strings.dart';
+import 'package:places/features/places_list/strings/places_list_strings.dart';
 
 enum PlaceType {
   temple,
@@ -37,20 +37,20 @@ enum PlaceType {
   String toTitle() {
     switch (this) {
       case PlaceType.park:
-        return PlaceTypeStrings.park;
+        return PlacesListStrings.parkType;
       case PlaceType.museum:
-        return PlaceTypeStrings.museum;
+        return PlacesListStrings.museumType;
       case PlaceType.hotel:
-        return PlaceTypeStrings.hotel;
+        return PlacesListStrings.hotelType;
       case PlaceType.restaurant:
-        return PlaceTypeStrings.restaurant;
+        return PlacesListStrings.restaurantType;
       case PlaceType.cafe:
-        return PlaceTypeStrings.cafe;
+        return PlacesListStrings.cafeType;
       case PlaceType.other:
       case PlaceType.temple:
       case PlaceType.monument:
       case PlaceType.theatre:
-        return PlaceTypeStrings.other;
+        return PlacesListStrings.otherType;
     }
   }
 }

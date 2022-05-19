@@ -48,6 +48,7 @@ class AppTheme {
     return base.textTheme.copyWith(
       headline2: AppTypography.title.copyWith(color: AppColors.whiteMain),
       headline3: AppTypography.text.copyWith(color: AppColors.whiteSecondary),
+      headline4: AppTypography.subtitle.copyWith(color: AppColors.whiteMain),
       subtitle1: AppTypography.small.copyWith(color: AppColors.whiteSecondary2),
       subtitle2: AppTypography.smallBold.copyWith(color: AppColors.whiteBase),
       button: AppTypography.button.copyWith(color: AppColors.whiteBase),
@@ -93,6 +94,7 @@ class AppTheme {
     return base.textTheme.copyWith(
       headline2: AppTypography.title.copyWith(color: AppColors.whiteBase),
       headline3: AppTypography.text.copyWith(color: AppColors.whiteBase),
+      headline4: AppTypography.subtitle.copyWith(color: AppColors.whiteBase),
       subtitle1: AppTypography.small.copyWith(color: AppColors.whiteSecondary2),
       subtitle2: AppTypography.smallBold.copyWith(color: AppColors.whiteBase),
       button: AppTypography.button.copyWith(color: AppColors.whiteBase),
