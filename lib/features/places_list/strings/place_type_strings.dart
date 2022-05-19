@@ -1,8 +1,8 @@
 class PlaceTypeStrings {
-  static const restaurant = 'Ресторан';
-  static const cafe = 'Кафе';
-  static const park = 'Парк';
-  static const hotel = 'Отель';
-  static const museum = 'Музей';
-  static const other = 'Особое место';
+  static const restaurant = 'ресторан';
+  static const cafe = 'кафе';
+  static const park = 'парк';
+  static const hotel = 'отель';
+  static const museum = 'музей';
+  static const other = 'особое место';
 }

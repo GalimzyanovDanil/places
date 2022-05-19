@@ -28,6 +28,7 @@ class AppTheme {
       scaffoldBackgroundColor: AppColors.whiteBase,
       indicatorColor: AppColors.whiteGreen,
       disabledColor: AppColors.inactiveBlack,
+      primaryColor: AppColors.background,
     );
   }
 
@@ -45,20 +46,12 @@ class AppTheme {
   // Получение цветовой палитры текстов для светлой темы
   static TextTheme _lightTextTheme(ThemeData base) {
     return base.textTheme.copyWith(
-      headline2: AppTypography.title.copyWith(
-        color: AppColors.whiteMain,
-      ),
-      subtitle1: AppTypography.small.copyWith(
-        color: AppColors.whiteSecondary2,
-      ),
-      button: AppTypography.button.copyWith(
-        color: AppColors.whiteBase,
-      ),
-
-      /// TextButton
-      caption: AppTypography.text.copyWith(
-        color: AppColors.whiteGreen,
-      ),
+      headline2: AppTypography.title.copyWith(color: AppColors.whiteMain),
+      headline3: AppTypography.text.copyWith(color: AppColors.whiteSecondary),
+      subtitle1: AppTypography.small.copyWith(color: AppColors.whiteSecondary2),
+      subtitle2: AppTypography.smallBold.copyWith(color: AppColors.whiteBase),
+      button: AppTypography.button.copyWith(color: AppColors.whiteBase),
+      caption: AppTypography.text.copyWith(color: AppColors.whiteGreen),
     );
   }
 
@@ -81,6 +74,7 @@ class AppTheme {
       scaffoldBackgroundColor: AppColors.blackMain,
       indicatorColor: AppColors.blackGreen,
       disabledColor: AppColors.inactiveBlack,
+      primaryColor: AppColors.blackDark,
     );
   }
 
@@ -97,20 +91,12 @@ class AppTheme {
   // Получение цветовой палитры текстов для темной темы
   static TextTheme _darkTextTheme(ThemeData base) {
     return base.textTheme.copyWith(
-      headline2: AppTypography.title.copyWith(
-        color: AppColors.whiteBase,
-      ),
-      subtitle1: AppTypography.small.copyWith(
-        color: AppColors.blackSecondary2,
-      ),
-      button: AppTypography.button.copyWith(
-        color: AppColors.whiteBase,
-      ),
-
-      /// TextButton
-      caption: AppTypography.text.copyWith(
-        color: AppColors.blackGreen,
-      ),
+      headline2: AppTypography.title.copyWith(color: AppColors.whiteBase),
+      headline3: AppTypography.text.copyWith(color: AppColors.whiteBase),
+      subtitle1: AppTypography.small.copyWith(color: AppColors.whiteSecondary2),
+      subtitle2: AppTypography.smallBold.copyWith(color: AppColors.whiteBase),
+      button: AppTypography.button.copyWith(color: AppColors.whiteBase),
+      caption: AppTypography.text.copyWith(color: AppColors.blackGreen),
     );
   }
 }
