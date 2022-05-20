@@ -6,15 +6,12 @@ import 'package:places/features/places_list/widgets/place_card_widget/descriptio
 import 'package:places/features/places_list/widgets/place_card_widget/network_image_widget.dart';
 
 /// [onTapCard] - Открытие делальной информации места
-/// [onTapFavorite] - Добавление/удаление в избранное
 /// [placeType] - Тип места
 /// [imageUrl] - Ссылка на изображение
 /// [name] - Имя места
 /// [description] - Краткое описание
 class PlaceCardWidget extends StatelessWidget {
   final VoidCallback onTapCard;
-  final VoidCallback onTapFavorite;
-  final bool isFavorite;
   final String placeType;
   final String imageUrl;
   final String name;
@@ -22,8 +19,6 @@ class PlaceCardWidget extends StatelessWidget {
 
   const PlaceCardWidget({
     required this.onTapCard,
-    required this.onTapFavorite,
-    required this.isFavorite,
     required this.placeType,
     required this.imageUrl,
     required this.name,
@@ -75,10 +70,7 @@ class PlaceCardWidget extends StatelessWidget {
             Positioned(
               top: 16,
               right: 16,
-              child: _FavoriteButtonWidget(
-                onTapFavorite: onTapFavorite,
-                isFavorite: isFavorite,
-              ),
+              child: _FavoriteButtonWidget(),
             ),
             Positioned(
               top: 16,
@@ -95,15 +87,15 @@ class PlaceCardWidget extends StatelessWidget {
   }
 }
 
+// TODO: Сделать отдельный элементари модуль
 class _FavoriteButtonWidget extends StatelessWidget {
-  const _FavoriteButtonWidget({
-    required this.onTapFavorite,
-    required this.isFavorite,
+  _FavoriteButtonWidget({
     Key? key,
   }) : super(key: key);
 
-  final void Function() onTapFavorite;
-  final bool isFavorite;
+  // ignore: prefer_function_declarations_over_variables
+  final onTapFavorite = () {};
+  final bool isFavorite = false;
 
   @override
   Widget build(BuildContext context) {
