@@ -72,6 +72,7 @@ class PlacesListWidgetModel
   Future<void> _getPlacesList(int offset) async {
     try {
       final content = await model.getPlacesList(placeCount, offset);
+      await Future<void>.delayed(const Duration(seconds: 2));
       for (final element in content) {
         _correctImageUrls(element.urls);
       }
@@ -89,7 +90,7 @@ class PlacesListWidgetModel
 
   // Удаление URL, не являющихся ссылками на изображения
   void _correctImageUrls(List<String> list) {
-    const checkList = ['.jpg', '.jpeg', '.png'];
+    const checkList = ['.jpg', '.jpeg', '.png', '.svg'];
 
     list.retainWhere((element) {
       var isOk = false;
