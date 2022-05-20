@@ -12,8 +12,8 @@ import 'package:places/features/places_list/widgets/place_card_widget/network_im
 /// [name] - Имя места
 /// [description] - Краткое описание
 class PlaceCardWidget extends StatelessWidget {
-  final void Function() onTapCard;
-  final void Function() onTapFavorite;
+  final VoidCallback onTapCard;
+  final VoidCallback onTapFavorite;
   final bool isFavorite;
   final String placeType;
   final String imageUrl;
