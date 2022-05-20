@@ -2,7 +2,7 @@ import 'package:places/api/data/place_response.dart';
 import 'package:places/features/places_list/domain/entity/place.dart';
 import 'package:places/features/places_list/domain/entity/place_type.dart';
 
-Place placeFromResponse(PlaceResponse response) {
+Place mapPlaceFromResponse(PlaceResponse response) {
   return Place(
       id: response.id,
       lat: response.lat,

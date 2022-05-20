@@ -1,6 +1,6 @@
 import 'package:places/api/service/place_api.dart';
 import 'package:places/features/places_list/domain/entity/place.dart';
-import 'package:places/features/places_list/domain/mappers/place_mapper.dart';
+import 'package:places/features/places_list/domain/repository/mappers/place_mapper.dart';
 
 class PlacesRepository {
   final PlaceApi _apiClient;
@@ -16,7 +16,7 @@ class PlacesRepository {
       };
       return _apiClient
           .getPlaces(queries)
-          .then((value) => value.map<Place>(placeFromResponse).toList());
+          .then((value) => value.map<Place>(mapPlaceFromResponse).toList());
     } on Object catch (_) {
       rethrow;
     }
