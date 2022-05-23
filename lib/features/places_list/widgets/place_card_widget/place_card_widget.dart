@@ -2,27 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/assets/colors/app_colors.dart';
 import 'package:places/assets/res/app_assets.dart';
+import 'package:places/features/places_list/domain/entity/place.dart';
 import 'package:places/features/places_list/widgets/place_card_widget/description_widget.dart';
 import 'package:places/features/places_list/widgets/place_card_widget/network_image_widget.dart';
 
 /// [onTapCard] - Открытие делальной информации места
-/// [placeType] - Тип места
-/// [imageUrl] - Ссылка на изображение
-/// [name] - Имя места
-/// [description] - Краткое описание
+/// [place] - Данные места
 class PlaceCardWidget extends StatelessWidget {
-  final VoidCallback onTapCard;
-  final String placeType;
-  final String imageUrl;
-  final String name;
-  final String description;
+  final ValueChanged<int> onTapCard;
+  final Place place;
+  final int index;
 
   const PlaceCardWidget({
     required this.onTapCard,
-    required this.placeType,
-    required this.imageUrl,
-    required this.name,
-    required this.description,
+    required this.place,
+    required this.index,
     super.key,
   });
 
@@ -45,13 +39,14 @@ class PlaceCardWidget extends StatelessWidget {
                     children: [
                       Expanded(
                         child: NetworkImageWidget(
-                          imageUrl: imageUrl,
+                          imageUrl:
+                              place.urls.isNotEmpty ? place.urls.first : '',
                         ),
                       ),
                       Expanded(
                         child: DescriptionWidget(
-                          name: name,
-                          description: description,
+                          name: place.name,
+                          description: place.description,
                         ),
                       ),
                     ],
@@ -61,7 +56,7 @@ class PlaceCardWidget extends StatelessWidget {
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      onTap: onTapCard,
+                      onTap: () => onTapCard(index),
                     ),
                   ),
                 ),
@@ -76,7 +71,7 @@ class PlaceCardWidget extends StatelessWidget {
               top: 16,
               left: 16,
               child: Text(
-                placeType,
+                place.placeType.toTitle(),
                 style: theme.textTheme.subtitle2,
               ),
             )

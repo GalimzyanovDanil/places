@@ -35,19 +35,17 @@ class Body extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: RefreshIndicator(
-          onRefresh: () async {
-            wm.pagingController.refresh();
-          },
+          onRefresh: wm.onRefresh,
           child: PagedListView.separated(
             pagingController: wm.pagingController,
             builderDelegate: PagedChildBuilderDelegate<Place>(
-                itemBuilder: (_, place, index) => PlaceCardWidget(
-                    onTapCard: () => wm.onTapCard(index),
-                    placeType: place.placeType.toTitle(),
-                    imageUrl: (place.urls.isNotEmpty) ? (place.urls.first) : '',
-                    name: place.name,
-                    description: place.description)),
-            separatorBuilder: (context, index) => const SizedBox(height: 24),
+              itemBuilder: (_, place, index) => PlaceCardWidget(
+                onTapCard: wm.onTapCard,
+                index: index,
+                place: place,
+              ),
+            ),
+            separatorBuilder: (_, __) => const SizedBox(height: 24),
           ),
         ),
       ),

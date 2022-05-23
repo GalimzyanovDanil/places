@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 abstract class IPlacesListWidgetModel extends IWidgetModel {
   PagingController<int, Place> get pagingController;
   void onTapCard(int index);
+  Future<void> onRefresh();
 }
 
 PlacesListWidgetModel defaultPlacesListWidgetModelFactory(
@@ -59,6 +60,11 @@ class PlacesListWidgetModel
   @override
   void onTapCard(int index) {
     // TODO: implement onTapCard
+  }
+
+  @override
+  Future<void> onRefresh() async {
+    pagingController.refresh();
   }
 
   // Инициализация
