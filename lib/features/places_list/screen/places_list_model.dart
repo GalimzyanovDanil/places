@@ -16,7 +16,9 @@ class PlacesListModel extends ElementaryModel {
 
   Future<List<Place>> getPlacesList(int count, [int offset = 0]) async {
     try {
-      return _placesService.getPlacesList(count, offset);
+      final List<Place> result;
+      result = await _placesService.getPlacesList(count, offset);
+      return result;
     } on Object catch (error) {
       _errorHandler.handleError(error);
       rethrow;

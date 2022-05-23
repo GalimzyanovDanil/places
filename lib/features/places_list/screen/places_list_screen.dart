@@ -1,5 +1,6 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:places/features/places_list/domain/entity/place.dart';
 import 'package:places/features/places_list/screen/places_list_wm.dart';
 import 'package:places/features/places_list/strings/places_list_strings.dart';
@@ -33,28 +34,19 @@ class Body extends StatelessWidget {
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: EntityStateNotifierBuilder<List<Place>>(
-          listenableEntityState: wm.placesState,
-          loadingBuilder: (_, __) => const CircularProgressIndicator.adaptive(),
-          errorBuilder: (_, __, ___) => const Text('Error'),
-          builder: (_, state) => ListView.separated(
-              itemBuilder: (context, index) {
-                wm.paginationOnScroll(index);
-                assert(state != null);
-                return PlaceCardWidget(
-                    onTapCard: () => wm.onTapCard(index),
-                    onTapFavorite: () => wm.onTapFavorite(index),
-                    // TODO: Задать состояние
-                    isFavorite: true,
-                    placeType: state![index].placeType.toTitle(),
-                    imageUrl: (state[index].urls.isNotEmpty)
-                        ? (state[index].urls.first)
-                        : '',
-                    name: state[index].name,
-                    description: state[index].description);
-              },
-              separatorBuilder: (context, index) => const SizedBox(height: 24),
-              itemCount: state?.length ?? 0),
+        child: RefreshIndicator(
+          onRefresh: wm.onRefresh,
+          child: PagedListView.separated(
+            pagingController: wm.pagingController,
+            builderDelegate: PagedChildBuilderDelegate<Place>(
+              itemBuilder: (_, place, index) => PlaceCardWidget(
+                onTapCard: wm.onTapCard,
+                index: index,
+                place: place,
+              ),
+            ),
+            separatorBuilder: (_, __) => const SizedBox(height: 24),
+          ),
         ),
       ),
     );

@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:places/features/places_list/domain/entity/place_type.dart';
 
 class Place {
@@ -23,6 +22,6 @@ class Place {
 
   @override
   String toString() {
-    return 'Place(id: $id, lat: $lat, lng: $lng, name: $name, urls: $urls, placeType: $placeType, description: $description, distance: $distance)';
+    return 'Place(id: $id, name: $name, placeType: $placeType)';
   }
 }

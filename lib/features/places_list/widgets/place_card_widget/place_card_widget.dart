@@ -2,32 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/assets/colors/app_colors.dart';
 import 'package:places/assets/res/app_assets.dart';
+import 'package:places/features/places_list/domain/entity/place.dart';
 import 'package:places/features/places_list/widgets/place_card_widget/description_widget.dart';
 import 'package:places/features/places_list/widgets/place_card_widget/network_image_widget.dart';
 
 /// [onTapCard] - Открытие делальной информации места
-/// [onTapFavorite] - Добавление/удаление в избранное
-/// [placeType] - Тип места
-/// [imageUrl] - Ссылка на изображение
-/// [name] - Имя места
-/// [description] - Краткое описание
+/// [place] - Данные места
 class PlaceCardWidget extends StatelessWidget {
-  final VoidCallback onTapCard;
-  final VoidCallback onTapFavorite;
-  final bool isFavorite;
-  final String placeType;
-  final String imageUrl;
-  final String name;
-  final String description;
+  final ValueChanged<int> onTapCard;
+  final Place place;
+  final int index;
 
   const PlaceCardWidget({
     required this.onTapCard,
-    required this.onTapFavorite,
-    required this.isFavorite,
-    required this.placeType,
-    required this.imageUrl,
-    required this.name,
-    required this.description,
+    required this.place,
+    required this.index,
     super.key,
   });
 
@@ -50,13 +39,14 @@ class PlaceCardWidget extends StatelessWidget {
                     children: [
                       Expanded(
                         child: NetworkImageWidget(
-                          imageUrl: imageUrl,
+                          imageUrl:
+                              place.urls.isNotEmpty ? place.urls.first : '',
                         ),
                       ),
                       Expanded(
                         child: DescriptionWidget(
-                          name: name,
-                          description: description,
+                          name: place.name,
+                          description: place.description,
                         ),
                       ),
                     ],
@@ -66,7 +56,7 @@ class PlaceCardWidget extends StatelessWidget {
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      onTap: onTapCard,
+                      onTap: () => onTapCard(index),
                     ),
                   ),
                 ),
@@ -75,16 +65,13 @@ class PlaceCardWidget extends StatelessWidget {
             Positioned(
               top: 16,
               right: 16,
-              child: _FavoriteButtonWidget(
-                onTapFavorite: onTapFavorite,
-                isFavorite: isFavorite,
-              ),
+              child: _FavoriteButtonWidget(),
             ),
             Positioned(
               top: 16,
               left: 16,
               child: Text(
-                placeType,
+                place.placeType.toTitle(),
                 style: theme.textTheme.subtitle2,
               ),
             )
@@ -95,15 +82,15 @@ class PlaceCardWidget extends StatelessWidget {
   }
 }
 
+// TODO: Сделать отдельный элементари модуль
 class _FavoriteButtonWidget extends StatelessWidget {
-  const _FavoriteButtonWidget({
-    required this.onTapFavorite,
-    required this.isFavorite,
+  _FavoriteButtonWidget({
     Key? key,
   }) : super(key: key);
 
-  final void Function() onTapFavorite;
-  final bool isFavorite;
+  // ignore: prefer_function_declarations_over_variables
+  final onTapFavorite = () {};
+  final bool isFavorite = false;
 
   @override
   Widget build(BuildContext context) {
