@@ -7,10 +7,6 @@ class PlacesService {
   PlacesService(this._placesRepository);
 
   Future<List<Place>> getPlacesList(int count, [int offset = 0]) async {
-    try {
-      return _placesRepository.getPlacesList(count, offset);
-    } on Object catch (_) {
-      rethrow;
-    }
+    return _placesRepository.getPlacesList(count, offset);
   }
 }

@@ -2,6 +2,8 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:places/features/places_list/domain/entity/place.dart';
+import 'package:places/features/places_list/screen/builder_widgets/first_page_error_widget.dart';
+import 'package:places/features/places_list/screen/builder_widgets/new_page_error_widget.dart';
 import 'package:places/features/places_list/screen/places_list_wm.dart';
 import 'package:places/features/places_list/strings/places_list_strings.dart';
 import 'package:places/features/places_list/widgets/place_card_widget/place_card_widget.dart';
@@ -31,18 +33,26 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final pagingController = wm.pagingController;
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: RefreshIndicator(
-          onRefresh: wm.onRefresh,
+      child: RefreshIndicator(
+        triggerMode: RefreshIndicatorTriggerMode.anywhere,
+        onRefresh: wm.onRefresh,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: PagedListView.separated(
-            pagingController: wm.pagingController,
+            pagingController: pagingController,
             builderDelegate: PagedChildBuilderDelegate<Place>(
               itemBuilder: (_, place, index) => PlaceCardWidget(
                 onTapCard: wm.onTapCard,
                 index: index,
                 place: place,
+              ),
+              firstPageErrorIndicatorBuilder: (_) =>
+                  FirstPageErrorWidget(pagingController.error),
+              newPageErrorIndicatorBuilder: (_) => NewPageErrorWidget(
+                error: pagingController.error,
+                retryLastRequest: pagingController.retryLastFailedRequest,
               ),
             ),
             separatorBuilder: (_, __) => const SizedBox(height: 24),

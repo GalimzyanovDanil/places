@@ -9,16 +9,12 @@ class PlacesRepository {
 
   /// Запросить [count] количество мест с отступом [offset] от первого элемента в базе
   Future<List<Place>> getPlacesList(int count, [int offset = 0]) async {
-    try {
-      final queries = <String, dynamic>{
-        'count': '$count',
-        'offset': '$offset',
-      };
-      return _apiClient
-          .getPlaces(queries)
-          .then((value) => value.map<Place>(mapPlaceFromResponse).toList());
-    } on Object catch (_) {
-      rethrow;
-    }
+    final queries = <String, dynamic>{
+      'count': '$count',
+      'offset': '$offset',
+    };
+    return _apiClient
+        .getPlaces(queries)
+        .then((value) => value.map<Place>(mapPlaceFromResponse).toList());
   }
 }

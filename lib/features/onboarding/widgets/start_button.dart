@@ -27,7 +27,6 @@ class StartButton extends StatelessWidget {
           OnboardingStrings.startButton,
           style: theme.textTheme.button,
         ),
-        backgroundColor: theme.floatingActionButtonTheme.backgroundColor,
       ),
     );
   }

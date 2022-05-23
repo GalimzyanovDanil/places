@@ -3,6 +3,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:places/features/app/di/app_scope.dart';
+import 'package:places/features/common/app_exceptions/api_exception.dart';
 import 'package:places/features/places_list/domain/entity/place.dart';
 import 'package:places/features/places_list/screen/places_list_model.dart';
 import 'package:places/features/places_list/screen/places_list_screen.dart';
@@ -20,7 +21,10 @@ PlacesListWidgetModel defaultPlacesListWidgetModelFactory(
   final appDependencies = context.read<IAppScope>();
   final placesService = appDependencies.placesService;
   final model = PlacesListModel(
-      errorHandler: appDependencies.errorHandler, placesService: placesService);
+    errorHandler: appDependencies.errorHandler,
+    placesService: placesService,
+    connectivityResult: appDependencies.connectivityResult,
+  );
   return PlacesListWidgetModel(model);
 }
 
@@ -89,7 +93,7 @@ class PlacesListWidgetModel
         final nextPageKey = offset + placeCount;
         _pagingController.appendPage(content, nextPageKey);
       }
-    } on Object catch (error) {
+    } on ApiException catch (error) {
       _pagingController.error = error;
     }
   }
