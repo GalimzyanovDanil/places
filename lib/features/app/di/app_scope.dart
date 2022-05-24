@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
@@ -47,13 +46,7 @@ class AppScope implements IAppScope {
     required VoidCallback applicationRebuilder,
   }) : _applicationRebuilder = applicationRebuilder {
     /// List interceptor. Fill in as needed.
-    final additionalInterceptors = <Interceptor>[
-      // InterceptorsWrapper(
-      //   onError: (error, handler) {
-      //     handler.next(error);
-      //   },
-      // ),
-    ];
+    final additionalInterceptors = <Interceptor>[];
 
     _dio = _initDio(additionalInterceptors);
     _errorHandler = DefaultErrorHandler();

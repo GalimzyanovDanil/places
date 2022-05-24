@@ -1,7 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:dio/dio.dart';
 import 'package:elementary/elementary.dart';
 import 'package:places/features/common/app_exceptions/api_exception.dart';
+import 'package:places/features/common/app_exceptions/exception_strings.dart';
 import 'package:places/features/places_list/domain/entity/place.dart';
 import 'package:places/features/places_list/service/places_service.dart';
 
@@ -28,8 +28,10 @@ class PlacesListModel extends ElementaryModel {
     } on Object catch (error) {
       _errorHandler.handleError(error);
       final exception = _connectivityResult == ConnectivityResult.none
-          ? ApiException(ApiExceptionType.network, 'No network connection')
-          : ApiException(ApiExceptionType.other, 'Any problem with API');
+          ? ApiException(
+              ApiExceptionType.network, ExceptionStrings.networkException)
+          : ApiException(
+              ApiExceptionType.other, ExceptionStrings.otherApiException);
       _errorHandler.handleError(exception.message);
       throw exception;
     }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:places/assets/res/app_assets.dart';
 import 'package:places/features/common/app_exceptions/api_exception.dart';
-
 import 'package:places/features/places_list/strings/places_list_strings.dart';
 
 class FirstPageErrorWidget extends StatelessWidget {
@@ -16,6 +15,7 @@ class FirstPageErrorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final color = theme.disabledColor;
+
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
