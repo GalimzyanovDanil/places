@@ -1,7 +1,8 @@
 import 'package:places/features/debug/screens/debug_screen/debug_screen.dart';
 import 'package:places/features/navigation/domain/entity/coordinate.dart';
 import 'package:places/features/onboarding/screen/onboarding_screen.dart';
-import 'package:places/features/places_list/screen/places_list_screen.dart';
+import 'package:places/features/places_list/screen/places_list_module/places_list_screen.dart';
+
 
 /// A set of routes for the entire app.
 class AppCoordinate extends Coordinate {

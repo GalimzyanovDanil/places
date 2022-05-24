@@ -5,14 +5,16 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:places/features/app/di/app_scope.dart';
 import 'package:places/features/common/app_exceptions/api_exception.dart';
 import 'package:places/features/places_list/domain/entity/place.dart';
-import 'package:places/features/places_list/screen/places_list_model.dart';
-import 'package:places/features/places_list/screen/places_list_screen.dart';
+import 'package:places/features/places_list/screen/places_list_module/places_list_model.dart';
+import 'package:places/features/places_list/screen/places_list_module/places_list_screen.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPlacesListWidgetModel extends IWidgetModel {
   PagingController<int, Place> get pagingController;
   void onTapCard(int index);
   Future<void> onRefresh();
+  void onSearchBarTap();
+  void onSettingsTap();
 }
 
 PlacesListWidgetModel defaultPlacesListWidgetModelFactory(
@@ -69,6 +71,17 @@ class PlacesListWidgetModel
   @override
   Future<void> onRefresh() async {
     pagingController.refresh();
+  }
+
+  
+  @override
+  void onSearchBarTap() {
+    // TODO: implement onSearchBarTap
+  }
+
+  @override
+  void onSettingsTap() {
+    // TODO: implement onSettingsTap
   }
 
   // Инициализация

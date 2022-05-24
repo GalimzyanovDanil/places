@@ -4,9 +4,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:places/assets/res/app_assets.dart';
 import 'package:places/features/places_list/domain/entity/place.dart';
-import 'package:places/features/places_list/screen/builder_widgets/first_page_error_widget.dart';
-import 'package:places/features/places_list/screen/builder_widgets/new_page_error_widget.dart';
-import 'package:places/features/places_list/screen/places_list_wm.dart';
+import 'package:places/features/places_list/screen/places_list_module/builder_widgets/first_page_error_widget.dart';
+import 'package:places/features/places_list/screen/places_list_module/builder_widgets/new_page_error_widget.dart';
+import 'package:places/features/places_list/screen/places_list_module/places_list_wm.dart';
+
 import 'package:places/features/places_list/strings/places_list_strings.dart';
 import 'package:places/features/places_list/widgets/place_card_widget/place_card_widget.dart';
 
@@ -23,7 +24,11 @@ class PlacesListScreen extends ElementaryWidget<IPlacesListWidgetModel> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        appBar: const AppBarWidget(toolbarHeight: 100),
+        appBar: AppBarWidget(
+          onSearchBarTap: () {},
+          onSettingsTap: () {},
+          toolbarHeight: 100,
+        ),
         body: Body(wm),
       ),
     );
@@ -70,8 +75,15 @@ class Body extends StatelessWidget {
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   /// AppBar height. Default 56.
   final double? toolbarHeight;
+  final VoidCallback onSettingsTap;
+  final VoidCallback onSearchBarTap;
 
-  const AppBarWidget({this.toolbarHeight, Key? key}) : super(key: key);
+  const AppBarWidget(
+      {required this.onSettingsTap,
+      required this.onSearchBarTap,
+      this.toolbarHeight,
+      Key? key})
+      : super(key: key);
 
   @override
   Size get preferredSize => Size.fromHeight(toolbarHeight ?? kToolbarHeight);
@@ -85,7 +97,10 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         PlacesListStrings.appBarTitle,
         style: Theme.of(context).textTheme.headline4,
       ),
-      bottom: SearchFieldWidget(onSearchBarTap: () {}, onSettingsTap: () {}),
+      bottom: SearchFieldWidget(
+        onSearchBarTap: onSearchBarTap,
+        onSettingsTap: onSettingsTap,
+      ),
     );
   }
 }
