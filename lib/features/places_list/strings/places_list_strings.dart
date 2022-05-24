@@ -12,4 +12,6 @@ class PlacesListStrings {
   static const otherErrorText = 'Что то пошло не так. \nПопробуйте позже.';
   static const networkErrorText = 'Проверьте интернет соединение.';
   static const pressForUpdate = 'Нажмите, что бы обновить.';
+
+  static const hintText = 'Поиск';
 }

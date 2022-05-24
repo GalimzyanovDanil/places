@@ -1,6 +1,8 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:places/assets/res/app_assets.dart';
 import 'package:places/features/places_list/domain/entity/place.dart';
 import 'package:places/features/places_list/screen/builder_widgets/first_page_error_widget.dart';
 import 'package:places/features/places_list/screen/builder_widgets/new_page_error_widget.dart';
@@ -18,11 +20,12 @@ class PlacesListScreen extends ElementaryWidget<IPlacesListWidgetModel> {
 
   @override
   Widget build(IPlacesListWidgetModel wm) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const AppBarTitle(),
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        appBar: const AppBarWidget(toolbarHeight: 100),
+        body: Body(wm),
       ),
-      body: Body(wm),
     );
   }
 }
@@ -34,12 +37,13 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pagingController = wm.pagingController;
+
     return Center(
       child: RefreshIndicator(
         triggerMode: RefreshIndicatorTriggerMode.anywhere,
         onRefresh: wm.onRefresh,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.only(top: 16, right: 16, left: 16),
           child: PagedListView.separated(
             pagingController: pagingController,
             builderDelegate: PagedChildBuilderDelegate<Place>(
@@ -63,16 +67,86 @@ class Body extends StatelessWidget {
   }
 }
 
-class AppBarTitle extends StatelessWidget {
-  const AppBarTitle({
-    Key? key,
-  }) : super(key: key);
+class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
+  /// AppBar height. Default 56.
+  final double? toolbarHeight;
+
+  const AppBarWidget({this.toolbarHeight, Key? key}) : super(key: key);
+
+  @override
+  Size get preferredSize => Size.fromHeight(toolbarHeight ?? kToolbarHeight);
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      PlacesListStrings.appBarTitle,
-      style: Theme.of(context).textTheme.headline4,
+    return AppBar(
+      toolbarHeight: toolbarHeight,
+      centerTitle: true,
+      title: Text(
+        PlacesListStrings.appBarTitle,
+        style: Theme.of(context).textTheme.headline4,
+      ),
+      bottom: SearchFieldWidget(onSearchBarTap: () {}, onSettingsTap: () {}),
+    );
+  }
+}
+
+class SearchFieldWidget extends StatelessWidget implements PreferredSizeWidget {
+  final double? toolbarHeight;
+  final VoidCallback onSettingsTap;
+  final VoidCallback onSearchBarTap;
+  const SearchFieldWidget(
+      {required this.onSettingsTap,
+      required this.onSearchBarTap,
+      this.toolbarHeight,
+      Key? key})
+      : super(key: key);
+
+  @override
+  Size get preferredSize => Size.fromHeight(toolbarHeight ?? kToolbarHeight);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadiusDirectional.circular(12),
+            color: theme.primaryColor),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                AppAssets.iconSearch,
+                color: theme.disabledColor,
+              ),
+              const SizedBox(width: 15),
+              Expanded(
+                child: TextField(
+                  onTap: onSearchBarTap,
+                  decoration: InputDecoration(
+                    hintText: PlacesListStrings.hintText,
+                    hintStyle: theme.textTheme.overline,
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 15),
+              IconButton(
+                onPressed: onSettingsTap,
+                splashRadius: 15,
+                icon: SvgPicture.asset(
+                  AppAssets.iconFilter,
+                  color: theme.indicatorColor,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
