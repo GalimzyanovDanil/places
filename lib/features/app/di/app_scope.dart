@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:elementary/elementary.dart';
@@ -21,6 +21,7 @@ class AppScope implements IAppScope {
 
   late final PlaceApi _placeApi;
   late final PlacesRepository _placesRepository;
+  late ConnectivityResult _connectivityResult;
 
   @override
   Dio get dio => _dio;
@@ -37,22 +38,20 @@ class AppScope implements IAppScope {
   @override
   PlacesService get placesService => _placesService;
 
+  @override
+  ConnectivityResult get connectivityResult => _connectivityResult;
+
   /// Create an instance [AppScope].
   AppScope({
     required VoidCallback applicationRebuilder,
   }) : _applicationRebuilder = applicationRebuilder {
     /// List interceptor. Fill in as needed.
-    final additionalInterceptors = <Interceptor>[
-      InterceptorsWrapper(
-        onError: (e, handler) {
-          handler.reject(e);
-        },
-      )
-    ];
+    final additionalInterceptors = <Interceptor>[];
 
     _dio = _initDio(additionalInterceptors);
     _errorHandler = DefaultErrorHandler();
     _coordinator = Coordinator();
+    _initConnectivity();
 
     _placeApi = PlaceApi(dio);
     _placesService = _initPlacesService();
@@ -93,6 +92,15 @@ class AppScope implements IAppScope {
     return dio;
   }
 
+  Future<void> _initConnectivity() async {
+    final connectivity = Connectivity();
+    _connectivityResult = await connectivity.checkConnectivity();
+
+    connectivity.onConnectivityChanged.listen((result) {
+      _connectivityResult = result;
+    });
+  }
+
   PlacesService _initPlacesService() {
     _placesRepository = PlacesRepository(_placeApi);
     return PlacesService(_placesRepository);
@@ -115,4 +123,7 @@ abstract class IAppScope {
 
   /// Places service
   PlacesService get placesService;
+
+  /// Connect to Internet status
+  ConnectivityResult get connectivityResult;
 }

@@ -1,4 +1,7 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:elementary/elementary.dart';
+import 'package:places/features/common/app_exceptions/api_exception.dart';
+import 'package:places/features/common/app_exceptions/exception_strings.dart';
 import 'package:places/features/places_list/domain/entity/place.dart';
 import 'package:places/features/places_list/service/places_service.dart';
 
@@ -7,11 +10,14 @@ import 'package:places/features/places_list/service/places_service.dart';
 class PlacesListModel extends ElementaryModel {
   final PlacesService _placesService;
   final ErrorHandler _errorHandler;
-  PlacesListModel(
-      {required ErrorHandler errorHandler,
-      required PlacesService placesService})
-      : _placesService = placesService,
+  final ConnectivityResult _connectivityResult;
+  PlacesListModel({
+    required ErrorHandler errorHandler,
+    required PlacesService placesService,
+    required ConnectivityResult connectivityResult,
+  })  : _placesService = placesService,
         _errorHandler = errorHandler,
+        _connectivityResult = connectivityResult,
         super(errorHandler: errorHandler);
 
   Future<List<Place>> getPlacesList(int count, [int offset = 0]) async {
@@ -21,7 +27,13 @@ class PlacesListModel extends ElementaryModel {
       return result;
     } on Object catch (error) {
       _errorHandler.handleError(error);
-      rethrow;
+      final exception = _connectivityResult == ConnectivityResult.none
+          ? ApiException(
+              ApiExceptionType.network, ExceptionStrings.networkException)
+          : ApiException(
+              ApiExceptionType.other, ExceptionStrings.otherApiException);
+      _errorHandler.handleError(exception.message);
+      throw exception;
     }
   }
 }
