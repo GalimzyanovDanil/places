@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
-import 'package:places/assets/res/app_assets.dart';
 import 'package:places/features/app/di/app_scope.dart';
 import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
@@ -94,7 +93,7 @@ class FilterSettingsWidgetModel
     _loadPlaceList();
   }
 
-  // Загрузка данных по данным фильтра с задержкой или без
+  // Загрузка данных по данным фильтра с задержкой
   Future<void> _loadPlaceListDebounce() async {
     _searchDebounced?.cancel();
     _searchDebounced = Timer(const Duration(milliseconds: 800), () async {
@@ -141,66 +140,31 @@ class FilterSettingsWidgetModel
 
   @override
   List<Widget> getCategoryElements() {
-    final result = allPlaceType.map<CategoryElementWidget>((type) {
-      final isSelect = _filterState.value?.contains(type) ?? false;
-
-      switch (type) {
-        case PlaceType.park:
-          return CategoryElementWidget(
-            iconPath: AppAssets.iconPark,
-            isSelect: isSelect,
-            onElementTap: _onElementTap,
-            placeType: type,
-          );
-        case PlaceType.museum:
-          return CategoryElementWidget(
-              iconPath: AppAssets.iconMuseum,
-              isSelect: isSelect,
-              onElementTap: _onElementTap,
-              placeType: type);
-        case PlaceType.hotel:
-          return CategoryElementWidget(
-              iconPath: AppAssets.iconHotel,
-              isSelect: isSelect,
-              onElementTap: _onElementTap,
-              placeType: type);
-        case PlaceType.restaurant:
-          return CategoryElementWidget(
-              iconPath: AppAssets.iconRestourant,
-              isSelect: isSelect,
-              onElementTap: _onElementTap,
-              placeType: type);
-        case PlaceType.cafe:
-          return CategoryElementWidget(
-              iconPath: AppAssets.iconCafe,
-              isSelect: isSelect,
-              onElementTap: _onElementTap,
-              placeType: type);
-        case PlaceType.other:
-          return CategoryElementWidget(
-              iconPath: AppAssets.iconParticularPlace,
-              isSelect: isSelect,
-              onElementTap: _onElementTap,
-              placeType: type);
-        default:
-          throw UnimplementedError();
-      }
-    });
+    final result = allPlaceType.map<CategoryElementWidget>(
+      (type) => CategoryElementWidget(
+        iconPath: type.iconPath,
+        isSelect: _filterState.value?.contains(type) ?? false,
+        onElementTap: _onElementTap,
+        placeType: type,
+      ),
+    );
 
     return result.toList();
   }
 
   // Обработка нажатия на элемент фильтра
   void _onElementTap(bool isSel, PlaceType type) {
+    final filterList = _filterState.value;
+
     if (isSel) {
-      _filterState.value?.remove(type);
+      filterList?.remove(type);
       _filterState.accept(
-        List<PlaceType>.from(_filterState.value ?? <PlaceType>[]),
+        List<PlaceType>.from(filterList ?? <PlaceType>[]),
       );
     } else {
-      _filterState.value?.add(type);
+      filterList?.add(type);
       _filterState.accept(
-        List<PlaceType>.from(_filterState.value ?? <PlaceType>[]),
+        List<PlaceType>.from(filterList ?? <PlaceType>[]),
       );
     }
     _loadPlaceListDebounce();

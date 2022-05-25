@@ -1,15 +1,20 @@
+import 'package:places/assets/res/app_assets.dart';
 import 'package:places/features/places_list/strings/places_list_strings.dart';
 
 enum PlaceType {
-  temple,
-  monument,
-  park,
-  theatre,
-  museum,
-  hotel,
-  restaurant,
-  cafe,
-  other;
+  temple(AppAssets.iconParticularPlace),
+  monument(AppAssets.iconParticularPlace),
+  park(AppAssets.iconPark),
+  theatre(AppAssets.iconParticularPlace),
+  museum(AppAssets.iconMuseum),
+  hotel(AppAssets.iconHotel),
+  restaurant(AppAssets.iconRestourant),
+  cafe(AppAssets.iconCafe),
+  other(AppAssets.iconParticularPlace);
+
+  final String iconPath;
+
+  const PlaceType(this.iconPath);
 
   @override
   String toString() => name;
