@@ -1,8 +1,8 @@
 import 'package:places/features/debug/screens/debug_screen/debug_screen.dart';
 import 'package:places/features/navigation/domain/entity/coordinate.dart';
 import 'package:places/features/onboarding/screen/onboarding_screen.dart';
+import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_screen.dart';
 import 'package:places/features/places_list/screen/places_list_module/places_list_screen.dart';
-
 
 /// A set of routes for the entire app.
 class AppCoordinate extends Coordinate {
@@ -11,6 +11,9 @@ class AppCoordinate extends Coordinate {
 
   /// Places screen
   static const placesScreen = AppCoordinate._('places', true);
+
+  ///Filter settings screen
+  static const filterSettingsScreen = AppCoordinate._('filter_settings', true);
 
   /// Debug screens([DebugScreen]).
   static const debugScreen = AppCoordinate._('debug_screen', true);
@@ -32,4 +35,5 @@ final Map<AppCoordinate, CoordinateBuilder> appCoordinates = {
   AppCoordinate.initial: (_, __) => const OnboardingScreen(),
   AppCoordinate.debugScreen: (_, __) => const DebugScreen(),
   AppCoordinate.placesScreen: (_, __) => const PlacesListScreen(),
+  AppCoordinate.filterSettingsScreen: (_, data) => const FilterSettingsScreen(),
 };

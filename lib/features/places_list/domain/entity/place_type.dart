@@ -15,19 +15,19 @@ enum PlaceType {
   String toString() => name;
 
   static PlaceType fromString(String placeTypeResponse) {
-    if (placeTypeResponse == PlaceType.park.toString()) {
+    if (placeTypeResponse.toLowerCase() == PlaceType.park.toString()) {
       return PlaceType.park;
     }
-    if (placeTypeResponse == PlaceType.museum.toString()) {
+    if (placeTypeResponse.toLowerCase() == PlaceType.museum.toString()) {
       return PlaceType.museum;
     }
-    if (placeTypeResponse == PlaceType.hotel.toString()) {
+    if (placeTypeResponse.toLowerCase() == PlaceType.hotel.toString()) {
       return PlaceType.hotel;
     }
-    if (placeTypeResponse == PlaceType.restaurant.toString()) {
+    if (placeTypeResponse.toLowerCase() == PlaceType.restaurant.toString()) {
       return PlaceType.restaurant;
     }
-    if (placeTypeResponse == PlaceType.cafe.toString()) {
+    if (placeTypeResponse.toLowerCase() == PlaceType.cafe.toString()) {
       return PlaceType.cafe;
     }
 
@@ -51,6 +51,26 @@ enum PlaceType {
       case PlaceType.monument:
       case PlaceType.theatre:
         return PlacesListStrings.otherType;
+    }
+  }
+
+  String toFilterTitle() {
+    switch (this) {
+      case PlaceType.park:
+        return PlacesListStrings.parkTypeFilter;
+      case PlaceType.museum:
+        return PlacesListStrings.museumTypeFilter;
+      case PlaceType.hotel:
+        return PlacesListStrings.hotelTypeFilter;
+      case PlaceType.restaurant:
+        return PlacesListStrings.restaurantTypeFilter;
+      case PlaceType.cafe:
+        return PlacesListStrings.cafeTypeFilter;
+      case PlaceType.other:
+      case PlaceType.temple:
+      case PlaceType.monument:
+      case PlaceType.theatre:
+        return PlacesListStrings.otherTypeFilter;
     }
   }
 }

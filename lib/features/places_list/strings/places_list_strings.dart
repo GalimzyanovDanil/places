@@ -14,4 +14,17 @@ class PlacesListStrings {
   static const pressForUpdate = 'Нажмите, что бы обновить.';
 
   static const hintText = 'Поиск';
+
+  static const clearFilters = 'Очистить';
+  static const showResult = 'ПОКАЗАТЬ';
+  static const category = 'КАТЕГОРИИ';
+  static const distance = 'Расстояние';
+  static const distanceNumber = 'от 10 до 30 км';
+
+  static const restaurantTypeFilter = 'Ресторан';
+  static const cafeTypeFilter = 'Кафе';
+  static const parkTypeFilter = 'Парк';
+  static const hotelTypeFilter = 'Отель';
+  static const museumTypeFilter = 'Музей';
+  static const otherTypeFilter = 'Особое место';
 }

@@ -9,7 +9,7 @@ import 'package:places/features/places_list/screen/places_list_module/builder_wi
 import 'package:places/features/places_list/screen/places_list_module/places_list_wm.dart';
 
 import 'package:places/features/places_list/strings/places_list_strings.dart';
-import 'package:places/features/places_list/widgets/place_card_widget/place_card_widget.dart';
+import 'package:places/features/places_list/widgets/place_card_widgets/place_card_widget.dart';
 
 // TODO: cover with documentation
 /// Main widget for PlacesList module
@@ -25,8 +25,8 @@ class PlacesListScreen extends ElementaryWidget<IPlacesListWidgetModel> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         appBar: AppBarWidget(
-          onSearchBarTap: () {},
-          onSettingsTap: () {},
+          onSearchBarTap: wm.onSearchBarTap,
+          onSettingsTap: wm.onSettingsTap,
           toolbarHeight: 100,
         ),
         body: Body(wm),

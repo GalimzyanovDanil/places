@@ -25,6 +25,10 @@ class AppTheme {
         backgroundColor: AppColors.whiteBase,
         elevation: 0,
       ),
+      sliderTheme: base.sliderTheme.copyWith(
+          valueIndicatorColor: AppColors.whiteGreen.withOpacity(0.7),
+          valueIndicatorTextStyle:
+              AppTypography.small.copyWith(color: AppColors.whiteBase)),
       scaffoldBackgroundColor: AppColors.whiteBase,
       indicatorColor: AppColors.whiteGreen,
       disabledColor: AppColors.inactiveBlack,
@@ -35,27 +39,33 @@ class AppTheme {
   //Получение цветовой палитры для светлой темы
   static ColorScheme _ligthColorScheme(ThemeData base) {
     return base.colorScheme.copyWith(
-        //TODO
-        // background: AppColors.blackMain,
-        // primary: AppColors.whiteBase,
-        // onPrimary: AppColors.blackGreen,
-
-        );
+      primary: AppColors.whiteGreen,
+      onPrimary: AppColors.whiteBase,
+      outline: AppColors.inactiveBlack,
+      tertiary: AppColors.whiteMain,
+      onTertiary: AppColors.whiteBase,
+    );
   }
 
   // Получение цветовой палитры текстов для светлой темы
   static TextTheme _lightTextTheme(ThemeData base) {
     return base.textTheme.copyWith(
-        headline2: AppTypography.title.copyWith(color: AppColors.whiteMain),
-        headline3: AppTypography.text.copyWith(color: AppColors.whiteSecondary),
-        headline4: AppTypography.subtitle.copyWith(color: AppColors.whiteMain),
-        subtitle1:
-            AppTypography.small.copyWith(color: AppColors.whiteSecondary2),
-        subtitle2: AppTypography.smallBold.copyWith(color: AppColors.whiteBase),
-        button: AppTypography.button.copyWith(color: AppColors.whiteBase),
-        caption: AppTypography.text.copyWith(color: AppColors.whiteGreen),
-        overline:
-            AppTypography.hintText.copyWith(color: AppColors.inactiveBlack));
+      headline2: AppTypography.title.copyWith(color: AppColors.whiteMain),
+      headline3: AppTypography.text.copyWith(color: AppColors.whiteSecondary),
+      headline4: AppTypography.subtitle.copyWith(color: AppColors.whiteMain),
+      headline5:
+          AppTypography.superSmall.copyWith(color: AppColors.whiteSecondary),
+      headline6:
+          AppTypography.superSmall.copyWith(color: AppColors.inactiveBlack),
+      subtitle1: AppTypography.small.copyWith(color: AppColors.whiteSecondary2),
+      subtitle2: AppTypography.smallBold.copyWith(color: AppColors.whiteBase),
+      bodyText1: AppTypography.hintText.copyWith(color: AppColors.whiteMain),
+      bodyText2:
+          AppTypography.hintText.copyWith(color: AppColors.whiteSecondary2),
+      button: AppTypography.button.copyWith(color: AppColors.whiteBase),
+      caption: AppTypography.text.copyWith(color: AppColors.whiteGreen),
+      overline: AppTypography.hintText.copyWith(color: AppColors.inactiveBlack),
+    );
   }
 
   // Получение глобальной темной темы
@@ -74,6 +84,10 @@ class AppTheme {
         backgroundColor: AppColors.blackMain,
         elevation: 0,
       ),
+      sliderTheme: base.sliderTheme.copyWith(
+          valueIndicatorColor: AppColors.blackGreen.withOpacity(0.7),
+          valueIndicatorTextStyle:
+              AppTypography.small.copyWith(color: AppColors.whiteBase)),
       scaffoldBackgroundColor: AppColors.blackMain,
       indicatorColor: AppColors.blackGreen,
       disabledColor: AppColors.inactiveBlack,
@@ -84,25 +98,31 @@ class AppTheme {
   //Получение цветовой палитры для темной темы
   static ColorScheme _darkColorScheme(ThemeData base) {
     return base.colorScheme.copyWith(
-        //TODO
-        // background: AppColors.blackMain,
-        // primary: AppColors.whiteBase,
-        // onPrimary: AppColors.blackGreen,
-        );
+      primary: AppColors.blackGreen,
+      onPrimary: AppColors.whiteBase,
+      outline: AppColors.inactiveBlack,
+      tertiary: AppColors.whiteBase,
+      onTertiary: AppColors.blackMain,
+    );
   }
 
   // Получение цветовой палитры текстов для темной темы
   static TextTheme _darkTextTheme(ThemeData base) {
     return base.textTheme.copyWith(
-        headline2: AppTypography.title.copyWith(color: AppColors.whiteBase),
-        headline3: AppTypography.text.copyWith(color: AppColors.whiteBase),
-        headline4: AppTypography.subtitle.copyWith(color: AppColors.whiteBase),
-        subtitle1:
-            AppTypography.small.copyWith(color: AppColors.whiteSecondary2),
-        subtitle2: AppTypography.smallBold.copyWith(color: AppColors.whiteBase),
-        button: AppTypography.button.copyWith(color: AppColors.whiteBase),
-        caption: AppTypography.text.copyWith(color: AppColors.blackGreen),
-        overline:
-            AppTypography.hintText.copyWith(color: AppColors.inactiveBlack));
+      headline2: AppTypography.title.copyWith(color: AppColors.whiteBase),
+      headline3: AppTypography.text.copyWith(color: AppColors.whiteBase),
+      headline4: AppTypography.subtitle.copyWith(color: AppColors.whiteBase),
+      headline5: AppTypography.superSmall.copyWith(color: AppColors.whiteBase),
+      headline6:
+          AppTypography.superSmall.copyWith(color: AppColors.inactiveBlack),
+      subtitle1: AppTypography.small.copyWith(color: AppColors.blackSecondary2),
+      subtitle2: AppTypography.smallBold.copyWith(color: AppColors.whiteBase),
+      bodyText1: AppTypography.hintText.copyWith(color: AppColors.whiteBase),
+      bodyText2:
+          AppTypography.hintText.copyWith(color: AppColors.blackSecondary2),
+      button: AppTypography.button.copyWith(color: AppColors.whiteBase),
+      caption: AppTypography.text.copyWith(color: AppColors.blackGreen),
+      overline: AppTypography.hintText.copyWith(color: AppColors.inactiveBlack),
+    );
   }
 }

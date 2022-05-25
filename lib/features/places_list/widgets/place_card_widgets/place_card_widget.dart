@@ -3,8 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/assets/colors/app_colors.dart';
 import 'package:places/assets/res/app_assets.dart';
 import 'package:places/features/places_list/domain/entity/place.dart';
-import 'package:places/features/places_list/widgets/place_card_widget/description_widget.dart';
-import 'package:places/features/places_list/widgets/place_card_widget/network_image_widget.dart';
+import 'package:places/features/places_list/widgets/place_card_widgets/description_widget.dart';
+import 'package:places/features/places_list/widgets/place_card_widgets/network_image_widget.dart';
 
 /// [onTapCard] - Открытие делальной информации места
 /// [place] - Данные места

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:places/features/app/di/app_scope.dart';
 import 'package:places/features/common/app_exceptions/api_exception.dart';
+import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
+import 'package:places/features/navigation/service/coordinator.dart';
 import 'package:places/features/places_list/domain/entity/place.dart';
 import 'package:places/features/places_list/screen/places_list_module/places_list_model.dart';
 import 'package:places/features/places_list/screen/places_list_module/places_list_screen.dart';
@@ -27,7 +29,8 @@ PlacesListWidgetModel defaultPlacesListWidgetModelFactory(
     placesService: placesService,
     connectivityResult: appDependencies.connectivityResult,
   );
-  return PlacesListWidgetModel(model);
+  return PlacesListWidgetModel(
+      model: model, coordinator: appDependencies.coordinator);
 }
 
 // TODO: cover with documentation
@@ -35,7 +38,11 @@ PlacesListWidgetModel defaultPlacesListWidgetModelFactory(
 class PlacesListWidgetModel
     extends WidgetModel<PlacesListScreen, PlacesListModel>
     implements IPlacesListWidgetModel {
-  PlacesListWidgetModel(PlacesListModel model) : super(model);
+  PlacesListWidgetModel(
+      {required PlacesListModel model, required this.coordinator})
+      : super(model);
+
+  final Coordinator coordinator;
 
   /// Отступ от начального элемента базы
   final int currentOffset = 0;
@@ -73,7 +80,6 @@ class PlacesListWidgetModel
     pagingController.refresh();
   }
 
-  
   @override
   void onSearchBarTap() {
     // TODO: implement onSearchBarTap
@@ -81,7 +87,7 @@ class PlacesListWidgetModel
 
   @override
   void onSettingsTap() {
-    // TODO: implement onSettingsTap
+    coordinator.navigate(context, AppCoordinate.filterSettingsScreen);
   }
 
   // Инициализация
