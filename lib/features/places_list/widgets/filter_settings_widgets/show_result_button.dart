@@ -31,12 +31,13 @@ class ShowResultButton extends StatelessWidget {
     final textStyle = isEmptyList
         ? theme.textTheme.button?.copyWith(color: AppColors.inactiveBlack)
         : theme.textTheme.button;
+    final onPress = isEmptyList ? null : onPressed;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       width: double.infinity,
       child: FloatingActionButton.extended(
-        onPressed: onPressed,
+        onPressed: onPress,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(12),

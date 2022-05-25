@@ -70,7 +70,7 @@ class Body extends StatelessWidget {
                 children: wm.getCategoryElements(),
               ),
             ),
-            const SizedBox(height: 60),
+            const SizedBox(height: 75),
             Align(
               alignment: Alignment.centerLeft,
               child: Row(
