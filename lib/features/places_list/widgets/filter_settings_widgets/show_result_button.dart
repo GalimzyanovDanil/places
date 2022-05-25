@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:places/assets/colors/app_colors.dart';
 import 'package:places/features/places_list/strings/places_list_strings.dart';
 
 class ShowResultButton extends StatelessWidget {
@@ -25,6 +26,11 @@ class ShowResultButton extends StatelessWidget {
     final lable = (countFindElements == null)
         ? PlacesListStrings.showResult
         : '${PlacesListStrings.showResult} ($countFindElements)';
+    final isEmptyList = countFindElements == 0;
+    final backgroundColor = isEmptyList ? theme.primaryColor : null;
+    final textStyle = isEmptyList
+        ? theme.textTheme.button?.copyWith(color: AppColors.inactiveBlack)
+        : theme.textTheme.button;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -36,11 +42,12 @@ class ShowResultButton extends StatelessWidget {
             Radius.circular(12),
           ),
         ),
+        backgroundColor: backgroundColor,
         label: progressIndicator
             ? CircularProgressIndicator(color: theme.colorScheme.onPrimary)
             : Text(
                 lable,
-                style: theme.textTheme.button,
+                style: textStyle,
               ),
       ),
     );
