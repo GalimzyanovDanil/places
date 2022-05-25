@@ -19,7 +19,8 @@ class PlacesListStrings {
   static const showResult = 'ПОКАЗАТЬ';
   static const category = 'КАТЕГОРИИ';
   static const distance = 'Расстояние';
-  static const distanceNumber = 'от 10 до 30 км';
+  static const distanceTo = 'до';
+  static const distanceKm = 'км';
 
   static const restaurantTypeFilter = 'Ресторан';
   static const cafeTypeFilter = 'Кафе';

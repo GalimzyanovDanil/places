@@ -18,7 +18,6 @@ abstract class IFilterSettingsWidgetModel extends IWidgetModel {
   ListenableState<List<PlaceType>> get filterState;
   double get minSliderValue;
   double get maxSliderValue;
-  int get divSliderValue;
   void onBackButtonTap();
   void onClearTap();
   void onShowResultTap();
@@ -51,8 +50,6 @@ class FilterSettingsWidgetModel
   final _maxSliderValue = 30.0;
   // Минимальное значение слайдера
   final _minSliderValue = 10.0;
-  // Значение шага слайдера
-  final divisionStep = 1.0;
   //Значение слайдера по умолчанию
   static const _defaultSliderValue = 15.0;
   //Таймер для задержки отправки запроса на сервер
@@ -90,9 +87,6 @@ class FilterSettingsWidgetModel
 
   @override
   double get minSliderValue => _minSliderValue;
-
-  @override
-  int get divSliderValue => (_maxSliderValue - _minSliderValue) ~/ divisionStep;
 
   @override
   void initWidgetModel() {

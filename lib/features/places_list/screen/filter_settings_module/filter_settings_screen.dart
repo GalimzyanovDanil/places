@@ -71,34 +71,36 @@ class Body extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 75),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Row(
-                children: [
-                  Text(
-                    PlacesListStrings.distance,
-                    style: textTheme.bodyText1,
-                  ),
-                  const Spacer(),
-                  Text(
-                    PlacesListStrings.distanceNumber,
-                    style: textTheme.bodyText2,
-                  ),
-                ],
-              ),
-            ),
             StateNotifierBuilder<double>(
               listenableState: wm.sliderState,
-              builder: (_, value) => Slider(
-                value: value ?? 0,
-                divisions: wm.divSliderValue,
-                label: value?.round().toString(),
-                onChanged: wm.onSliderChange,
-                min: wm.minSliderValue,
-                max: wm.maxSliderValue,
-                activeColor: colorScheme.primary,
-                thumbColor: colorScheme.onPrimary,
-                inactiveColor: colorScheme.outline,
+              builder: (_, value) => Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      children: [
+                        Text(
+                          PlacesListStrings.distance,
+                          style: textTheme.bodyText1,
+                        ),
+                        const Spacer(),
+                        Text(
+                          '${PlacesListStrings.distanceTo} ${value?.toStringAsFixed(2)} ${PlacesListStrings.distanceKm}',
+                          style: textTheme.bodyText2,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Slider(
+                    value: value ?? 0,
+                    onChanged: wm.onSliderChange,
+                    min: wm.minSliderValue,
+                    max: wm.maxSliderValue,
+                    activeColor: colorScheme.primary,
+                    thumbColor: colorScheme.onPrimary,
+                    inactiveColor: colorScheme.outline,
+                  ),
+                ],
               ),
             ),
           ],
