@@ -15,6 +15,7 @@ abstract class IFilterSettingsWidgetModel extends IWidgetModel {
   ListenableState<EntityState<List<Place>>> get listPlaceState;
   ListenableState<double> get sliderState;
   ListenableState<List<PlaceType>> get filterState;
+  ThemeData get theme;
   double get minSliderValue;
   double get maxSliderValue;
   void onBackButtonTap();
@@ -71,6 +72,8 @@ class FilterSettingsWidgetModel
 
   final _listPlaceState = EntityStateNotifier<List<Place>>();
 
+  late final ThemeData _theme;
+
   @override
   ListenableState<List<PlaceType>> get filterState => _filterState;
 
@@ -88,8 +91,12 @@ class FilterSettingsWidgetModel
   double get minSliderValue => _minSliderValue;
 
   @override
+  ThemeData get theme => _theme;
+
+  @override
   void initWidgetModel() {
     super.initWidgetModel();
+    _theme = Theme.of(context);
     _loadPlaceList();
   }
 

@@ -71,7 +71,7 @@ class PlaceCardWidget extends StatelessWidget {
               top: 16,
               left: 16,
               child: Text(
-                place.placeType.toTitle(),
+                place.placeType.title,
                 style: theme.textTheme.subtitle2,
               ),
             )

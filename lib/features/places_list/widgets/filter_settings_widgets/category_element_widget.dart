@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/assets/res/app_assets.dart';
+import 'package:places/features/common/app_typedef.dart';
 import 'package:places/features/places_list/domain/entity/place_type.dart';
 
 class CategoryElementWidget extends StatelessWidget {
   final String iconPath;
   final PlaceType placeType;
   final bool isSelect;
-  final Function(bool isSelect, PlaceType placeType) onElementTap;
+  final DoubleValueSetter<bool, PlaceType> onElementTap;
 
   const CategoryElementWidget({
     required this.iconPath,
@@ -72,7 +73,7 @@ class CategoryElementWidget extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Text(
-          placeType.toFilterTitle(),
+          placeType.filterTitle,
           style: theme.textTheme.headline5,
         ),
       ],

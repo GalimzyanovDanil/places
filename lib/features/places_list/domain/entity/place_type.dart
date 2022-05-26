@@ -2,80 +2,78 @@ import 'package:places/assets/res/app_assets.dart';
 import 'package:places/features/places_list/strings/places_list_strings.dart';
 
 enum PlaceType {
-  temple(AppAssets.iconParticularPlace),
-  monument(AppAssets.iconParticularPlace),
-  park(AppAssets.iconPark),
-  theatre(AppAssets.iconParticularPlace),
-  museum(AppAssets.iconMuseum),
-  hotel(AppAssets.iconHotel),
-  restaurant(AppAssets.iconRestourant),
-  cafe(AppAssets.iconCafe),
-  other(AppAssets.iconParticularPlace);
+  temple(
+    AppAssets.iconParticularPlace,
+    PlacesListStrings.otherType,
+    PlacesListStrings.otherTypeFilter,
+  ),
+  monument(
+    AppAssets.iconParticularPlace,
+    PlacesListStrings.otherType,
+    PlacesListStrings.otherTypeFilter,
+  ),
+  park(
+    AppAssets.iconPark,
+    PlacesListStrings.parkType,
+    PlacesListStrings.parkTypeFilter,
+  ),
+  theatre(
+    AppAssets.iconParticularPlace,
+    PlacesListStrings.otherType,
+    PlacesListStrings.otherTypeFilter,
+  ),
+  museum(
+    AppAssets.iconMuseum,
+    PlacesListStrings.museumType,
+    PlacesListStrings.museumTypeFilter,
+  ),
+  hotel(
+    AppAssets.iconHotel,
+    PlacesListStrings.hotelType,
+    PlacesListStrings.hotelTypeFilter,
+  ),
+  restaurant(
+    AppAssets.iconRestourant,
+    PlacesListStrings.restaurantType,
+    PlacesListStrings.restaurantTypeFilter,
+  ),
+  cafe(
+    AppAssets.iconCafe,
+    PlacesListStrings.cafeType,
+    PlacesListStrings.cafeTypeFilter,
+  ),
+  other(
+    AppAssets.iconParticularPlace,
+    PlacesListStrings.otherType,
+    PlacesListStrings.otherTypeFilter,
+  );
 
   final String iconPath;
+  final String title;
+  final String filterTitle;
 
-  const PlaceType(this.iconPath);
+  const PlaceType(this.iconPath, this.title, this.filterTitle);
 
   @override
   String toString() => name;
 
   static PlaceType fromString(String placeTypeResponse) {
-    if (placeTypeResponse.toLowerCase() == PlaceType.park.toString()) {
+    if (placeTypeResponse.toLowerCase() == PlaceType.park.name) {
       return PlaceType.park;
     }
-    if (placeTypeResponse.toLowerCase() == PlaceType.museum.toString()) {
+    if (placeTypeResponse.toLowerCase() == PlaceType.museum.name) {
       return PlaceType.museum;
     }
-    if (placeTypeResponse.toLowerCase() == PlaceType.hotel.toString()) {
+    if (placeTypeResponse.toLowerCase() == PlaceType.hotel.name) {
       return PlaceType.hotel;
     }
-    if (placeTypeResponse.toLowerCase() == PlaceType.restaurant.toString()) {
+    if (placeTypeResponse.toLowerCase() == PlaceType.restaurant.name) {
       return PlaceType.restaurant;
     }
-    if (placeTypeResponse.toLowerCase() == PlaceType.cafe.toString()) {
+    if (placeTypeResponse.toLowerCase() == PlaceType.cafe.name) {
       return PlaceType.cafe;
     }
 
     return PlaceType.other;
-  }
-
-  String toTitle() {
-    switch (this) {
-      case PlaceType.park:
-        return PlacesListStrings.parkType;
-      case PlaceType.museum:
-        return PlacesListStrings.museumType;
-      case PlaceType.hotel:
-        return PlacesListStrings.hotelType;
-      case PlaceType.restaurant:
-        return PlacesListStrings.restaurantType;
-      case PlaceType.cafe:
-        return PlacesListStrings.cafeType;
-      case PlaceType.other:
-      case PlaceType.temple:
-      case PlaceType.monument:
-      case PlaceType.theatre:
-        return PlacesListStrings.otherType;
-    }
-  }
-
-  String toFilterTitle() {
-    switch (this) {
-      case PlaceType.park:
-        return PlacesListStrings.parkTypeFilter;
-      case PlaceType.museum:
-        return PlacesListStrings.museumTypeFilter;
-      case PlaceType.hotel:
-        return PlacesListStrings.hotelTypeFilter;
-      case PlaceType.restaurant:
-        return PlacesListStrings.restaurantTypeFilter;
-      case PlaceType.cafe:
-        return PlacesListStrings.cafeTypeFilter;
-      case PlaceType.other:
-      case PlaceType.temple:
-      case PlaceType.monument:
-      case PlaceType.theatre:
-        return PlacesListStrings.otherTypeFilter;
-    }
   }
 }

@@ -22,7 +22,66 @@ class FilterSettingsScreen
     return Scaffold(
       appBar: AppBarWidget(
           onBackButtonTap: wm.onBackButtonTap, onClearTap: wm.onClearTap),
-      body: Body(wm: wm),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            children: [
+              const SizedBox(height: 25),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  PlacesListStrings.category,
+                  style: wm.theme.textTheme.headline6,
+                ),
+              ),
+              const SizedBox(height: 25),
+              StateNotifierBuilder<List<PlaceType>>(
+                listenableState: wm.filterState,
+                builder: (_, filterList) => Wrap(
+                  alignment: WrapAlignment.spaceAround,
+                  spacing: 40,
+                  runSpacing: 40,
+                  children: wm.getCategoryElements(),
+                ),
+              ),
+              const SizedBox(height: 75),
+              StateNotifierBuilder<double>(
+                listenableState: wm.sliderState,
+                builder: (_, value) => Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        children: [
+                          Text(
+                            PlacesListStrings.distance,
+                            style: wm.theme.textTheme.bodyText1,
+                          ),
+                          const Spacer(),
+                          Text(
+                            '${PlacesListStrings.distanceTo} ${value?.toStringAsFixed(2)} ${PlacesListStrings.distanceKm}',
+                            style: wm.theme.textTheme.bodyText2,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Slider(
+                      value: value ?? 0,
+                      onChanged: wm.onSliderChange,
+                      min: wm.minSliderValue,
+                      max: wm.maxSliderValue,
+                      activeColor: wm.theme.colorScheme.primary,
+                      thumbColor: wm.theme.colorScheme.onPrimary,
+                      inactiveColor: wm.theme.colorScheme.outline,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
       floatingActionButton: EntityStateNotifierBuilder<List<Place>>(
         listenableEntityState: wm.listPlaceState,
         loadingBuilder: (_, __) => const ShowResultButton.loading(),
@@ -33,79 +92,6 @@ class FilterSettingsScreen
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       resizeToAvoidBottomInset: false,
-    );
-  }
-}
-
-class Body extends StatelessWidget {
-  final IFilterSettingsWidgetModel wm;
-  const Body({required this.wm, Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
-    final colorScheme = theme.colorScheme;
-
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          children: [
-            const SizedBox(height: 25),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                PlacesListStrings.category,
-                style: textTheme.headline6,
-              ),
-            ),
-            const SizedBox(height: 25),
-            StateNotifierBuilder<List<PlaceType>>(
-              listenableState: wm.filterState,
-              builder: (_, filterList) => Wrap(
-                alignment: WrapAlignment.spaceAround,
-                spacing: 40,
-                runSpacing: 40,
-                children: wm.getCategoryElements(),
-              ),
-            ),
-            const SizedBox(height: 75),
-            StateNotifierBuilder<double>(
-              listenableState: wm.sliderState,
-              builder: (_, value) => Column(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Row(
-                      children: [
-                        Text(
-                          PlacesListStrings.distance,
-                          style: textTheme.bodyText1,
-                        ),
-                        const Spacer(),
-                        Text(
-                          '${PlacesListStrings.distanceTo} ${value?.toStringAsFixed(2)} ${PlacesListStrings.distanceKm}',
-                          style: textTheme.bodyText2,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Slider(
-                    value: value ?? 0,
-                    onChanged: wm.onSliderChange,
-                    min: wm.minSliderValue,
-                    max: wm.maxSliderValue,
-                    activeColor: colorScheme.primary,
-                    thumbColor: colorScheme.onPrimary,
-                    inactiveColor: colorScheme.outline,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
