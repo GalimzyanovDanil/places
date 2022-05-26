@@ -12,4 +12,20 @@ class PlacesListStrings {
   static const otherErrorText = 'Что то пошло не так. \nПопробуйте позже.';
   static const networkErrorText = 'Проверьте интернет соединение.';
   static const pressForUpdate = 'Нажмите, что бы обновить.';
+
+  static const hintText = 'Поиск';
+
+  static const clearFilters = 'Очистить';
+  static const showResult = 'ПОКАЗАТЬ';
+  static const category = 'КАТЕГОРИИ';
+  static const distance = 'Расстояние';
+  static const distanceTo = 'до';
+  static const distanceKm = 'км';
+
+  static const restaurantTypeFilter = 'Ресторан';
+  static const cafeTypeFilter = 'Кафе';
+  static const parkTypeFilter = 'Парк';
+  static const hotelTypeFilter = 'Отель';
+  static const museumTypeFilter = 'Музей';
+  static const otherTypeFilter = 'Особое место';
 }

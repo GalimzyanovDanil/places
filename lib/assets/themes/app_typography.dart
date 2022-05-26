@@ -53,4 +53,11 @@ class AppTypography {
         height: 1.29,
         letterSpacing: 0.3,
       );
+
+  static TextStyle get hintText => _base.copyWith(
+        fontSize: 16.0,
+        fontWeight: FontWeight.w400,
+        height: 1.25,
+        letterSpacing: 0.5,
+      );
 }
