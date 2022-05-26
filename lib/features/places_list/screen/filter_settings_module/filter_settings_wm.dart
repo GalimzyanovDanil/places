@@ -72,7 +72,8 @@ class FilterSettingsWidgetModel
 
   final _listPlaceState = EntityStateNotifier<List<Place>>();
 
-  late final ThemeData _theme;
+  @visibleForTesting
+  final themeWrapper = ThemeWrapper();
 
   @override
   ListenableState<List<PlaceType>> get filterState => _filterState;
@@ -91,12 +92,11 @@ class FilterSettingsWidgetModel
   double get minSliderValue => _minSliderValue;
 
   @override
-  ThemeData get theme => _theme;
+  ThemeData get theme => themeWrapper.getTheme(context);
 
   @override
   void initWidgetModel() {
     super.initWidgetModel();
-    _theme = Theme.of(context);
     _loadPlaceList();
   }
 

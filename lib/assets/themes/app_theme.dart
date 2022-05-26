@@ -26,9 +26,8 @@ class AppTheme {
         elevation: 0,
       ),
       sliderTheme: base.sliderTheme.copyWith(
-          valueIndicatorColor: AppColors.whiteGreen.withOpacity(0.7),
-          valueIndicatorTextStyle:
-              AppTypography.small.copyWith(color: AppColors.whiteBase)),
+        inactiveTrackColor: AppColors.inactiveBlack,
+      ),
       scaffoldBackgroundColor: AppColors.whiteBase,
       indicatorColor: AppColors.whiteGreen,
       disabledColor: AppColors.inactiveBlack,
@@ -85,9 +84,8 @@ class AppTheme {
         elevation: 0,
       ),
       sliderTheme: base.sliderTheme.copyWith(
-          valueIndicatorColor: AppColors.blackGreen.withOpacity(0.7),
-          valueIndicatorTextStyle:
-              AppTypography.small.copyWith(color: AppColors.whiteBase)),
+        inactiveTrackColor: AppColors.inactiveBlack,
+      ),
       scaffoldBackgroundColor: AppColors.blackMain,
       indicatorColor: AppColors.blackGreen,
       disabledColor: AppColors.inactiveBlack,

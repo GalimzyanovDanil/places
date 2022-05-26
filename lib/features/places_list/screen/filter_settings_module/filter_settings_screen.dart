@@ -21,7 +21,9 @@ class FilterSettingsScreen
   Widget build(IFilterSettingsWidgetModel wm) {
     return Scaffold(
       appBar: AppBarWidget(
-          onBackButtonTap: wm.onBackButtonTap, onClearTap: wm.onClearTap),
+        onBackButtonTap: wm.onBackButtonTap,
+        onClearTap: wm.onClearTap,
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -36,6 +38,7 @@ class FilterSettingsScreen
                 ),
               ),
               const SizedBox(height: 25),
+              //TODO: Переделать на GridView
               StateNotifierBuilder<List<PlaceType>>(
                 listenableState: wm.filterState,
                 builder: (_, filterList) => Wrap(
@@ -71,9 +74,6 @@ class FilterSettingsScreen
                       onChanged: wm.onSliderChange,
                       min: wm.minSliderValue,
                       max: wm.maxSliderValue,
-                      activeColor: wm.theme.colorScheme.primary,
-                      thumbColor: wm.theme.colorScheme.onPrimary,
-                      inactiveColor: wm.theme.colorScheme.outline,
                     ),
                   ],
                 ),
