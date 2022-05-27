@@ -29,6 +29,9 @@ class AppTheme {
         inactiveTrackColor: AppColors.inactiveBlack,
       ),
       scaffoldBackgroundColor: AppColors.whiteBase,
+      bottomNavigationBarTheme: base.bottomNavigationBarTheme.copyWith(
+        backgroundColor: AppColors.whiteBase,
+      ),
       indicatorColor: AppColors.whiteGreen,
       disabledColor: AppColors.inactiveBlack,
       primaryColor: AppColors.background,
@@ -40,6 +43,7 @@ class AppTheme {
     return base.colorScheme.copyWith(
       primary: AppColors.whiteGreen,
       onPrimary: AppColors.whiteBase,
+      onPrimaryContainer: AppColors.whiteSecondary,
       outline: AppColors.inactiveBlack,
       tertiary: AppColors.whiteMain,
       onTertiary: AppColors.whiteBase,
@@ -87,6 +91,8 @@ class AppTheme {
         inactiveTrackColor: AppColors.inactiveBlack,
       ),
       scaffoldBackgroundColor: AppColors.blackMain,
+      bottomNavigationBarTheme: base.bottomNavigationBarTheme
+          .copyWith(backgroundColor: AppColors.blackMain),
       indicatorColor: AppColors.blackGreen,
       disabledColor: AppColors.inactiveBlack,
       primaryColor: AppColors.blackDark,
@@ -98,6 +104,7 @@ class AppTheme {
     return base.colorScheme.copyWith(
       primary: AppColors.blackGreen,
       onPrimary: AppColors.whiteBase,
+      onPrimaryContainer: AppColors.background,
       outline: AppColors.inactiveBlack,
       tertiary: AppColors.whiteBase,
       onTertiary: AppColors.blackMain,

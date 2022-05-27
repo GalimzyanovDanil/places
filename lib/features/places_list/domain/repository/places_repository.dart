@@ -15,6 +15,6 @@ class PlacesRepository {
     };
     return _apiClient
         .getPlaces(queries)
-        .then((value) => value.map<Place>(mapPlaceFromResponse).toList());
+        .then((value) => value.map<Place>(mapResponseToPlace).toList());
   }
 }

@@ -84,6 +84,6 @@ class OnboardingWidgetModel
   }
 
   void _nextScreen() =>
-      coordinator.navigate(context, AppCoordinate.placesScreen,
+      coordinator.navigate(context, AppCoordinate.mainTabsScreen,
           replaceCurrentCoordinate: true);
 }
