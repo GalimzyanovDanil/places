@@ -48,4 +48,10 @@ class MainTabsWidgetModel extends WidgetModel<MainTabsScreen, MainTabsModel>
         _indexState.accept(_tabController.index);
       });
   }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 }
