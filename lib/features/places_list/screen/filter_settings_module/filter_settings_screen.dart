@@ -38,7 +38,7 @@ class FilterSettingsScreen
                 ),
               ),
               const SizedBox(height: 25),
-              //TODO: Переделать на GridView
+              //TODO: Переделать Wrap на GridView
               StateNotifierBuilder<List<PlaceType>>(
                 listenableState: wm.filterState,
                 builder: (_, filterList) => Wrap(

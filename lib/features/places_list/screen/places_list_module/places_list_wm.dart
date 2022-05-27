@@ -66,8 +66,8 @@ class PlacesListWidgetModel
 
   @override
   void dispose() {
-    super.dispose();
     _pagingController.dispose();
+    super.dispose();
   }
 
   @override
@@ -100,18 +100,23 @@ class PlacesListWidgetModel
   // Получение списка мест
   Future<void> _getPlacesList(int offset) async {
     try {
-      final content = await model.getPlacesList(placeCount, offset);
-      await Future<void>.delayed(const Duration(seconds: 2));
-      for (final element in content) {
-        _correctImageUrls(element.urls);
-      }
-      _isLastPage = content.length < placeCount;
-      if (_isLastPage) {
-        _pagingController.appendLastPage(content);
-      } else {
-        final nextPageKey = offset + placeCount;
-        _pagingController.appendPage(content, nextPageKey);
-      }
+      await model.getPlacesList(placeCount, offset).then((content) async {
+        // TODO: Удалить после проверки
+        await Future<void>.delayed(const Duration(seconds: 2));
+        for (final element in content) {
+          _correctImageUrls(element.urls);
+        }
+        _isLastPage = content.length < placeCount;
+
+        if (isMounted) {
+          if (_isLastPage) {
+            _pagingController.appendLastPage(content);
+          } else {
+            final nextPageKey = offset + placeCount;
+            _pagingController.appendPage(content, nextPageKey);
+          }
+        }
+      });
     } on ApiException catch (error) {
       _pagingController.error = error;
     }
