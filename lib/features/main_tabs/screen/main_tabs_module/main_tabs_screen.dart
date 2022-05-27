@@ -20,6 +20,7 @@ class MainTabsScreen extends ElementaryWidget<IMainTabsWidgetModel> {
     return Scaffold(
       body: TabBarView(
         controller: wm.tabController,
+        physics: const NeverScrollableScrollPhysics(),
         children: const [
           PlacesListScreen(),
           FavoriteScreen(),
