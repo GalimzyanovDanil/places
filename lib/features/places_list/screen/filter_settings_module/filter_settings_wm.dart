@@ -28,7 +28,8 @@ abstract class IFilterSettingsWidgetModel extends IWidgetModel {
 FilterSettingsWidgetModel defaultFilterSettingsWidgetModelFactory(
     BuildContext context) {
   final appDependencies = context.read<IAppScope>();
-  final model = FilterSettingsModel();
+  final localStorageService = appDependencies.localStorageService;
+  final model = FilterSettingsModel(localStorageService);
   return FilterSettingsWidgetModel(
     model: model,
     coordinator: appDependencies.coordinator,
@@ -51,7 +52,7 @@ class FilterSettingsWidgetModel
   // Минимальное значение слайдера
   final _minSliderValue = 10.0;
   //Значение слайдера по умолчанию
-  static const _defaultSliderValue = 15.0;
+  static const _defaultSliderValue = 10.0;
   //Таймер для задержки отправки запроса на сервер
   Timer? _searchDebounced;
   // Список всех типов
@@ -66,9 +67,11 @@ class FilterSettingsWidgetModel
   ];
 
   //TODO: Получение начальных фильтров widget.
-  final _filterState = StateNotifier<List<PlaceType>>(initValue: <PlaceType>[]);
+  final StateNotifier<List<PlaceType>> _filterState =
+      StateNotifier<List<PlaceType>>(initValue: <PlaceType>[]);
   //TODO: Получение начальных значений слайдера widget.
-  final _sliderState = StateNotifier<double>(initValue: _defaultSliderValue);
+  final StateNotifier<double> _sliderState =
+      StateNotifier<double>(initValue: _defaultSliderValue);
 
   final _listPlaceState = EntityStateNotifier<List<Place>>();
 
@@ -95,6 +98,14 @@ class FilterSettingsWidgetModel
   void initWidgetModel() {
     super.initWidgetModel();
     _loadPlaceList();
+    _initFilterSettings();
+  }
+
+  Future<void> _initFilterSettings() async {
+    final initialFilterTypes = await model.getFilterPlaceTypes();
+    final initialFilterDistance = await model.getFilterDistance();
+    _filterState.accept(initialFilterTypes ?? allPlaceType);
+    _sliderState.accept(initialFilterDistance ?? _defaultSliderValue);
   }
 
   // Загрузка данных по данным фильтра с задержкой
@@ -114,7 +125,16 @@ class FilterSettingsWidgetModel
 
   @override
   void onBackButtonTap() {
+    //TODO: Удалить saveSettings
+    saveSetttings();
     Navigator.of(context).pop();
+  }
+
+  Future<void> saveSetttings() async {
+    await model.setFilterSettings(
+      types: _filterState.value ?? allPlaceType,
+      distance: _sliderState.value ?? _defaultSliderValue,
+    );
   }
 
   @override
@@ -126,13 +146,12 @@ class FilterSettingsWidgetModel
 
   @override
   void onShowResultTap() {
+    saveSetttings();
     coordinator.navigate(
       context,
       AppCoordinate.mainTabsScreen,
       replaceCurrentCoordinate: true,
       replaceRootCoordinate: true,
-      //TODO arguments = FILTER SETTING  + List<Places>
-      arguments: _listPlaceState.value?.data,
     );
   }
 
@@ -161,6 +180,7 @@ class FilterSettingsWidgetModel
     final filterList = _filterState.value;
 
     if (isSel) {
+      // if (filterList?.length == 1) return;
       filterList?.remove(type);
       _filterState.accept(
         List<PlaceType>.from(filterList ?? <PlaceType>[]),

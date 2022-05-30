@@ -6,6 +6,8 @@ import 'package:elementary/elementary.dart';
 import 'package:places/api/service/place_api.dart';
 import 'package:places/config/app_config.dart';
 import 'package:places/config/environment/environment.dart';
+import 'package:places/features/common/domain/repository/local_storage_repository.dart';
+import 'package:places/features/common/service/local_storage_service.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
 import 'package:places/features/places_list/domain/repository/places_repository.dart';
 import 'package:places/features/places_list/service/places_service.dart';
@@ -18,10 +20,12 @@ class AppScope implements IAppScope {
   late final VoidCallback _applicationRebuilder;
   late final Coordinator _coordinator;
   late final PlacesService _placesService;
+  late final LocalStorageService _localStorageService;
 
   late final PlaceApi _placeApi;
   late final PlacesRepository _placesRepository;
   late ConnectivityResult _connectivityResult;
+  late final LocalStorageRepository _localStorageRepository;
 
   @override
   Dio get dio => _dio;
@@ -41,6 +45,8 @@ class AppScope implements IAppScope {
   @override
   ConnectivityResult get connectivityResult => _connectivityResult;
 
+  @override
+  LocalStorageService get localStorageService => _localStorageService;
   /// Create an instance [AppScope].
   AppScope({
     required VoidCallback applicationRebuilder,
@@ -55,6 +61,9 @@ class AppScope implements IAppScope {
 
     _placeApi = PlaceApi(dio);
     _placesService = _initPlacesService();
+
+    _localStorageRepository = LocalStorageRepository();
+    _localStorageService = LocalStorageService(_localStorageRepository);
   }
 
   Dio _initDio(Iterable<Interceptor> additionalInterceptors) {
@@ -121,9 +130,12 @@ abstract class IAppScope {
   /// Class that coordinates navigation for the whole app.
   Coordinator get coordinator;
 
-  /// Places service
+  /// Places service.
   PlacesService get placesService;
 
-  /// Connect to Internet status
+  /// Connect to Internet status.
   ConnectivityResult get connectivityResult;
+
+  /// Local storage service.
+  LocalStorageService get localStorageService;
 }
