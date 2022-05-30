@@ -47,6 +47,7 @@ class AppScope implements IAppScope {
 
   @override
   LocalStorageService get localStorageService => _localStorageService;
+
   /// Create an instance [AppScope].
   AppScope({
     required VoidCallback applicationRebuilder,

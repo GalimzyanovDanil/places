@@ -91,7 +91,6 @@ class OnboardingWidgetModel
 
   //TODO Перенести в сплешскрин
   Future<void> _init() async {
-
     final isOnboardingComplete = await model.getOnboardingStatus();
     if (isOnboardingComplete ?? false) {
       _nextScreen();
