@@ -21,7 +21,7 @@ OnboardingWidgetModel defaultOnboardingWidgetModelFactory(
 ) {
   final appScope = context.read<IAppScope>();
 
-  final model = OnboardingModel();
+  final model = OnboardingModel(appScope.localStorageService);
   return OnboardingWidgetModel(
     model: model,
     coordinator: appScope.coordinator,
@@ -57,8 +57,9 @@ class OnboardingWidgetModel
 
   @override
   void initWidgetModel() {
-    _pageController = PageController();
     super.initWidgetModel();
+    _pageController = PageController();
+    _init();
   }
 
   @override
@@ -75,12 +76,25 @@ class OnboardingWidgetModel
 
   @override
   void onSkipButton() {
-    _nextScreen();
+    _finishOnboarding();
   }
 
   @override
   void onStartButton() {
+    _finishOnboarding();
+  }
+
+  void _finishOnboarding() {
+    model.setOnboardingStatus(isComplete: true);
     _nextScreen();
+  }
+
+  //TODO Перенести в сплешскрин
+  Future<void> _init() async {
+    final isOnboardingComplete = await model.getOnboardingStatus();
+    if (isOnboardingComplete ?? false) {
+      _nextScreen();
+    }
   }
 
   void _nextScreen() =>
