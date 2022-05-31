@@ -13,7 +13,7 @@ class FilterSettingsModel extends ElementaryModel {
 
   Future<List<PlaceType>?> getFilterPlaceTypes() async {
     return _appSettingsService.getFilterPlaceTypes().then(
-          (value) => value?.map<PlaceType>(PlaceType.fromString).toList(),
+          (value) => value.map<PlaceType>(PlaceType.fromString).toList(),
         );
   }
 

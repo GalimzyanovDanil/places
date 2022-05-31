@@ -13,5 +13,5 @@ class SettingsModel extends ElementaryModel {
   void setTheme({required bool isDark}) =>
       _appSettingsService.setTheme(isDark: isDark);
 
-  bool? getTheme() => _appSettingsService.getTheme();
+  bool getTheme() => _appSettingsService.getTheme();
 }

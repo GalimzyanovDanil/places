@@ -14,7 +14,8 @@ abstract class ISplashWidgetModel extends IWidgetModel {}
 SplashWidgetModel defaultSplashWidgetModelFactory(BuildContext context) {
   final appScope = context.read<IAppScope>();
   final model = SplashModel(
-    appScope.appSettingsService,
+    appSettingsService: appScope.appSettingsService,
+    geopositionService: appScope.geopositionService,
   );
   return SplashWidgetModel(model: model, coordinator: appScope.coordinator);
 }
@@ -27,8 +28,7 @@ class SplashWidgetModel extends WidgetModel<SplashScreen, SplashModel>
       : super(model);
 
   final Coordinator coordinator;
-  late final bool? isOnboardingFinish;
-  late final bool? isLigthCurrentTheme;
+  late final bool isOnboardingFinish;
 
   @override
   void initWidgetModel() {
@@ -45,7 +45,7 @@ class SplashWidgetModel extends WidgetModel<SplashScreen, SplashModel>
   }
 
   void _navigate() {
-    if (isOnboardingFinish ?? false) {
+    if (isOnboardingFinish) {
       coordinator.navigate(context, AppCoordinate.mainTabsScreen,
           replaceRootCoordinate: true);
     } else {

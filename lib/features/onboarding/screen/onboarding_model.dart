@@ -8,7 +8,6 @@ class OnboardingModel extends ElementaryModel {
   OnboardingModel(this.appSettingsService) : super();
   final AppSettingsService appSettingsService;
 
-  Future<void> setOnboardingStatus({required bool isComplete}) async {
-    unawaited(appSettingsService.setOnboardingStatus(isComplete: isComplete));
-  }
+  Future<void> setOnboardingStatus({required bool isComplete}) async =>
+      appSettingsService.setOnboardingStatus(isComplete: isComplete);
 }
