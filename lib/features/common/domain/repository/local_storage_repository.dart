@@ -24,7 +24,7 @@ class LocalStorageRepository {
 
   Future<T?> getValue<T>(String key) async {
     assert(T != dynamic, ExceptionStrings.unsupportedDataType);
-    if (T == List<String>) return (await _storage).getStringList(key) as T;
+    if (T == List<String>) return (await _storage).getStringList(key) as T?;
     return (await _storage).get(key) as T?;
   }
 }

@@ -1,30 +1,30 @@
 import 'dart:async';
 
 import 'package:elementary/elementary.dart';
-import 'package:places/features/common/service/local_storage_service.dart';
+import 'package:places/features/common/service/app_settings_service.dart';
 import 'package:places/features/places_list/domain/entity/place_type.dart';
 
 // TODO: cover with documentation
 /// Default Elementary model for FilterSettings module
 class FilterSettingsModel extends ElementaryModel {
-  FilterSettingsModel(this._localStorageService) : super();
+  FilterSettingsModel(this._appSettingsService) : super();
 
-  final LocalStorageService _localStorageService;
+  final AppSettingsService _appSettingsService;
 
   Future<List<PlaceType>?> getFilterPlaceTypes() async {
-    return (await _localStorageService.getFilterPlaceTypes())
-        ?.map<PlaceType>(PlaceType.fromString)
-        .toList();
+    return _appSettingsService.getFilterPlaceTypes().then(
+          (value) => value?.map<PlaceType>(PlaceType.fromString).toList(),
+        );
   }
 
   Future<double?> getFilterDistance() async {
-    return _localStorageService.getFilterDistance();
+    return _appSettingsService.getFilterDistance();
   }
 
   Future<void> setFilterSettings(
       {required List<PlaceType> types, required double distance}) async {
-    unawaited(_localStorageService
+    unawaited(_appSettingsService
         .setFilterPlaceTypes(types.map((type) => type.name).toList()));
-    unawaited(_localStorageService.setFilterDistance(distance));
+    unawaited(_appSettingsService.setFilterDistance(distance));
   }
 }

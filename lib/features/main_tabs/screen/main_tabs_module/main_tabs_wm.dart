@@ -1,7 +1,9 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:places/features/app/di/app_scope.dart';
 import 'package:places/features/main_tabs/screen/main_tabs_module/main_tabs_model.dart';
 import 'package:places/features/main_tabs/screen/main_tabs_module/main_tabs_screen.dart';
+import 'package:provider/provider.dart';
 
 abstract class IMainTabsWidgetModel extends IWidgetModel {
   ListenableState<int> get indexState;
@@ -11,7 +13,8 @@ abstract class IMainTabsWidgetModel extends IWidgetModel {
 }
 
 MainTabsWidgetModel defaultSettingsWidgetModelFactory(BuildContext context) {
-  final model = MainTabsModel();
+  final appScope = context.read<IAppScope>();
+  final model = MainTabsModel(appScope.appSettingsService);
   return MainTabsWidgetModel(model);
 }
 
@@ -43,15 +46,24 @@ class MainTabsWidgetModel extends WidgetModel<MainTabsScreen, MainTabsModel>
   @override
   void initWidgetModel() {
     super.initWidgetModel();
+
     _tabController = TabController(length: navigationItemCount, vsync: this)
       ..addListener(() {
         _indexState.accept(_tabController.index);
+        model.setTabIndex(_tabController.index);
       });
+
+    _restoreTabIndex();
   }
 
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  Future<void> _restoreTabIndex() async {
+    final lastTapIndex = model.getTabIndex();
+    _tabController.index = lastTapIndex ?? 0;
   }
 }

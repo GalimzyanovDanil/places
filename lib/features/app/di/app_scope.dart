@@ -7,7 +7,7 @@ import 'package:places/api/service/place_api.dart';
 import 'package:places/config/app_config.dart';
 import 'package:places/config/environment/environment.dart';
 import 'package:places/features/common/domain/repository/local_storage_repository.dart';
-import 'package:places/features/common/service/local_storage_service.dart';
+import 'package:places/features/common/service/app_settings_service.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
 import 'package:places/features/places_list/domain/repository/places_repository.dart';
 import 'package:places/features/places_list/service/places_service.dart';
@@ -20,7 +20,7 @@ class AppScope implements IAppScope {
   late final VoidCallback _applicationRebuilder;
   late final Coordinator _coordinator;
   late final PlacesService _placesService;
-  late final LocalStorageService _localStorageService;
+  late final AppSettingsService _appSettingsService;
 
   late final PlaceApi _placeApi;
   late final PlacesRepository _placesRepository;
@@ -46,7 +46,7 @@ class AppScope implements IAppScope {
   ConnectivityResult get connectivityResult => _connectivityResult;
 
   @override
-  LocalStorageService get localStorageService => _localStorageService;
+  AppSettingsService get appSettingsService => _appSettingsService;
 
   /// Create an instance [AppScope].
   AppScope({
@@ -64,7 +64,7 @@ class AppScope implements IAppScope {
     _placesService = _initPlacesService();
 
     _localStorageRepository = LocalStorageRepository();
-    _localStorageService = LocalStorageService(_localStorageRepository);
+    _appSettingsService = AppSettingsService(_localStorageRepository);
   }
 
   Dio _initDio(Iterable<Interceptor> additionalInterceptors) {
@@ -102,6 +102,12 @@ class AppScope implements IAppScope {
     return dio;
   }
 
+  // For dispose any controllers
+  @override
+  void dispose() {
+    _appSettingsService.dispose();
+  }
+
   Future<void> _initConnectivity() async {
     final connectivity = Connectivity();
     _connectivityResult = await connectivity.checkConnectivity();
@@ -137,6 +143,8 @@ abstract class IAppScope {
   /// Connect to Internet status.
   ConnectivityResult get connectivityResult;
 
-  /// Local storage service.
-  LocalStorageService get localStorageService;
+  /// App setings service.
+  AppSettingsService get appSettingsService;
+
+  void dispose();
 }
