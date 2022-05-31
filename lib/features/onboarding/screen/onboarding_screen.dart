@@ -20,6 +20,7 @@ class OnboardingScreen extends ElementaryWidget<IOnboardingWidgetModel> {
   Widget build(IOnboardingWidgetModel wm) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         actions: [
           StateNotifierBuilder<bool>(
             listenableState: wm.isLastPage,

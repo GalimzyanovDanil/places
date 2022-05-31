@@ -20,8 +20,7 @@ OnboardingWidgetModel defaultOnboardingWidgetModelFactory(
   BuildContext context,
 ) {
   final appScope = context.read<IAppScope>();
-
-  final model = OnboardingModel(appScope.localStorageService);
+  final model = OnboardingModel(appScope.appSettingsService);
   return OnboardingWidgetModel(
     model: model,
     coordinator: appScope.coordinator,
@@ -59,7 +58,6 @@ class OnboardingWidgetModel
   void initWidgetModel() {
     super.initWidgetModel();
     _pageController = PageController();
-    _init();
   }
 
   @override
@@ -89,15 +87,13 @@ class OnboardingWidgetModel
     _nextScreen();
   }
 
-  //TODO Перенести в сплешскрин
-  Future<void> _init() async {
-    final isOnboardingComplete = await model.getOnboardingStatus();
-    if (isOnboardingComplete ?? false) {
-      _nextScreen();
-    }
-  }
-
-  void _nextScreen() =>
+  void _nextScreen() {
+    if (coordinator.pages.length > 1) {
+      coordinator.navigate(context, AppCoordinate.mainTabsScreen,
+          replaceRootCoordinate: true);
+    } else {
       coordinator.navigate(context, AppCoordinate.mainTabsScreen,
           replaceCurrentCoordinate: true);
+    }
+  }
 }

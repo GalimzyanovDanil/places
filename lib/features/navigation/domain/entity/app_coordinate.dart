@@ -3,11 +3,15 @@ import 'package:places/features/main_tabs/screen/main_tabs_module/main_tabs_scre
 import 'package:places/features/navigation/domain/entity/coordinate.dart';
 import 'package:places/features/onboarding/screen/onboarding_screen.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_screen.dart';
+import 'package:places/features/splash_screen/splash_screen.dart';
 
 /// A set of routes for the entire app.
 class AppCoordinate extends Coordinate {
   /// Initialization screens([]).
-  static const initScreen = AppCoordinate._('onboarding', true);
+  static const initScreen = AppCoordinate._('init', true);
+
+  ///Onboarding screen
+  static const onboardingScreen = AppCoordinate._('onboarding', true);
 
   ///Filter settings screen
   static const filterSettingsScreen = AppCoordinate._('filter_settings', true);
@@ -32,8 +36,9 @@ class AppCoordinate extends Coordinate {
 
 /// List of main routes of the app.
 final Map<AppCoordinate, CoordinateBuilder> appCoordinates = {
-  AppCoordinate.initial: (_, __) => const OnboardingScreen(),
+  AppCoordinate.initScreen: (_, __) => const SplashScreen(),
   AppCoordinate.debugScreen: (_, __) => const DebugScreen(),
-  AppCoordinate.filterSettingsScreen: (_, __) => const FilterSettingsScreen(),
+  AppCoordinate.onboardingScreen: (_, __) => const OnboardingScreen(),
   AppCoordinate.mainTabsScreen: (_, __) => const MainTabsScreen(),
+  AppCoordinate.filterSettingsScreen: (_, __) => const FilterSettingsScreen(),
 };

@@ -28,8 +28,8 @@ abstract class IFilterSettingsWidgetModel extends IWidgetModel {
 FilterSettingsWidgetModel defaultFilterSettingsWidgetModelFactory(
     BuildContext context) {
   final appDependencies = context.read<IAppScope>();
-  final localStorageService = appDependencies.localStorageService;
-  final model = FilterSettingsModel(localStorageService);
+  final appSettingsService = appDependencies.appSettingsService;
+  final model = FilterSettingsModel(appSettingsService);
   return FilterSettingsWidgetModel(
     model: model,
     coordinator: appDependencies.coordinator,
@@ -104,35 +104,35 @@ class FilterSettingsWidgetModel
   Future<void> _initFilterSettings() async {
     final initialFilterTypes = await model.getFilterPlaceTypes();
     final initialFilterDistance = await model.getFilterDistance();
-    _filterState.accept(initialFilterTypes ?? allPlaceType);
+    _filterState.accept(initialFilterTypes ?? allPlaceType.toList());
     _sliderState.accept(initialFilterDistance ?? _defaultSliderValue);
   }
 
   // Загрузка данных по данным фильтра с задержкой
   Future<void> _loadPlaceListDebounce() async {
     _searchDebounced?.cancel();
-    _searchDebounced = Timer(const Duration(milliseconds: 800), () async {
+    _searchDebounced = Timer(const Duration(seconds: 1), () async {
       await _loadPlaceList();
     });
   }
 
   Future<void> _loadPlaceList() async {
     _listPlaceState.loading();
-    //TODO Загрузка данных
+    //TODO(me): Загрузка данных
     await Future<void>.delayed(const Duration(seconds: 2));
     _listPlaceState.content(<Place>[]);
   }
 
   @override
   void onBackButtonTap() {
-    //TODO: Удалить saveSettings
+    //TODO(me): Удалить saveSettings
     saveSetttings();
     Navigator.of(context).pop();
   }
 
   Future<void> saveSetttings() async {
     await model.setFilterSettings(
-      types: _filterState.value ?? allPlaceType,
+      types: _filterState.value ?? <PlaceType>[],
       distance: _sliderState.value ?? _defaultSliderValue,
     );
   }
@@ -171,16 +171,14 @@ class FilterSettingsWidgetModel
         placeType: type,
       ),
     );
-
     return result.toList();
   }
 
   // Обработка нажатия на элемент фильтра
   void _onElementTap(bool isSel, PlaceType type) {
-    final filterList = _filterState.value;
+    final filterList = _filterState.value?.toList();
 
     if (isSel) {
-      // if (filterList?.length == 1) return;
       filterList?.remove(type);
       _filterState.accept(
         List<PlaceType>.from(filterList ?? <PlaceType>[]),

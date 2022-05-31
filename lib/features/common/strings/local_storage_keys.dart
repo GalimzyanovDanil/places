@@ -3,4 +3,5 @@ class LocalStorageKeys {
   static const filterPlaceTypes = 'filter_place_type';
   static const filterDistance = 'filter_distance';
   static const onboardingStatus = 'onboarding_status';
+  static const mainTabIndex = 'main_tab_index';
 }

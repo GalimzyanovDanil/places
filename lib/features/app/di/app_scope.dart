@@ -6,12 +6,14 @@ import 'package:elementary/elementary.dart';
 import 'package:places/api/service/place_api.dart';
 import 'package:places/config/app_config.dart';
 import 'package:places/config/environment/environment.dart';
-import 'package:places/features/common/domain/repository/local_storage_repository.dart';
-import 'package:places/features/common/service/local_storage_service.dart';
+import 'package:places/features/common/domain/repository/shared_prefs_storage.dart';
+import 'package:places/features/common/service/app_settings_service.dart';
+import 'package:places/features/common/service/geoposition_service.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
 import 'package:places/features/places_list/domain/repository/places_repository.dart';
 import 'package:places/features/places_list/service/places_service.dart';
 import 'package:places/util/default_error_handler.dart';
+import 'package:places/util/shared_preferences_helper.dart';
 
 /// Scope of dependencies which need through all app's life.
 class AppScope implements IAppScope {
@@ -20,12 +22,15 @@ class AppScope implements IAppScope {
   late final VoidCallback _applicationRebuilder;
   late final Coordinator _coordinator;
   late final PlacesService _placesService;
-  late final LocalStorageService _localStorageService;
+  late final AppSettingsService _appSettingsService;
 
   late final PlaceApi _placeApi;
   late final PlacesRepository _placesRepository;
   late ConnectivityResult _connectivityResult;
-  late final LocalStorageRepository _localStorageRepository;
+  late final SharedPreferencesHelper _sharedPreferencesHelper;
+  late final SharedPrefsStorage _sharedPrefStorage;
+
+  late final GeopositionService _geopositionService;
 
   @override
   Dio get dio => _dio;
@@ -46,7 +51,10 @@ class AppScope implements IAppScope {
   ConnectivityResult get connectivityResult => _connectivityResult;
 
   @override
-  LocalStorageService get localStorageService => _localStorageService;
+  AppSettingsService get appSettingsService => _appSettingsService;
+
+  @override
+  GeopositionService get geopositionService => _geopositionService;
 
   /// Create an instance [AppScope].
   AppScope({
@@ -63,8 +71,11 @@ class AppScope implements IAppScope {
     _placeApi = PlaceApi(dio);
     _placesService = _initPlacesService();
 
-    _localStorageRepository = LocalStorageRepository();
-    _localStorageService = LocalStorageService(_localStorageRepository);
+    _sharedPreferencesHelper = SharedPreferencesHelper();
+    _sharedPrefStorage = SharedPrefsStorage(_sharedPreferencesHelper);
+    _appSettingsService = AppSettingsService(_sharedPrefStorage);
+
+    _geopositionService = GeopositionService();
   }
 
   Dio _initDio(Iterable<Interceptor> additionalInterceptors) {
@@ -102,6 +113,12 @@ class AppScope implements IAppScope {
     return dio;
   }
 
+  // For dispose any controllers
+  @override
+  void dispose() {
+    _appSettingsService.dispose();
+  }
+
   Future<void> _initConnectivity() async {
     final connectivity = Connectivity();
     _connectivityResult = await connectivity.checkConnectivity();
@@ -137,6 +154,12 @@ abstract class IAppScope {
   /// Connect to Internet status.
   ConnectivityResult get connectivityResult;
 
-  /// Local storage service.
-  LocalStorageService get localStorageService;
+  /// App setings service.
+  AppSettingsService get appSettingsService;
+
+  ///Geolocation service
+  GeopositionService get geopositionService;
+
+  /// For dispose any controllers
+  void dispose();
 }
