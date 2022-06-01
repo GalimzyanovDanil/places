@@ -3,7 +3,7 @@ import 'package:places/features/main_tabs/screen/main_tabs_module/main_tabs_scre
 import 'package:places/features/navigation/domain/entity/coordinate.dart';
 import 'package:places/features/onboarding/screen/onboarding_screen.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_screen.dart';
-import 'package:places/features/splash_screen/splash_screen.dart';
+import 'package:places/features/splash_screen/screen/splash_screen.dart';
 
 /// A set of routes for the entire app.
 class AppCoordinate extends Coordinate {
