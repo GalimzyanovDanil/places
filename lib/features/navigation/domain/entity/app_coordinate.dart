@@ -36,7 +36,7 @@ class AppCoordinate extends Coordinate {
 
 /// List of main routes of the app.
 final Map<AppCoordinate, CoordinateBuilder> appCoordinates = {
-  AppCoordinate.initScreen: (_, __) => const SplashScreen(),
+  AppCoordinate.initial: (_, __) => const SplashScreen(),
   AppCoordinate.debugScreen: (_, __) => const DebugScreen(),
   AppCoordinate.onboardingScreen: (_, __) => const OnboardingScreen(),
   AppCoordinate.mainTabsScreen: (_, __) => const MainTabsScreen(),

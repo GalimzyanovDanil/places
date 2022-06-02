@@ -90,6 +90,7 @@ class _AndroidAlertDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return AlertDialog(
+      backgroundColor: colorScheme.onPrimaryContainer,
       title: Text(title),
       content: SingleChildScrollView(
         child: ListBody(

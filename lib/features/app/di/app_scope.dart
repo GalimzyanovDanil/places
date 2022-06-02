@@ -6,9 +6,10 @@ import 'package:elementary/elementary.dart';
 import 'package:places/api/service/place_api.dart';
 import 'package:places/config/app_config.dart';
 import 'package:places/config/environment/environment.dart';
+import 'package:places/features/common/domain/repository/geoposition_repository.dart';
 import 'package:places/features/common/domain/repository/shared_prefs_storage.dart';
 import 'package:places/features/common/service/app_settings_service.dart';
-import 'package:places/features/common/service/geoposition_service.dart';
+import 'package:places/features/common/service/geoposition_bloc/geoposition_bloc.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
 import 'package:places/features/places_list/domain/repository/places_repository.dart';
 import 'package:places/features/places_list/service/places_service.dart';
@@ -30,7 +31,8 @@ class AppScope implements IAppScope {
   late final SharedPreferencesHelper _sharedPreferencesHelper;
   late final SharedPrefsStorage _sharedPrefStorage;
 
-  late final GeopositionService _geopositionService;
+  late final GeopositionRepository _geopositionRepository;
+  late final GeopositionBloc _geopositionBloc;
 
   @override
   Dio get dio => _dio;
@@ -54,7 +56,7 @@ class AppScope implements IAppScope {
   AppSettingsService get appSettingsService => _appSettingsService;
 
   @override
-  GeopositionService get geopositionService => _geopositionService;
+  GeopositionBloc get geopositionBloc => _geopositionBloc;
 
   /// Create an instance [AppScope].
   AppScope({
@@ -75,7 +77,9 @@ class AppScope implements IAppScope {
     _sharedPrefStorage = SharedPrefsStorage(_sharedPreferencesHelper);
     _appSettingsService = AppSettingsService(_sharedPrefStorage);
 
-    _geopositionService = GeopositionService();
+    _geopositionRepository = GeopositionRepository();
+    _geopositionBloc = GeopositionBloc(_geopositionRepository)
+      ..add(const GeopositionEvent.checkAndRequestPermission());
   }
 
   Dio _initDio(Iterable<Interceptor> additionalInterceptors) {
@@ -158,7 +162,7 @@ abstract class IAppScope {
   AppSettingsService get appSettingsService;
 
   ///Geolocation service
-  GeopositionService get geopositionService;
+  GeopositionBloc get geopositionBloc;
 
   /// For dispose any controllers
   void dispose();

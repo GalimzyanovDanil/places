@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:places/features/app/di/app_scope.dart';
 import 'package:places/features/common/app_exceptions/api_exception.dart';
-import 'package:places/features/common/service/geoposition_service.dart';
-import 'package:places/features/common/strings/alert_dialog_strings.dart';
+import 'package:places/features/common/domain/repository/geoposition_repository.dart';
+import 'package:places/features/common/strings/dialog_strings.dart';
 import 'package:places/features/common/widgets/alert_dialog/alert_dialog_widget_factory.dart';
 import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
@@ -32,8 +32,12 @@ PlacesListWidgetModel defaultPlacesListWidgetModelFactory(
       errorHandler: appScope.errorHandler,
       placesService: appScope.placesService,
       connectivityResult: appScope.connectivityResult,
-      geopositionService: appScope.geopositionService);
-  return PlacesListWidgetModel(model: model, coordinator: appScope.coordinator);
+      geopositionBloc: appScope.geopositionBloc);
+
+  return PlacesListWidgetModel(
+    model: model,
+    coordinator: appScope.coordinator,
+  );
 }
 
 // TODO: cover with documentation
@@ -144,50 +148,29 @@ class PlacesListWidgetModel
   }
 
   Future<bool> _geopositionChecks() async {
-    var status = GeopositionStatus.ok;
-    status = await model.isCheckPermission();
-
-    if (status == GeopositionStatus.denied) {
-      await _showMyDialog(
-          alertDialogWidget: alertDialogWidgetFactory(
-              title: AlertDialogStrings.errorTitle,
+    return model.geopositionState.map<bool>(
+        initial: (_) => false,
+        getStatusInProgress: (_) => false,
+        getPositionInProgress: (_) => true,
+        succsess: (_) => true,
+        error: (state) {
+          if (state.status == GeopositionStatus.deniedForever) {
+            _showSnackBar(DialogStrings.snackBarText);
+            return false;
+          }
+          _showMyDialog(
+            alertDialogWidget: alertDialogWidgetFactory(
+              title: DialogStrings.errorTitle,
               onConfirm: () async {
-                status = await model.requsetAndIsCheckPermission();
+                model.requsetAndIsCheckPermission();
               },
-              bodyText: AlertDialogStrings.requetBodyText,
-              confirmTitle: AlertDialogStrings.confirmText,
-              declineTitle: AlertDialogStrings.declineText));
-    }
-
-    switch (status) {
-      case GeopositionStatus.denied:
-        return false;
-      case GeopositionStatus.ok:
-        return _isLocationServiceEnabled();
-      case GeopositionStatus.deniedForever:
-        // TODO(me): Можно показать снекбар
-        // и попросить пользователся включить в настройках
-        return false;
-    }
-  }
-
-  Future<bool> _isLocationServiceEnabled() async {
-    var isEnabled = false;
-    isEnabled = await model.isLocationServiceEnabled();
-    if (!isEnabled) {
-      await _showMyDialog(
-          alertDialogWidget: alertDialogWidgetFactory(
-        title: AlertDialogStrings.title,
-        bodyText: AlertDialogStrings.geoServiceNotEnabledText,
-        confirmTitle: AlertDialogStrings.confirmText,
-        declineTitle: AlertDialogStrings.declineText,
-        onConfirm: model.openSettings,
-      ));
-      //Возвращаем TRUE, считая, что пользователь включил геолокацию(GPS)
-      //Даже, если не включил она не жизненно необходима.
-      isEnabled = true;
-    }
-    return isEnabled;
+              bodyText: DialogStrings.requetBodyText,
+              confirmTitle: DialogStrings.confirmText,
+              declineTitle: DialogStrings.declineText,
+            ),
+          );
+          return false;
+        });
   }
 
   Future<void> _showMyDialog({required Widget alertDialogWidget}) async {
@@ -200,5 +183,18 @@ class PlacesListWidgetModel
         },
       );
     }
+  }
+
+  Future<void> _showSnackBar(String text) async {
+    final theme = Theme.of(context);
+    final snackBar = SnackBar(
+      backgroundColor: theme.colorScheme.onPrimaryContainer,
+      content: Text(
+        text,
+        style: theme.textTheme.subtitle1,
+      ),
+      duration: const Duration(seconds: 2),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

@@ -1,17 +1,18 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:geolocator/geolocator.dart';
 import 'package:places/features/common/domain/entity/geoposition.dart';
 
-enum GeopositionStatus { denied, ok, deniedForever }
+enum GeopositionStatus { denied, firstDenied, ok, deniedForever }
 
-class GeopositionService {
+class GeopositionRepository {
   // Получение текущей геопозиции
-  Future<Geopposition> getCurrentPosition() async {
+  Future<Geoposition> getCurrentPosition() async {
     final position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.medium,
-        timeLimit: const Duration(seconds: 60));
-    return Geopposition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+    return Geoposition(
       latitude: position.latitude,
       longitude: position.longitude,
     );
@@ -52,7 +53,9 @@ class GeopositionService {
       case LocationPermission.always:
         return GeopositionStatus.ok;
       case LocationPermission.deniedForever:
-        return GeopositionStatus.deniedForever;
+        return Platform.isIOS
+            ? GeopositionStatus.deniedForever
+            : GeopositionStatus.denied;
     }
   }
 }
