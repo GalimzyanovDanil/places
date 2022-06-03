@@ -53,9 +53,7 @@ class GeopositionRepository {
       case LocationPermission.always:
         return GeopositionStatus.ok;
       case LocationPermission.deniedForever:
-        return Platform.isIOS
-            ? GeopositionStatus.deniedForever
-            : GeopositionStatus.denied;
+        return GeopositionStatus.deniedForever;
     }
   }
 }
