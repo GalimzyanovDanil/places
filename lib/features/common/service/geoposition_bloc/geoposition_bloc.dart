@@ -1,15 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:places/features/common/domain/entity/geoposition.dart';
-import 'package:places/features/common/domain/repository/geoposition_repository.dart';
 
 part 'geoposition_event.dart';
 part 'geoposition_state.dart';
 part 'geoposition_bloc.freezed.dart';
 
 class GeopositionBloc extends Bloc<GeopositionEvent, GeopositionState> {
-  final GeopositionRepository _geopositionRepository;
-  GeopositionBloc(this._geopositionRepository) : super(const _InitialState()) {
+  GeopositionBloc() : super(const _InitialState()) {
     on<GeopositionEvent>((event, emit) async {
       await event.map<Future<void>>(
         checkAndRequestPermission: (value) =>
@@ -29,12 +28,15 @@ class GeopositionBloc extends Bloc<GeopositionEvent, GeopositionState> {
       return;
     }
     emit(const GeopositionState.getStatusInProgress());
+    LocationPermission permission;
     GeopositionStatus status;
-    status = await _geopositionRepository.checkPermission();
+    permission = await Geolocator.checkPermission();
+    status = _mapPermissionToStatus(permission);
 
     if (status == GeopositionStatus.denied ||
         status == GeopositionStatus.deniedForever) {
-      status = await _geopositionRepository.requsetAndCheckPermission();
+      permission = await Geolocator.requestPermission();
+      status = _mapPermissionToStatus(permission);
     }
 
     switch (status) {
@@ -52,12 +54,19 @@ class GeopositionBloc extends Bloc<GeopositionEvent, GeopositionState> {
         emit(const GeopositionState.getPositionInProgress(
           status: GeopositionStatus.ok,
         ));
-        final isServiceEnbled =
-            await _geopositionRepository.isLocationServiceEnabled();
+        final isServiceEnbled = await Geolocator.isLocationServiceEnabled();
         if (!isServiceEnbled) {
-          await _geopositionRepository.openLocationSettings();
+          await Geolocator.openLocationSettings();
         }
-        final geoposition = await _geopositionRepository.getCurrentPosition();
+        final position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high,
+        );
+
+        final geoposition = Geoposition(
+          latitude: position.latitude,
+          longitude: position.longitude,
+        );
+
         emit(GeopositionState.succsess(
           status: state.status,
           geoposition: geoposition,
@@ -74,5 +83,20 @@ class GeopositionBloc extends Bloc<GeopositionEvent, GeopositionState> {
       status: state.status,
       geoposition: state.geoposition,
     ));
+  }
+}
+
+enum GeopositionStatus { denied, firstDenied, ok, deniedForever }
+
+GeopositionStatus _mapPermissionToStatus(LocationPermission permission) {
+  switch (permission) {
+    case LocationPermission.denied:
+    case LocationPermission.unableToDetermine:
+      return GeopositionStatus.denied;
+    case LocationPermission.whileInUse:
+    case LocationPermission.always:
+      return GeopositionStatus.ok;
+    case LocationPermission.deniedForever:
+      return GeopositionStatus.deniedForever;
   }
 }

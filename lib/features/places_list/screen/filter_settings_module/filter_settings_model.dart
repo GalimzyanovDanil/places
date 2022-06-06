@@ -23,8 +23,7 @@ class FilterSettingsModel extends ElementaryModel {
         _errorHandler = errorHandler,
         _connectivityResult = connectivityResult,
         _placesService = placesService,
-        _geopositionBloc = geopositionBloc,
-        super();
+        _geopositionBloc = geopositionBloc;
 
   final AppSettingsService _appSettingsService;
   final PlacesService _placesService;

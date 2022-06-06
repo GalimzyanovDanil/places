@@ -6,7 +6,6 @@ import 'package:elementary/elementary.dart';
 import 'package:places/api/service/place_api.dart';
 import 'package:places/config/app_config.dart';
 import 'package:places/config/environment/environment.dart';
-import 'package:places/features/common/domain/repository/geoposition_repository.dart';
 import 'package:places/features/common/domain/repository/shared_prefs_storage.dart';
 import 'package:places/features/common/service/app_settings_service.dart';
 import 'package:places/features/common/service/geoposition_bloc/geoposition_bloc.dart';
@@ -31,7 +30,6 @@ class AppScope implements IAppScope {
   late final SharedPreferencesHelper _sharedPreferencesHelper;
   late final SharedPrefsStorage _sharedPrefStorage;
 
-  late final GeopositionRepository _geopositionRepository;
   late final GeopositionBloc _geopositionBloc;
 
   @override
@@ -83,8 +81,7 @@ class AppScope implements IAppScope {
     _sharedPrefStorage = SharedPrefsStorage(_sharedPreferencesHelper);
     _appSettingsService = AppSettingsService(_sharedPrefStorage);
 
-    _geopositionRepository = GeopositionRepository();
-    _geopositionBloc = GeopositionBloc(_geopositionRepository)
+    _geopositionBloc = GeopositionBloc()
       ..add(const GeopositionEvent.checkAndRequestPermission());
   }
 
