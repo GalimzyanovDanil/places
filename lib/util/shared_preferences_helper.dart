@@ -9,7 +9,12 @@ class SharedPreferencesHelper {
   /// Reads a value of [T] type from persistent storage.
   Future<T> get<T>(String key, T defaultValue) async {
     final instance = await _prefs;
-    final result = instance.get(key) as T?;
+    final T? result;
+    if (T == List<String>) {
+      result = instance.getStringList(key) as T?;
+      return result ?? defaultValue;
+    }
+    result = instance.get(key) as T?;
 
     return result ?? defaultValue;
   }

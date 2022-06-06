@@ -3,7 +3,7 @@ import 'package:places/features/main_tabs/screen/main_tabs_module/main_tabs_scre
 import 'package:places/features/navigation/domain/entity/coordinate.dart';
 import 'package:places/features/onboarding/screen/onboarding_screen.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_screen.dart';
-import 'package:places/features/splash_screen/splash_screen.dart';
+import 'package:places/features/splash_screen/screen/splash_screen.dart';
 
 /// A set of routes for the entire app.
 class AppCoordinate extends Coordinate {
@@ -36,7 +36,7 @@ class AppCoordinate extends Coordinate {
 
 /// List of main routes of the app.
 final Map<AppCoordinate, CoordinateBuilder> appCoordinates = {
-  AppCoordinate.initScreen: (_, __) => const SplashScreen(),
+  AppCoordinate.initial: (_, __) => const SplashScreen(),
   AppCoordinate.debugScreen: (_, __) => const DebugScreen(),
   AppCoordinate.onboardingScreen: (_, __) => const OnboardingScreen(),
   AppCoordinate.mainTabsScreen: (_, __) => const MainTabsScreen(),

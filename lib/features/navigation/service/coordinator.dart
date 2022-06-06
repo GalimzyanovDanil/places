@@ -3,7 +3,7 @@ import 'package:places/features/navigation/domain/entity/coordinate.dart';
 import 'package:places/features/navigation/domain/entity/coordinate_key.dart';
 import 'package:places/features/navigation/domain/entity/coordinate_route.dart';
 import 'package:places/features/navigation/domain/entity/coordinator_exceptions.dart';
-import 'package:places/features/splash_screen/splash_screen.dart';
+import 'package:places/features/splash_screen/screen/splash_screen.dart';
 
 /// Class that coordinates navigation for the whole app and provides
 /// methods for navigation.

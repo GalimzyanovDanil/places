@@ -2,6 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:elementary/elementary.dart';
 import 'package:places/features/common/app_exceptions/api_exception.dart';
 import 'package:places/features/common/app_exceptions/exception_strings.dart';
+import 'package:places/features/common/service/geoposition_bloc/geoposition_bloc.dart';
 import 'package:places/features/places_list/domain/entity/place.dart';
 import 'package:places/features/places_list/service/places_service.dart';
 
@@ -11,13 +12,19 @@ class PlacesListModel extends ElementaryModel {
   final PlacesService _placesService;
   final ErrorHandler _errorHandler;
   final ConnectivityResult _connectivityResult;
+  final GeopositionBloc _geopositionBloc;
+
+  GeopositionState get geopositionState => _geopositionBloc.state;
+
   PlacesListModel({
     required ErrorHandler errorHandler,
     required PlacesService placesService,
     required ConnectivityResult connectivityResult,
+    required GeopositionBloc geopositionBloc,
   })  : _placesService = placesService,
         _errorHandler = errorHandler,
         _connectivityResult = connectivityResult,
+        _geopositionBloc = geopositionBloc,
         super(errorHandler: errorHandler);
 
   Future<List<Place>> getPlacesList(int count, [int offset = 0]) async {
@@ -35,5 +42,9 @@ class PlacesListModel extends ElementaryModel {
       _errorHandler.handleError(exception.message);
       throw exception;
     }
+  }
+
+  void requsetAndIsCheckPermission() {
+    _geopositionBloc.add(const GeopositionEvent.checkAndRequestPermission());
   }
 }

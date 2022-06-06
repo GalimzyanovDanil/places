@@ -1,4 +1,5 @@
 import 'package:elementary/elementary.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -75,7 +76,7 @@ class Body extends StatelessWidget {
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   /// AppBar height. Default 56.
   final double? toolbarHeight;
-  final VoidCallback onSettingsTap;
+  final AsyncCallback onSettingsTap;
   final VoidCallback onSearchBarTap;
 
   const AppBarWidget(
