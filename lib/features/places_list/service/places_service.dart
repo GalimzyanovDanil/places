@@ -1,4 +1,5 @@
 import 'package:places/features/places_list/domain/entity/place.dart';
+import 'package:places/features/places_list/domain/entity/place_filter.dart';
 import 'package:places/features/places_list/domain/repository/places_repository.dart';
 
 class PlacesService {
@@ -8,5 +9,9 @@ class PlacesService {
 
   Future<List<Place>> getPlacesList(int count, [int offset = 0]) async {
     return _placesRepository.getPlacesList(count, offset);
+  }
+
+  Future<List<Place>> getFilteredPlace(PlaceFilter filter) async {
+    return _placesRepository.getFilteredPlacesList(filter);
   }
 }

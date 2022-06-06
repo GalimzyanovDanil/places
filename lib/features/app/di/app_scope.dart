@@ -63,7 +63,13 @@ class AppScope implements IAppScope {
     required VoidCallback applicationRebuilder,
   }) : _applicationRebuilder = applicationRebuilder {
     /// List interceptor. Fill in as needed.
-    final additionalInterceptors = <Interceptor>[];
+    final additionalInterceptors = <Interceptor>[
+      InterceptorsWrapper(
+        onError: (e, handler) {
+          handler.reject(e);
+        },
+      )
+    ];
 
     _dio = _initDio(additionalInterceptors);
     _errorHandler = DefaultErrorHandler();

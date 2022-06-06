@@ -8,8 +8,10 @@ import 'package:places/features/common/app_exceptions/api_exception.dart';
 import 'package:places/features/common/domain/repository/geoposition_repository.dart';
 import 'package:places/features/common/strings/dialog_strings.dart';
 import 'package:places/features/common/widgets/alert_dialog/alert_dialog_widget_factory.dart';
+import 'package:places/features/common/widgets/ui_func.dart';
 import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
+import 'package:places/features/places_list/common/entity/filter_sto.dart';
 import 'package:places/features/places_list/domain/entity/place.dart';
 import 'package:places/features/places_list/screen/places_list_module/places_list_model.dart';
 import 'package:places/features/places_list/screen/places_list_module/places_list_screen.dart';
@@ -111,8 +113,41 @@ class PlacesListWidgetModel
   // Получение списка мест
   Future<void> _getPlacesList(int offset) async {
     try {
-      await model.getPlacesList(placeCount, offset).then((content) async {
-        // TODO: Удалить после проверки
+      final arguments = widget.transferObject;
+      if (arguments == null) {
+        await _getAllPlacesList(offset);
+      } else {
+        await _getFilteredPlaces(arguments);
+      }
+    } on ApiException catch (error) {
+      _pagingController.error = error;
+    }
+  }
+
+  Future<void> _getFilteredPlaces(FilterScreenTransferObject arguments) async {
+    // TODO(me): Удалить после проверки
+    await Future<void>.delayed(const Duration(seconds: 1));
+    await model
+        .getFilteredPlacesList(
+      lat: arguments.lat,
+      lng: arguments.lng,
+      radius: arguments.radius,
+      placeTypes: arguments.placeTypes,
+    )
+        .then((content) {
+      content.sort((a, b) {
+        assert(a.distance != null && b.distance != null,
+            'Incorrect data from server');
+        return a.distance!.compareTo(b.distance!);
+      });
+      _pagingController.appendLastPage(content);
+    });
+  }
+
+  Future<void> _getAllPlacesList(int offset) async {
+    await model.getPlacesList(placeCount, offset).then(
+      (content) async {
+        // TODO(me): Удалить после проверки
         await Future<void>.delayed(const Duration(seconds: 1));
         for (final element in content) {
           _correctImageUrls(element.urls);
@@ -127,10 +162,8 @@ class PlacesListWidgetModel
             _pagingController.appendPage(content, nextPageKey);
           }
         }
-      });
-    } on ApiException catch (error) {
-      _pagingController.error = error;
-    }
+      },
+    );
   }
 
   // Удаление URL, не являющихся ссылками на изображения
@@ -155,7 +188,9 @@ class PlacesListWidgetModel
         succsess: (_) => true,
         error: (state) {
           if (state.status == GeopositionStatus.deniedForever) {
-            _showSnackBar(DialogStrings.snackBarText);
+            showSnackBar(
+                text: DialogStrings.geoPermissinoSnackBarText,
+                context: context);
             return false;
           }
           _showMyDialog(
@@ -183,18 +218,5 @@ class PlacesListWidgetModel
         },
       );
     }
-  }
-
-  Future<void> _showSnackBar(String text) async {
-    final theme = Theme.of(context);
-    final snackBar = SnackBar(
-      backgroundColor: theme.colorScheme.onPrimaryContainer,
-      content: Text(
-        text,
-        style: theme.textTheme.subtitle1,
-      ),
-      duration: const Duration(seconds: 2),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

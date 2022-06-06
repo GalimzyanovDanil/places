@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:io';
-
 import 'package:geolocator/geolocator.dart';
 import 'package:places/features/common/domain/entity/geoposition.dart';
 

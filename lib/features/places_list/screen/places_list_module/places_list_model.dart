@@ -1,9 +1,10 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:elementary/elementary.dart';
-import 'package:places/features/common/app_exceptions/api_exception.dart';
-import 'package:places/features/common/app_exceptions/exception_strings.dart';
+import 'package:places/features/common/app_exceptions/api_exception_handler.dart';
 import 'package:places/features/common/service/geoposition_bloc/geoposition_bloc.dart';
 import 'package:places/features/places_list/domain/entity/place.dart';
+import 'package:places/features/places_list/domain/entity/place_filter.dart';
+import 'package:places/features/places_list/domain/entity/place_type.dart';
 import 'package:places/features/places_list/service/places_service.dart';
 
 // TODO: cover with documentation
@@ -33,14 +34,38 @@ class PlacesListModel extends ElementaryModel {
       result = await _placesService.getPlacesList(count, offset);
       return result;
     } on Object catch (error) {
-      _errorHandler.handleError(error);
-      final exception = _connectivityResult == ConnectivityResult.none
-          ? ApiException(
-              ApiExceptionType.network, ExceptionStrings.networkException)
-          : ApiException(
-              ApiExceptionType.other, ExceptionStrings.otherApiException);
-      _errorHandler.handleError(exception.message);
-      throw exception;
+      throw apiExceptionHandle(
+        error: error,
+        connectivityResult: _connectivityResult,
+        errorHandler: _errorHandler,
+      );
+    }
+  }
+
+  Future<List<Place>> getFilteredPlacesList({
+    required double lat,
+    required double lng,
+    required double radius,
+    required List<PlaceType> placeTypes,
+  }) async {
+    try {
+      final List<Place> result;
+      final filter = PlaceFilter(
+        lat: lat,
+        lng: lng,
+        radius: radius,
+        typeFilter: placeTypes,
+        nameFilter: '',
+      );
+
+      result = await _placesService.getFilteredPlace(filter);
+      return result;
+    } on Object catch (error) {
+      throw apiExceptionHandle(
+        error: error,
+        connectivityResult: _connectivityResult,
+        errorHandler: _errorHandler,
+      );
     }
   }
 
