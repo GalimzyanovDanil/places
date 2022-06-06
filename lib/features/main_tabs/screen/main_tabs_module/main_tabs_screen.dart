@@ -4,13 +4,16 @@ import 'package:places/assets/res/app_assets.dart';
 import 'package:places/features/favorite_list/screens/favorite_screen.dart';
 import 'package:places/features/main_tabs/screen/main_tabs_module/main_tabs_wm.dart';
 import 'package:places/features/main_tabs/widgets/svg_navigation_bar_item.dart';
+import 'package:places/features/places_list/common/entity/filter_sto.dart';
 import 'package:places/features/places_list/screen/places_list_module/places_list_screen.dart';
 import 'package:places/features/settings/screen/settings_screen.dart';
 
 // TODO: cover with documentation
 /// Main widget for Settings module
 class MainTabsScreen extends ElementaryWidget<IMainTabsWidgetModel> {
+  final FilterScreenTransferObject? transferObject;
   const MainTabsScreen({
+    this.transferObject,
     Key? key,
     WidgetModelFactory wmFactory = defaultSettingsWidgetModelFactory,
   }) : super(wmFactory, key: key);
@@ -21,10 +24,10 @@ class MainTabsScreen extends ElementaryWidget<IMainTabsWidgetModel> {
       body: TabBarView(
         controller: wm.tabController,
         physics: const NeverScrollableScrollPhysics(),
-        children: const [
-          PlacesListScreen(),
-          FavoriteScreen(),
-          SettingsScreen(),
+        children: [
+          PlacesListScreen(transferObject: transferObject),
+          const FavoriteScreen(),
+          const SettingsScreen(),
         ],
       ),
       bottomNavigationBar: StateNotifierBuilder<int>(

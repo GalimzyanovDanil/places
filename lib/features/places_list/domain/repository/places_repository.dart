@@ -1,5 +1,6 @@
 import 'package:places/api/service/place_api.dart';
 import 'package:places/features/places_list/domain/entity/place.dart';
+import 'package:places/features/places_list/domain/entity/place_filter.dart';
 import 'package:places/features/places_list/domain/repository/mappers/place_mapper.dart';
 
 class PlacesRepository {
@@ -15,6 +16,12 @@ class PlacesRepository {
     };
     return _apiClient
         .getPlaces(queries)
+        .then((value) => value.map<Place>(mapResponseToPlace).toList());
+  }
+
+  Future<List<Place>> getFilteredPlacesList(PlaceFilter filter) async {
+    return _apiClient
+        .getFilteredPlace(mapPlaceFilterToRequest(filter))
         .then((value) => value.map<Place>(mapResponseToPlace).toList());
   }
 }

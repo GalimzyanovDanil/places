@@ -2,8 +2,13 @@ import 'dart:async';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:places/features/app/di/app_scope.dart';
+import 'package:places/features/common/app_exceptions/api_exception.dart';
+import 'package:places/features/common/domain/entity/geoposition.dart';
+import 'package:places/features/common/strings/dialog_strings.dart';
+import 'package:places/features/common/widgets/ui_func.dart';
 import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
+import 'package:places/features/places_list/common/entity/filter_sto.dart';
 import 'package:places/features/places_list/domain/entity/place.dart';
 import 'package:places/features/places_list/domain/entity/place_type.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_model.dart';
@@ -27,12 +32,18 @@ abstract class IFilterSettingsWidgetModel extends IWidgetModel {
 
 FilterSettingsWidgetModel defaultFilterSettingsWidgetModelFactory(
     BuildContext context) {
-  final appDependencies = context.read<IAppScope>();
-  final appSettingsService = appDependencies.appSettingsService;
-  final model = FilterSettingsModel(appSettingsService);
+  final appScope = context.read<IAppScope>();
+
+  final model = FilterSettingsModel(
+    appSettingsService: appScope.appSettingsService,
+    placesService: appScope.placesService,
+    geopositionBloc: appScope.geopositionBloc,
+    connectivityResult: appScope.connectivityResult,
+    errorHandler: appScope.errorHandler,
+  );
   return FilterSettingsWidgetModel(
     model: model,
-    coordinator: appDependencies.coordinator,
+    coordinator: appScope.coordinator,
   );
 }
 
@@ -74,6 +85,7 @@ class FilterSettingsWidgetModel
       StateNotifier<double>(initValue: _defaultSliderValue);
 
   final _listPlaceState = EntityStateNotifier<List<Place>>();
+  Geoposition? _position;
 
   @override
   ListenableState<List<PlaceType>> get filterState => _filterState;
@@ -97,8 +109,12 @@ class FilterSettingsWidgetModel
   @override
   void initWidgetModel() {
     super.initWidgetModel();
-    _loadPlaceList();
-    _initFilterSettings();
+    _init();
+  }
+
+  Future<void> _init() async {
+    await _initFilterSettings();
+    await _loadPlaceList();
   }
 
   Future<void> _initFilterSettings() async {
@@ -118,15 +134,37 @@ class FilterSettingsWidgetModel
 
   Future<void> _loadPlaceList() async {
     _listPlaceState.loading();
-    //TODO(me): Загрузка данных
-    await Future<void>.delayed(const Duration(seconds: 2));
-    _listPlaceState.content(<Place>[]);
+    model.getCurrentGeoposition();
+
+    _position ??= model.geopositionState.geoposition;
+    assert(_position != null, 'Position can not be null!');
+
+    try {
+      final listPlaces = await model.getFilteredPlacesList(
+        lat: _position!.latitude,
+        lng: _position!.longitude,
+        radius: _sliderState.value!,
+        placeTypes: _filterState.value!,
+      );
+
+      _listPlaceState.content(listPlaces);
+    } on ApiException catch (error) {
+      switch (error.exceptionType) {
+        case ApiExceptionType.network:
+          unawaited(showSnackBar(
+              text: DialogStrings.networkErrorSnackBarText, context: context));
+          break;
+        case ApiExceptionType.other:
+          unawaited(showSnackBar(
+              text: DialogStrings.otherErrorSnackBarText, context: context));
+          break;
+      }
+      _listPlaceState.content([]);
+    }
   }
 
   @override
   void onBackButtonTap() {
-    //TODO(me): Удалить saveSettings
-    saveSetttings();
     Navigator.of(context).pop();
   }
 
@@ -147,11 +185,24 @@ class FilterSettingsWidgetModel
   @override
   void onShowResultTap() {
     saveSetttings();
+    assert(
+      _filterState.value != null &&
+          _sliderState.value != null &&
+          _position != null,
+      'Filter parametrs and position can not be null!',
+    );
+
+    final arguments = FilterScreenTransferObject(
+      lat: _position!.latitude,
+      lng: _position!.longitude,
+      placeTypes: _filterState.value!,
+      radius: _sliderState.value!,
+    );
     coordinator.navigate(
       context,
       AppCoordinate.mainTabsScreen,
-      replaceCurrentCoordinate: true,
       replaceRootCoordinate: true,
+      arguments: arguments,
     );
   }
 

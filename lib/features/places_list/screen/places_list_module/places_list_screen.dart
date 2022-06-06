@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:places/assets/res/app_assets.dart';
+import 'package:places/features/places_list/common/entity/filter_sto.dart';
 import 'package:places/features/places_list/domain/entity/place.dart';
 import 'package:places/features/places_list/screen/places_list_module/builder_widgets/first_page_error_widget.dart';
 import 'package:places/features/places_list/screen/places_list_module/builder_widgets/new_page_error_widget.dart';
@@ -15,7 +16,9 @@ import 'package:places/features/places_list/widgets/place_card_widgets/place_car
 // TODO: cover with documentation
 /// Main widget for PlacesList module
 class PlacesListScreen extends ElementaryWidget<IPlacesListWidgetModel> {
+  final FilterScreenTransferObject? transferObject;
   const PlacesListScreen({
+    this.transferObject,
     Key? key,
     WidgetModelFactory wmFactory = defaultPlacesListWidgetModelFactory,
   }) : super(wmFactory, key: key);
