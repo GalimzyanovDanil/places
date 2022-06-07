@@ -47,12 +47,17 @@ class AppTheme {
       outline: AppColors.inactiveBlack,
       tertiary: AppColors.whiteMain,
       onTertiary: AppColors.whiteBase,
+      onSecondary: AppColors.whiteSecondary,
+      onSecondaryContainer: AppColors.whiteSecondary,
+      onBackground: AppColors.inactiveBlack,
+      onSurface: AppColors.whiteSecondary,
     );
   }
 
   // Получение цветовой палитры текстов для светлой темы
   static TextTheme _lightTextTheme(ThemeData base) {
     return base.textTheme.copyWith(
+      headline1: AppTypography.title.copyWith(color: AppColors.whiteSecondary),
       headline2: AppTypography.title.copyWith(color: AppColors.whiteMain),
       headline3: AppTypography.text.copyWith(color: AppColors.whiteSecondary),
       headline4: AppTypography.subtitle.copyWith(color: AppColors.whiteMain),
@@ -108,12 +113,17 @@ class AppTheme {
       outline: AppColors.inactiveBlack,
       tertiary: AppColors.whiteBase,
       onTertiary: AppColors.blackMain,
+      onSecondary: AppColors.blackSecondary2,
+      onSecondaryContainer: AppColors.whiteBase,
+      onBackground: AppColors.blackSecondary2,
+      onSurface: AppColors.whiteBase,
     );
   }
 
   // Получение цветовой палитры текстов для темной темы
   static TextTheme _darkTextTheme(ThemeData base) {
     return base.textTheme.copyWith(
+      headline1: AppTypography.title.copyWith(color: AppColors.whiteBase),
       headline2: AppTypography.title.copyWith(color: AppColors.whiteBase),
       headline3: AppTypography.text.copyWith(color: AppColors.whiteBase),
       headline4: AppTypography.subtitle.copyWith(color: AppColors.whiteBase),

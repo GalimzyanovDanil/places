@@ -1,4 +1,4 @@
-import 'package:places/features/common/entity/screen_transfer_object.dart';
+import 'package:places/features/common/screen_transfer_object.dart';
 import 'package:places/features/places_list/domain/entity/place_type.dart';
 
 class FilterScreenTransferObject implements ScreenTransferObject {

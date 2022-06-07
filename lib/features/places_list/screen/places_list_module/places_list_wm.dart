@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:places/features/app/di/app_scope.dart';
 import 'package:places/features/common/app_exceptions/api_exception.dart';
-import 'package:places/features/common/domain/repository/geoposition_repository.dart';
+import 'package:places/features/common/service/geoposition_bloc/geoposition_bloc.dart';
 import 'package:places/features/common/strings/dialog_strings.dart';
 import 'package:places/features/common/widgets/alert_dialog/alert_dialog_widget_factory.dart';
 import 'package:places/features/common/widgets/ui_func.dart';
 import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
+import 'package:places/features/place_details/common/entity/details_sto.dart';
 import 'package:places/features/places_list/common/entity/filter_sto.dart';
 import 'package:places/features/places_list/domain/entity/place.dart';
 import 'package:places/features/places_list/screen/places_list_module/places_list_model.dart';
@@ -48,10 +49,11 @@ class PlacesListWidgetModel
     extends WidgetModel<PlacesListScreen, PlacesListModel>
     implements IPlacesListWidgetModel {
   PlacesListWidgetModel(
-      {required PlacesListModel model, required this.coordinator})
-      : super(model);
+      {required PlacesListModel model, required Coordinator coordinator})
+      : _coordinator = coordinator,
+        super(model);
 
-  final Coordinator coordinator;
+  final Coordinator _coordinator;
 
   /// Отступ от начального элемента базы
   final int currentOffset = 0;
@@ -81,7 +83,19 @@ class PlacesListWidgetModel
 
   @override
   void onTapCard(int index) {
-    // TODO: implement onTapCard
+    final currentPlace = _pagingController.itemList?[index];
+
+    if (currentPlace != null) {
+      final args = DetailsScreenTransferObject(
+        place: currentPlace,
+      );
+      
+      _coordinator.navigate(
+        context,
+        AppCoordinate.detailsPlaceScreen,
+        arguments: args,
+      );
+    }
   }
 
   @override
@@ -98,7 +112,7 @@ class PlacesListWidgetModel
   Future<void> onSettingsTap() async {
     await _geopositionChecks().then((isEnabled) {
       if (isEnabled) {
-        coordinator.navigate(context, AppCoordinate.filterSettingsScreen);
+        _coordinator.navigate(context, AppCoordinate.filterSettingsScreen);
       }
     });
   }
