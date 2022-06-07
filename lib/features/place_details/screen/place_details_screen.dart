@@ -1,18 +1,18 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
-import 'package:places/features/place_details/common/entity/details_sto.dart';
 import 'package:places/features/place_details/screen/place_details_wm.dart';
 import 'package:places/features/place_details/widgets/back_button_widget.dart';
 import 'package:places/features/place_details/widgets/buttons_widget.dart';
 import 'package:places/features/place_details/widgets/content_widget.dart';
 import 'package:places/features/place_details/widgets/image_view_widget.dart';
+import 'package:places/features/places_list/domain/entity/place.dart';
 
 // TODO: cover with documentation
 /// Main widget for PlaceDetails module
 class PlaceDetailsScreen extends ElementaryWidget<IPlaceDetailsWidgetModel> {
-  final DetailsScreenTransferObject transferObject;
+  final Place place;
   const PlaceDetailsScreen({
-    required this.transferObject,
+    required this.place,
     Key? key,
     WidgetModelFactory wmFactory = defaultPlaceDetailsWidgetModelFactory,
   }) : super(wmFactory, key: key);
@@ -29,7 +29,7 @@ class PlaceDetailsScreen extends ElementaryWidget<IPlaceDetailsWidgetModel> {
             leading: BackButtonWidget(onTapBack: () {}),
             flexibleSpace: FlexibleSpaceBar(
               background: ImageViewWidget(
-                place: transferObject.place,
+                place: place,
                 onPageChanged: (value) {},
                 //TODO(me) попробовать передать page
                 currentPage: 1,
@@ -42,7 +42,7 @@ class PlaceDetailsScreen extends ElementaryWidget<IPlaceDetailsWidgetModel> {
             sliver: SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  DetailsContentWidget(place: transferObject.place),
+                  DetailsContentWidget(place: place),
                   const SizedBox(height: 24),
                   //TODO(me) Обернуть в нотифаер
                   ButtonsWidget(
@@ -50,10 +50,9 @@ class PlaceDetailsScreen extends ElementaryWidget<IPlaceDetailsWidgetModel> {
                     onTapNavigation: () {},
                     onTapPlanned: () {},
                     onTapShare: () {},
-                    isFavorite: false,
-                    isFinished: false,
-                    plannedButtonState: PlannedButtonState.disable,
-                    plannedDate: null,
+                    isFavorite: true,
+                    plannedButtonState: PlannedButtonState.active,
+                    plannedDate: 'null',
                   ),
                 ],
               ),

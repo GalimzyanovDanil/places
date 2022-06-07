@@ -10,7 +10,6 @@ class ButtonsWidget extends StatelessWidget {
   final VoidCallback onTapPlanned;
   final VoidCallback onTapShare;
   final bool isFavorite;
-  final bool isFinished;
   final PlannedButtonState plannedButtonState;
   final String? plannedDate;
 
@@ -19,7 +18,6 @@ class ButtonsWidget extends StatelessWidget {
     required this.onTapFavorite,
     required this.onTapPlanned,
     required this.isFavorite,
-    required this.isFinished,
     required this.plannedButtonState,
     required this.plannedDate,
     required this.onTapShare,
@@ -37,7 +35,7 @@ class ButtonsWidget extends StatelessWidget {
       children: [
         _NavigationButtonWidget(
           onTap: onTapNavigation,
-          isFinished: isFinished,
+          state: plannedButtonState,
           theme: theme,
         ),
         const SizedBox(height: 24),
@@ -170,12 +168,12 @@ class _PlannedButtonWidget extends StatelessWidget {
 class _NavigationButtonWidget extends StatelessWidget {
   final VoidCallback onTap;
   final ThemeData theme;
-  final bool isFinished;
+  final PlannedButtonState state;
 
   const _NavigationButtonWidget({
     required this.theme,
     required this.onTap,
-    required this.isFinished,
+    required this.state,
     Key? key,
   }) : super(key: key);
 
@@ -185,7 +183,7 @@ class _NavigationButtonWidget extends StatelessWidget {
     final textTheme = theme.textTheme;
     const radius = 12.0;
 
-    return isFinished
+    return state == PlannedButtonState.share
         ? _FinishedButtonWidget(
             radius: radius,
             theme: theme,

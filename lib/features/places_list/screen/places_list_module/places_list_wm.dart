@@ -11,9 +11,8 @@ import 'package:places/features/common/widgets/alert_dialog/alert_dialog_widget_
 import 'package:places/features/common/widgets/ui_func.dart';
 import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
-import 'package:places/features/place_details/common/entity/details_sto.dart';
-import 'package:places/features/places_list/common/entity/filter_sto.dart';
 import 'package:places/features/places_list/domain/entity/place.dart';
+import 'package:places/features/places_list/domain/entity/place_type.dart';
 import 'package:places/features/places_list/screen/places_list_module/places_list_model.dart';
 import 'package:places/features/places_list/screen/places_list_module/places_list_screen.dart';
 import 'package:provider/provider.dart';
@@ -86,9 +85,7 @@ class PlacesListWidgetModel
     final currentPlace = _pagingController.itemList?[index];
 
     if (currentPlace != null) {
-      final args = DetailsScreenTransferObject(
-        place: currentPlace,
-      );
+      final args = currentPlace;
 
       _coordinator.navigate(
         context,
@@ -127,26 +124,40 @@ class PlacesListWidgetModel
   // Получение списка мест
   Future<void> _getPlacesList(int offset) async {
     try {
-      final arguments = widget.transferObject;
-      if (arguments == null) {
+      final lat = widget.lat;
+      final lng = widget.lng;
+      final placeTypes = widget.placeTypes;
+      final radius = widget.radius;
+
+      if (lat == null || lng == null || placeTypes == null || radius == null) {
         await _getAllPlacesList(offset);
       } else {
-        await _getFilteredPlaces(arguments);
+        await _getFilteredPlaces(
+          lat: lat,
+          lng: lng,
+          radius: radius,
+          placeTypes: placeTypes,
+        );
       }
     } on ApiException catch (error) {
       _pagingController.error = error;
     }
   }
 
-  Future<void> _getFilteredPlaces(FilterScreenTransferObject arguments) async {
+  Future<void> _getFilteredPlaces({
+    required double lat,
+    required double lng,
+    required double radius,
+    required List<PlaceType> placeTypes,
+  }) async {
     // TODO(me): Удалить после проверки
     await Future<void>.delayed(const Duration(seconds: 1));
     await model
         .getFilteredPlacesList(
-      lat: arguments.lat,
-      lng: arguments.lng,
-      radius: arguments.radius,
-      placeTypes: arguments.placeTypes,
+      lat: lat,
+      lng: lng,
+      radius: radius,
+      placeTypes: placeTypes,
     )
         .then((content) {
       content.sort((a, b) {
