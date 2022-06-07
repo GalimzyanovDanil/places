@@ -8,7 +8,6 @@ import 'package:places/features/common/strings/dialog_strings.dart';
 import 'package:places/features/common/widgets/ui_func.dart';
 import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
-import 'package:places/features/places_list/common/entity/filter_sto.dart';
 import 'package:places/features/places_list/domain/entity/place.dart';
 import 'package:places/features/places_list/domain/entity/place_type.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_model.dart';
@@ -192,12 +191,13 @@ class FilterSettingsWidgetModel
       'Filter parametrs and position can not be null!',
     );
 
-    final arguments = FilterScreenTransferObject(
-      lat: _position!.latitude,
-      lng: _position!.longitude,
-      placeTypes: _filterState.value!,
-      radius: _sliderState.value!,
-    );
+    final arguments = {
+      'lat': _position!.latitude,
+      'lng': _position!.longitude,
+      'radius': _sliderState.value!,
+      'placeTypes': _filterState.value!,
+    };
+
     coordinator.navigate(
       context,
       AppCoordinate.mainTabsScreen,

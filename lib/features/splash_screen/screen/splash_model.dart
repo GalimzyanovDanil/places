@@ -8,8 +8,7 @@ class SplashModel extends ElementaryModel {
   final AppSettingsService _appSettingsService;
 
   SplashModel({required AppSettingsService appSettingsService})
-      : _appSettingsService = appSettingsService,
-        super();
+      : _appSettingsService = appSettingsService;
 
   Future<bool> getOnboardingStatus() async =>
       _appSettingsService.getOnboardingStatus();

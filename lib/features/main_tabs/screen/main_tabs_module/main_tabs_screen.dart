@@ -4,16 +4,23 @@ import 'package:places/assets/res/app_assets.dart';
 import 'package:places/features/favorite_list/screens/favorite_screen.dart';
 import 'package:places/features/main_tabs/screen/main_tabs_module/main_tabs_wm.dart';
 import 'package:places/features/main_tabs/widgets/svg_navigation_bar_item.dart';
-import 'package:places/features/places_list/common/entity/filter_sto.dart';
+import 'package:places/features/places_list/domain/entity/place_type.dart';
 import 'package:places/features/places_list/screen/places_list_module/places_list_screen.dart';
 import 'package:places/features/settings/screen/settings_screen.dart';
 
 // TODO: cover with documentation
 /// Main widget for Settings module
 class MainTabsScreen extends ElementaryWidget<IMainTabsWidgetModel> {
-  final FilterScreenTransferObject? transferObject;
+  final List<PlaceType>? placeTypes;
+  final double? radius;
+  final double? lat;
+  final double? lng;
+
   const MainTabsScreen({
-    this.transferObject,
+    this.placeTypes,
+    this.radius,
+    this.lat,
+    this.lng,
     Key? key,
     WidgetModelFactory wmFactory = defaultSettingsWidgetModelFactory,
   }) : super(wmFactory, key: key);
@@ -25,7 +32,12 @@ class MainTabsScreen extends ElementaryWidget<IMainTabsWidgetModel> {
         controller: wm.tabController,
         physics: const NeverScrollableScrollPhysics(),
         children: [
-          PlacesListScreen(transferObject: transferObject),
+          PlacesListScreen(
+            lat: lat,
+            lng: lng,
+            radius: radius,
+            placeTypes: placeTypes,
+          ),
           const FavoriteScreen(),
           const SettingsScreen(),
         ],

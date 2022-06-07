@@ -2,7 +2,9 @@ import 'package:places/features/debug/screens/debug_screen/debug_screen.dart';
 import 'package:places/features/main_tabs/screen/main_tabs_module/main_tabs_screen.dart';
 import 'package:places/features/navigation/domain/entity/coordinate.dart';
 import 'package:places/features/onboarding/screen/onboarding_screen.dart';
-import 'package:places/features/places_list/common/entity/filter_sto.dart';
+import 'package:places/features/place_details/screen/place_details_screen.dart';
+import 'package:places/features/places_list/domain/entity/place.dart';
+import 'package:places/features/places_list/domain/entity/place_type.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_screen.dart';
 import 'package:places/features/splash_screen/screen/splash_screen.dart';
 
@@ -23,6 +25,9 @@ class AppCoordinate extends Coordinate {
   /// Debug screens([DebugScreen]).
   static const debugScreen = AppCoordinate._('debug_screen', true);
 
+  ///Deatils screen
+  static const detailsPlaceScreen = AppCoordinate._('details_place', true);
+
   /// Initialization screens(it can be any screens).
   static const initial = initScreen;
 
@@ -40,7 +45,13 @@ final Map<AppCoordinate, CoordinateBuilder> appCoordinates = {
   AppCoordinate.initial: (_, __) => const SplashScreen(),
   AppCoordinate.debugScreen: (_, __) => const DebugScreen(),
   AppCoordinate.onboardingScreen: (_, __) => const OnboardingScreen(),
-  AppCoordinate.mainTabsScreen: (_, args) =>
-      MainTabsScreen(transferObject: args as FilterScreenTransferObject?),
+  AppCoordinate.mainTabsScreen: (_, args) => MainTabsScreen(
+        lat: (args as Map?)?['lat'] as double?,
+        lng: args?['lng'] as double?,
+        radius: args?['radius'] as double?,
+        placeTypes: args?['placeTypes'] as List<PlaceType>?,
+      ),
   AppCoordinate.filterSettingsScreen: (_, __) => const FilterSettingsScreen(),
+  AppCoordinate.detailsPlaceScreen: (_, place) =>
+      PlaceDetailsScreen(place: place as Place),
 };

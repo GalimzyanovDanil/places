@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:places/features/app/di/app_scope.dart';
 import 'package:places/features/common/app_exceptions/api_exception.dart';
-import 'package:places/features/common/domain/repository/geoposition_repository.dart';
+import 'package:places/features/common/service/geoposition_bloc/geoposition_bloc.dart';
 import 'package:places/features/common/strings/dialog_strings.dart';
 import 'package:places/features/common/widgets/alert_dialog/alert_dialog_widget_factory.dart';
 import 'package:places/features/common/widgets/ui_func.dart';
 import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
-import 'package:places/features/places_list/common/entity/filter_sto.dart';
 import 'package:places/features/places_list/domain/entity/place.dart';
+import 'package:places/features/places_list/domain/entity/place_type.dart';
 import 'package:places/features/places_list/screen/places_list_module/places_list_model.dart';
 import 'package:places/features/places_list/screen/places_list_module/places_list_screen.dart';
 import 'package:provider/provider.dart';
@@ -48,10 +48,11 @@ class PlacesListWidgetModel
     extends WidgetModel<PlacesListScreen, PlacesListModel>
     implements IPlacesListWidgetModel {
   PlacesListWidgetModel(
-      {required PlacesListModel model, required this.coordinator})
-      : super(model);
+      {required PlacesListModel model, required Coordinator coordinator})
+      : _coordinator = coordinator,
+        super(model);
 
-  final Coordinator coordinator;
+  final Coordinator _coordinator;
 
   /// Отступ от начального элемента базы
   final int currentOffset = 0;
@@ -81,7 +82,17 @@ class PlacesListWidgetModel
 
   @override
   void onTapCard(int index) {
-    // TODO: implement onTapCard
+    final currentPlace = _pagingController.itemList?[index];
+
+    if (currentPlace != null) {
+      final args = currentPlace;
+
+      _coordinator.navigate(
+        context,
+        AppCoordinate.detailsPlaceScreen,
+        arguments: args,
+      );
+    }
   }
 
   @override
@@ -98,7 +109,7 @@ class PlacesListWidgetModel
   Future<void> onSettingsTap() async {
     await _geopositionChecks().then((isEnabled) {
       if (isEnabled) {
-        coordinator.navigate(context, AppCoordinate.filterSettingsScreen);
+        _coordinator.navigate(context, AppCoordinate.filterSettingsScreen);
       }
     });
   }
@@ -113,26 +124,40 @@ class PlacesListWidgetModel
   // Получение списка мест
   Future<void> _getPlacesList(int offset) async {
     try {
-      final arguments = widget.transferObject;
-      if (arguments == null) {
+      final lat = widget.lat;
+      final lng = widget.lng;
+      final placeTypes = widget.placeTypes;
+      final radius = widget.radius;
+
+      if (lat == null || lng == null || placeTypes == null || radius == null) {
         await _getAllPlacesList(offset);
       } else {
-        await _getFilteredPlaces(arguments);
+        await _getFilteredPlaces(
+          lat: lat,
+          lng: lng,
+          radius: radius,
+          placeTypes: placeTypes,
+        );
       }
     } on ApiException catch (error) {
       _pagingController.error = error;
     }
   }
 
-  Future<void> _getFilteredPlaces(FilterScreenTransferObject arguments) async {
+  Future<void> _getFilteredPlaces({
+    required double lat,
+    required double lng,
+    required double radius,
+    required List<PlaceType> placeTypes,
+  }) async {
     // TODO(me): Удалить после проверки
     await Future<void>.delayed(const Duration(seconds: 1));
     await model
         .getFilteredPlacesList(
-      lat: arguments.lat,
-      lng: arguments.lng,
-      radius: arguments.radius,
-      placeTypes: arguments.placeTypes,
+      lat: lat,
+      lng: lng,
+      radius: radius,
+      placeTypes: placeTypes,
     )
         .then((content) {
       content.sort((a, b) {

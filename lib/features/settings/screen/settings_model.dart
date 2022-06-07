@@ -6,7 +6,7 @@ import 'package:places/features/common/service/app_settings_service.dart';
 class SettingsModel extends ElementaryModel {
   SettingsModel(
     this._appSettingsService,
-  ) : super();
+  );
 
   final AppSettingsService _appSettingsService;
 
