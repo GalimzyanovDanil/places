@@ -89,7 +89,7 @@ class PlacesListWidgetModel
       final args = DetailsScreenTransferObject(
         place: currentPlace,
       );
-      
+
       _coordinator.navigate(
         context,
         AppCoordinate.detailsPlaceScreen,
