@@ -41,42 +41,32 @@ class PlacesListScreen extends ElementaryWidget<IPlacesListWidgetModel> {
           onSettingsTap: wm.onSettingsTap,
           toolbarHeight: 100,
         ),
-        body: Body(wm),
-      ),
-    );
-  }
-}
-
-class Body extends StatelessWidget {
-  final IPlacesListWidgetModel wm;
-  const Body(this.wm, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final pagingController = wm.pagingController;
-
-    return Center(
-      child: RefreshIndicator(
-        triggerMode: RefreshIndicatorTriggerMode.anywhere,
-        onRefresh: wm.onRefresh,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 16, right: 16, left: 16),
-          child: PagedListView.separated(
-            pagingController: pagingController,
-            builderDelegate: PagedChildBuilderDelegate<Place>(
-              itemBuilder: (_, place, index) => PlaceCardWidget(
-                onTapCard: wm.onTapCard,
-                index: index,
-                place: place,
-              ),
-              firstPageErrorIndicatorBuilder: (_) =>
-                  FirstPageErrorWidget(pagingController.error),
-              newPageErrorIndicatorBuilder: (_) => NewPageErrorWidget(
-                error: pagingController.error,
-                retryLastRequest: pagingController.retryLastFailedRequest,
+        body: Center(
+          child: RefreshIndicator(
+            triggerMode: RefreshIndicatorTriggerMode.anywhere,
+            onRefresh: wm.onRefresh,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 16, right: 16, left: 16),
+              child: PagedListView.separated(
+                key: const PageStorageKey<String>('listPlaces'),
+                pagingController: wm.pagingController,
+                builderDelegate: PagedChildBuilderDelegate<Place>(
+                  itemBuilder: (_, place, index) => PlaceCardWidget(
+                    onTapCard: wm.onTapCard,
+                    index: index,
+                    place: place,
+                  ),
+                  firstPageErrorIndicatorBuilder: (_) =>
+                      FirstPageErrorWidget(wm.pagingController.error),
+                  newPageErrorIndicatorBuilder: (_) => NewPageErrorWidget(
+                    error: wm.pagingController.error,
+                    retryLastRequest:
+                        wm.pagingController.retryLastFailedRequest,
+                  ),
+                ),
+                separatorBuilder: (_, __) => const SizedBox(height: 24),
               ),
             ),
-            separatorBuilder: (_, __) => const SizedBox(height: 24),
           ),
         ),
       ),
