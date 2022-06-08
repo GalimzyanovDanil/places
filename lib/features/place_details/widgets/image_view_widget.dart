@@ -5,15 +5,13 @@ import 'package:places/features/places_list/domain/entity/place.dart';
 class ImageViewWidget extends StatelessWidget {
   const ImageViewWidget({
     required this.place,
-    required this.onPageChanged,
-    required this.currentPage,
+    required this.pageOffset,
     required this.pageController,
     Key? key,
   }) : super(key: key);
 
   final Place place;
-  final ValueSetter<int> onPageChanged;
-  final int currentPage;
+  final double pageOffset;
   final PageController pageController;
 
   @override
@@ -25,7 +23,6 @@ class ImageViewWidget extends StatelessWidget {
       children: [
         PageView.builder(
           controller: pageController,
-          onPageChanged: onPageChanged,
           physics: const ClampingScrollPhysics(),
           itemCount: urls.length,
           itemBuilder: (_, index) {
@@ -37,16 +34,14 @@ class ImageViewWidget extends StatelessWidget {
             bottom: 0,
             child: SizedBox(
               height: 8,
-              width: (screenWidth / place.urls.length) * currentPage,
+              width: (screenWidth / place.urls.length) * (pageOffset + 1),
               child: DecoratedBox(
                 decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.tertiary,
-                    borderRadius: urls.length != currentPage
-                        ? const BorderRadius.only(
-                            bottomRight: Radius.circular(8),
-                            topRight: Radius.circular(8),
-                          )
-                        : null),
+                    borderRadius: const BorderRadius.only(
+                      bottomRight: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    )),
               ),
             ),
           )

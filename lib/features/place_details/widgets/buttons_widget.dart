@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/assets/res/app_assets.dart';
@@ -5,16 +6,14 @@ import 'package:places/features/place_details/Strings/details_screen_strings.dar
 import 'package:places/features/place_details/screen/place_details_wm.dart';
 
 class ButtonsWidget extends StatelessWidget {
-  final VoidCallback onTapNavigation;
   final VoidCallback onTapFavorite;
-  final VoidCallback onTapPlanned;
+  final AsyncCallback onTapPlanned;
   final VoidCallback onTapShare;
   final bool isFavorite;
   final PlannedButtonState plannedButtonState;
   final String? plannedDate;
 
   const ButtonsWidget({
-    required this.onTapNavigation,
     required this.onTapFavorite,
     required this.onTapPlanned,
     required this.isFavorite,
@@ -33,12 +32,6 @@ class ButtonsWidget extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        _NavigationButtonWidget(
-          onTap: onTapNavigation,
-          state: plannedButtonState,
-          theme: theme,
-        ),
-        const SizedBox(height: 24),
         Divider(
           height: 0,
           color: theme.colorScheme.onBackground,
@@ -161,199 +154,6 @@ class _PlannedButtonWidget extends StatelessWidget {
       onPressed: onPressed,
       icon: SvgPicture.asset(iconAsset, color: color),
       label: Text(label, style: textTheme.subtitle1?.copyWith(color: color)),
-    );
-  }
-}
-
-class _NavigationButtonWidget extends StatelessWidget {
-  final VoidCallback onTap;
-  final ThemeData theme;
-  final PlannedButtonState state;
-
-  const _NavigationButtonWidget({
-    required this.theme,
-    required this.onTap,
-    required this.state,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = theme.colorScheme;
-    final textTheme = theme.textTheme;
-    const radius = 12.0;
-
-    return state == PlannedButtonState.share
-        ? _FinishedButtonWidget(
-            radius: radius,
-            theme: theme,
-            colorScheme: colorScheme,
-            textTheme: textTheme,
-            onTap: onTap,
-          )
-        : _NotFinishedButtonWidget(
-            radius: radius,
-            theme: theme,
-            colorScheme: colorScheme,
-            textTheme: textTheme,
-            onTap: onTap,
-          );
-  }
-}
-
-class _NotFinishedButtonWidget extends StatelessWidget {
-  const _NotFinishedButtonWidget({
-    required this.theme,
-    required this.colorScheme,
-    required this.textTheme,
-    required this.onTap,
-    required this.radius,
-    Key? key,
-  }) : super(key: key);
-
-  final ThemeData theme;
-  final ColorScheme colorScheme;
-  final TextTheme textTheme;
-  final VoidCallback onTap;
-  final double radius;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 48,
-      child: Expanded(
-        child: Material(
-          color: theme.colorScheme.primary,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(radius),
-            ),
-          ),
-          child: Align(
-            child: Stack(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      AppAssets.iconGo,
-                      color: colorScheme.onPrimary,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 15,
-                        horizontal: 10,
-                      ),
-                      child: Text(
-                        DeatilsScreenStrings.navigate,
-                        style: textTheme.button,
-                      ),
-                    ),
-                  ],
-                ),
-                Positioned.fill(
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(radius),
-                    onTap: onTap,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _FinishedButtonWidget extends StatelessWidget {
-  const _FinishedButtonWidget({
-    required this.theme,
-    required this.colorScheme,
-    required this.textTheme,
-    required this.onTap,
-    required this.radius,
-    Key? key,
-  }) : super(key: key);
-
-  final ThemeData theme;
-  final ColorScheme colorScheme;
-  final TextTheme textTheme;
-  final VoidCallback onTap;
-  final double radius;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 48,
-      child: Row(
-        children: [
-          Expanded(
-            flex: 5,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: theme.primaryColor,
-                borderRadius: BorderRadius.circular(radius),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 10,
-                ),
-                child: Align(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        AppAssets.iconTick,
-                        color: colorScheme.primary,
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        DeatilsScreenStrings.finish,
-                        style: textTheme.button?.copyWith(
-                          color: colorScheme.primary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: Material(
-              color: theme.colorScheme.primary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(radius),
-                ),
-              ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 15,
-                      horizontal: 14,
-                    ),
-                    child: SvgPicture.asset(
-                      AppAssets.iconGo,
-                      color: colorScheme.onPrimary,
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(radius),
-                      onTap: onTap,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
     );
   }
 }
