@@ -18,5 +18,6 @@ abstract class PlaceApi {
 
   @POST(PlaceApiStrings.filteredPlace)
   Future<List<PlaceResponse>> getFilteredPlace(
-      @Body() PlaceFilterRequest request);
+    @Body() PlaceFilterRequest request,
+  );
 }

@@ -18,17 +18,17 @@ MainTabsWidgetModel defaultSettingsWidgetModelFactory(BuildContext context) {
   return MainTabsWidgetModel(model);
 }
 
-// TODO: cover with documentation
+// TODO(me): cover with documentation
 /// Default widget model for SettingsWidget
 class MainTabsWidgetModel extends WidgetModel<MainTabsScreen, MainTabsModel>
     with TickerProviderWidgetModelMixin<MainTabsScreen, MainTabsModel>
     implements IMainTabsWidgetModel {
-  MainTabsWidgetModel(MainTabsModel model) : super(model);
-
   late final TabController _tabController;
-  final _indexState = StateNotifier<int>(initValue: 0);
   //Количество иконок меню
-  final navigationItemCount = 3;
+  final _navigationItemCount = 3;
+
+  final _indexState = StateNotifier<int>(initValue: 0);
+
   @override
   TabController get tabController => _tabController;
 
@@ -37,6 +37,8 @@ class MainTabsWidgetModel extends WidgetModel<MainTabsScreen, MainTabsModel>
 
   @override
   ColorScheme get colorScheme => Theme.of(context).colorScheme;
+
+  MainTabsWidgetModel(MainTabsModel model) : super(model);
 
   @override
   void onTapNavigation(int index) {
@@ -47,7 +49,7 @@ class MainTabsWidgetModel extends WidgetModel<MainTabsScreen, MainTabsModel>
   void initWidgetModel() {
     super.initWidgetModel();
 
-    _tabController = TabController(length: navigationItemCount, vsync: this)
+    _tabController = TabController(length: _navigationItemCount, vsync: this)
       ..addListener(() {
         _indexState.accept(_tabController.index);
         model.setTabIndex(_tabController.index);

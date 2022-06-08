@@ -16,15 +16,15 @@ SplashWidgetModel defaultSplashWidgetModelFactory(BuildContext context) {
   return SplashWidgetModel(model: model, coordinator: appScope.coordinator);
 }
 
-// TODO: cover with documentation
+// TODO(me): cover with documentation
 /// Default widget model for SplashWidget
 class SplashWidgetModel extends WidgetModel<SplashScreen, SplashModel>
     implements ISplashWidgetModel {
-  SplashWidgetModel({required SplashModel model, required this.coordinator})
-      : super(model);
-
   final Coordinator coordinator;
   late final bool isOnboardingFinish;
+
+  SplashWidgetModel({required SplashModel model, required this.coordinator})
+      : super(model);
 
   @override
   void initWidgetModel() {
@@ -42,11 +42,17 @@ class SplashWidgetModel extends WidgetModel<SplashScreen, SplashModel>
   void _navigate() {
     if (isMounted) {
       if (isOnboardingFinish) {
-        coordinator.navigate(context, AppCoordinate.mainTabsScreen,
-            replaceRootCoordinate: true);
+        coordinator.navigate(
+          context,
+          AppCoordinate.mainTabsScreen,
+          replaceRootCoordinate: true,
+        );
       } else {
-        coordinator.navigate(context, AppCoordinate.onboardingScreen,
-            replaceRootCoordinate: true);
+        coordinator.navigate(
+          context,
+          AppCoordinate.onboardingScreen,
+          replaceRootCoordinate: true,
+        );
       }
     }
   }

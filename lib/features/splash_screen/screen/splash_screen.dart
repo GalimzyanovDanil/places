@@ -2,7 +2,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:places/features/splash_screen/screen/splash_wm.dart';
 
-// TODO: cover with documentation
+// TODO(me): cover with documentation
 /// Main widget for Splash module
 class SplashScreen extends ElementaryWidget<ISplashWidgetModel> {
   const SplashScreen({

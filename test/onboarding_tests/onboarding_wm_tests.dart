@@ -67,10 +67,10 @@ Future<void> onboardingWidgetModelTest() async {
         (wm, tester, context) {
           tester.init();
           wm.onSkipButton();
-          // TODO: Проверить, что выполнилась навигация
+          // TODO(me): Проверить, что выполнилась навигация
           // verify
           wm.onStartButton();
-          // TODO: Проверить, что выполнилась навигация
+          // TODO(me): Проверить, что выполнилась навигация
           // verify
         },
       );

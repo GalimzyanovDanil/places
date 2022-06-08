@@ -6,12 +6,12 @@ import 'package:elementary/elementary.dart';
 import 'package:places/api/service/place_api.dart';
 import 'package:places/config/app_config.dart';
 import 'package:places/config/environment/environment.dart';
+import 'package:places/features/common/domain/repository/places_repository.dart';
 import 'package:places/features/common/domain/repository/shared_prefs_storage.dart';
 import 'package:places/features/common/service/app_settings_service.dart';
 import 'package:places/features/common/service/geoposition_bloc/geoposition_bloc.dart';
+import 'package:places/features/common/service/places_service.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
-import 'package:places/features/places_list/domain/repository/places_repository.dart';
-import 'package:places/features/places_list/service/places_service.dart';
 import 'package:places/util/default_error_handler.dart';
 import 'package:places/util/shared_preferences_helper.dart';
 
@@ -26,12 +26,9 @@ class AppScope implements IAppScope {
 
   late final PlaceApi _placeApi;
   late final PlacesRepository _placesRepository;
-  late ConnectivityResult _connectivityResult;
   late final SharedPreferencesHelper _sharedPreferencesHelper;
   late final SharedPrefsStorage _sharedPrefStorage;
-
   late final GeopositionBloc _geopositionBloc;
-
   @override
   Dio get dio => _dio;
 
@@ -56,6 +53,8 @@ class AppScope implements IAppScope {
   @override
   GeopositionBloc get geopositionBloc => _geopositionBloc;
 
+  late ConnectivityResult _connectivityResult;
+
   /// Create an instance [AppScope].
   AppScope({
     required VoidCallback applicationRebuilder,
@@ -66,7 +65,7 @@ class AppScope implements IAppScope {
         onError: (e, handler) {
           handler.reject(e);
         },
-      )
+      ),
     ];
 
     _dio = _initDio(additionalInterceptors);
@@ -85,6 +84,12 @@ class AppScope implements IAppScope {
       ..add(const GeopositionEvent.checkAndRequestPermission());
   }
 
+  // For dispose any controllers
+  @override
+  void dispose() {
+    _appSettingsService.dispose();
+  }
+
   Dio _initDio(Iterable<Interceptor> additionalInterceptors) {
     const timeout = Duration(seconds: 30);
 
@@ -97,6 +102,7 @@ class AppScope implements IAppScope {
       ..sendTimeout = timeout.inMilliseconds;
 
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        // ignore: body_might_complete_normally_nullable
         (client) {
       final proxyUrl = Environment<AppConfig>.instance().config.proxyUrl;
       if (proxyUrl != null && proxyUrl.isNotEmpty) {
@@ -118,12 +124,6 @@ class AppScope implements IAppScope {
     }
 
     return dio;
-  }
-
-  // For dispose any controllers
-  @override
-  void dispose() {
-    _appSettingsService.dispose();
   }
 
   Future<void> _initConnectivity() async {

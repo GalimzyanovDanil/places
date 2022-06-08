@@ -10,7 +10,7 @@ FavoriteWidgetModel defaultFavoriteWidgetModelFactory(BuildContext context) {
   return FavoriteWidgetModel(model);
 }
 
-// TODO: cover with documentation
+// TODO(me): cover with documentation
 /// Default widget model for FavoriteWidget
 class FavoriteWidgetModel extends WidgetModel<FavoriteScreen, FavoriteModel>
     implements IFavoriteWidgetModel {

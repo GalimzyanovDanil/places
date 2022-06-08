@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:places/features/app/di/app_scope.dart';
 import 'package:places/features/common/app_exceptions/api_exception.dart';
 import 'package:places/features/common/domain/entity/geoposition.dart';
+import 'package:places/features/common/domain/entity/place.dart';
+import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/common/strings/dialog_strings.dart';
 import 'package:places/features/common/widgets/ui_func.dart';
 import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
-import 'package:places/features/places_list/domain/entity/place.dart';
-import 'package:places/features/places_list/domain/entity/place_type.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_model.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_screen.dart';
 import 'package:places/features/places_list/widgets/filter_settings_widgets/category_element_widget.dart';
@@ -30,7 +30,8 @@ abstract class IFilterSettingsWidgetModel extends IWidgetModel {
 }
 
 FilterSettingsWidgetModel defaultFilterSettingsWidgetModelFactory(
-    BuildContext context) {
+  BuildContext context,
+) {
   final appScope = context.read<IAppScope>();
 
   final model = FilterSettingsModel(
@@ -46,25 +47,14 @@ FilterSettingsWidgetModel defaultFilterSettingsWidgetModelFactory(
   );
 }
 
-// TODO: cover with documentation
+// TODO(me): cover with documentation
 /// Default widget model for FilterSettingsWidget
 class FilterSettingsWidgetModel
     extends WidgetModel<FilterSettingsScreen, FilterSettingsModel>
     implements IFilterSettingsWidgetModel {
-  FilterSettingsWidgetModel({
-    required FilterSettingsModel model,
-    required this.coordinator,
-  }) : super(model);
-
-  final Coordinator coordinator;
-  // Максимальное значение слайдера
-  final _maxSliderValue = 30.0;
-  // Минимальное значение слайдера
-  final _minSliderValue = 10.0;
   //Значение слайдера по умолчанию
   static const _defaultSliderValue = 10.0;
-  //Таймер для задержки отправки запроса на сервер
-  Timer? _searchDebounced;
+
   // Список всех типов
   @visibleForTesting
   final allPlaceType = <PlaceType>[
@@ -76,15 +66,19 @@ class FilterSettingsWidgetModel
     PlaceType.cafe,
   ];
 
-  //TODO: Получение начальных фильтров widget.
+  final Coordinator coordinator;
+
   final StateNotifier<List<PlaceType>> _filterState =
       StateNotifier<List<PlaceType>>(initValue: <PlaceType>[]);
-  //TODO: Получение начальных значений слайдера widget.
   final StateNotifier<double> _sliderState =
       StateNotifier<double>(initValue: _defaultSliderValue);
 
   final _listPlaceState = EntityStateNotifier<List<Place>>();
-  Geoposition? _position;
+
+  // Максимальное значение слайдера
+  final _maxSliderValue = 30.0;
+  // Минимальное значение слайдера
+  final _minSliderValue = 10.0;
 
   @override
   ListenableState<List<PlaceType>> get filterState => _filterState;
@@ -105,10 +99,76 @@ class FilterSettingsWidgetModel
   @override
   ThemeData get theme => Theme.of(context);
 
+  //Таймер для задержки отправки запроса на сервер
+  Timer? _searchDebounced;
+
+  Geoposition? _position;
+
+  FilterSettingsWidgetModel({
+    required FilterSettingsModel model,
+    required this.coordinator,
+  }) : super(model);
+
   @override
   void initWidgetModel() {
     super.initWidgetModel();
     _init();
+  }
+
+  @override
+  void onBackButtonTap() {
+    Navigator.of(context).pop();
+  }
+
+  @override
+  void onClearTap() {
+    _filterState.accept(List<PlaceType>.from(<PlaceType>[]));
+    _sliderState.accept(_defaultSliderValue);
+    _loadPlaceListDebounce();
+  }
+
+  @override
+  void onShowResultTap() {
+    _saveSetttings();
+    assert(
+      _filterState.value != null &&
+          _sliderState.value != null &&
+          _position != null,
+      'Filter parametrs and position can not be null!',
+    );
+
+    final arguments = {
+      'lat': _position!.latitude,
+      'lng': _position!.longitude,
+      'radius': _sliderState.value!,
+      'placeTypes': _filterState.value!,
+    };
+
+    coordinator.navigate(
+      context,
+      AppCoordinate.mainTabsScreen,
+      replaceRootCoordinate: true,
+      arguments: arguments,
+    );
+  }
+
+  @override
+  void onSliderChange(double value) {
+    _sliderState.accept(value);
+    _loadPlaceListDebounce();
+  }
+
+  @override
+  List<Widget> getCategoryElements() {
+    final result = allPlaceType.map<CategoryElementWidget>(
+      (type) => CategoryElementWidget(
+        iconPath: type.iconPath,
+        isSelect: _filterState.value?.contains(type) ?? false,
+        onElementTap: _onElementTap,
+        placeType: type,
+      ),
+    );
+    return result.toList();
   }
 
   Future<void> _init() async {
@@ -151,78 +211,19 @@ class FilterSettingsWidgetModel
       switch (error.exceptionType) {
         case ApiExceptionType.network:
           unawaited(showSnackBar(
-              text: DialogStrings.networkErrorSnackBarText, context: context));
+            text: DialogStrings.networkErrorSnackBarText,
+            context: context,
+          ));
           break;
         case ApiExceptionType.other:
           unawaited(showSnackBar(
-              text: DialogStrings.otherErrorSnackBarText, context: context));
+            text: DialogStrings.otherErrorSnackBarText,
+            context: context,
+          ));
           break;
       }
       _listPlaceState.content([]);
     }
-  }
-
-  @override
-  void onBackButtonTap() {
-    Navigator.of(context).pop();
-  }
-
-  Future<void> saveSetttings() async {
-    await model.setFilterSettings(
-      types: _filterState.value ?? <PlaceType>[],
-      distance: _sliderState.value ?? _defaultSliderValue,
-    );
-  }
-
-  @override
-  void onClearTap() {
-    _filterState.accept(List<PlaceType>.from(<PlaceType>[]));
-    _sliderState.accept(_defaultSliderValue);
-    _loadPlaceListDebounce();
-  }
-
-  @override
-  void onShowResultTap() {
-    saveSetttings();
-    assert(
-      _filterState.value != null &&
-          _sliderState.value != null &&
-          _position != null,
-      'Filter parametrs and position can not be null!',
-    );
-
-    final arguments = {
-      'lat': _position!.latitude,
-      'lng': _position!.longitude,
-      'radius': _sliderState.value!,
-      'placeTypes': _filterState.value!,
-    };
-
-    coordinator.navigate(
-      context,
-      AppCoordinate.mainTabsScreen,
-      replaceRootCoordinate: true,
-      arguments: arguments,
-    );
-  }
-
-  @override
-  void onSliderChange(double value) {
-    _sliderState.accept(value);
-    _loadPlaceListDebounce();
-  }
-
-  @override
-  List<Widget> getCategoryElements() {
-    final result = allPlaceType.map<CategoryElementWidget>(
-      (type) => CategoryElementWidget(
-        iconPath: type.iconPath,
-        isSelect: _filterState.value?.contains(type) ?? false,
-        onElementTap: _onElementTap,
-        placeType: type,
-      ),
-    );
-    return result.toList();
   }
 
   // Обработка нажатия на элемент фильтра
@@ -241,5 +242,12 @@ class FilterSettingsWidgetModel
       );
     }
     _loadPlaceListDebounce();
+  }
+
+  Future<void> _saveSetttings() async {
+    await model.setFilterSettings(
+      types: _filterState.value ?? <PlaceType>[],
+      distance: _sliderState.value ?? _defaultSliderValue,
+    );
   }
 }

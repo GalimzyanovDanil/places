@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/assets/res/app_assets.dart';
 import 'package:places/features/common/app_typedef.dart';
-import 'package:places/features/places_list/domain/entity/place_type.dart';
+import 'package:places/features/common/domain/entity/place_type.dart';
 
 class CategoryElementWidget extends StatelessWidget {
   final String iconPath;
