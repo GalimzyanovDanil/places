@@ -11,32 +11,34 @@ Future<void> datePickerFactory({
 }) async {
   if (Platform.isAndroid) {
     final picked = await showDatePicker(
-        context: context,
-        initialDate: initialDate,
-        firstDate: firstDate,
-        lastDate: lastDate);
+      context: context,
+      initialDate: initialDate,
+      firstDate: firstDate,
+      lastDate: lastDate,
+    );
     if (picked != null && picked != initialDate) {
       onDateTimeChanged.call(picked);
     }
   } else {
     await showCupertinoModalPopup<DateTime>(
-        context: context,
-        builder: (context) => Container(
-              height: 220,
-              padding: const EdgeInsets.only(top: 6.0),
-              margin: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-              ),
-              color: CupertinoColors.systemBackground.resolveFrom(context),
-              child: SafeArea(
-                top: false,
-                child: CupertinoDatePicker(
-                  backgroundColor: Colors.white,
-                  initialDateTime: initialDate,
-                  mode: CupertinoDatePickerMode.date,
-                  onDateTimeChanged: onDateTimeChanged,
-                ),
-              ),
-            ));
+      context: context,
+      builder: (context) => Container(
+        height: 220,
+        padding: const EdgeInsets.only(top: 6.0),
+        margin: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        color: CupertinoColors.systemBackground.resolveFrom(context),
+        child: SafeArea(
+          top: false,
+          child: CupertinoDatePicker(
+            backgroundColor: Colors.white,
+            initialDateTime: initialDate,
+            mode: CupertinoDatePickerMode.date,
+            onDateTimeChanged: onDateTimeChanged,
+          ),
+        ),
+      ),
+    );
   }
 }

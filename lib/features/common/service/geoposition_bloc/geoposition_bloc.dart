@@ -19,7 +19,9 @@ class GeopositionBloc extends Bloc<GeopositionEvent, GeopositionState> {
   }
 
   Future<void> _onCheckAndRequestPermission(
-      GeopositionEvent event, Emitter<GeopositionState> emit) async {
+    GeopositionEvent event,
+    Emitter<GeopositionState> emit,
+  ) async {
     if (state.status == GeopositionStatus.ok) {
       emit(GeopositionState.succsess(
         status: state.status,
@@ -78,7 +80,9 @@ class GeopositionBloc extends Bloc<GeopositionEvent, GeopositionState> {
   }
 
   Future<void> _onGetGeoposition(
-      GeopositionEvent event, Emitter<GeopositionState> emit) async {
+    GeopositionEvent event,
+    Emitter<GeopositionState> emit,
+  ) async {
     emit(GeopositionState.succsess(
       status: state.status,
       geoposition: state.geoposition,

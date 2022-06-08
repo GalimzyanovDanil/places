@@ -1,4 +1,4 @@
-import 'package:places/features/places_list/domain/entity/place_type.dart';
+import 'package:places/features/common/domain/entity/place_type.dart';
 
 class Place {
   final int id;

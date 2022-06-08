@@ -1,13 +1,13 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:elementary/elementary.dart';
 import 'package:places/features/common/app_exceptions/api_exception_handler.dart';
+import 'package:places/features/common/domain/entity/place.dart';
+import 'package:places/features/common/domain/entity/place_filter.dart';
+import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/common/service/geoposition_bloc/geoposition_bloc.dart';
-import 'package:places/features/places_list/domain/entity/place.dart';
-import 'package:places/features/places_list/domain/entity/place_filter.dart';
-import 'package:places/features/places_list/domain/entity/place_type.dart';
-import 'package:places/features/places_list/service/places_service.dart';
+import 'package:places/features/common/service/places_service.dart';
 
-// TODO: cover with documentation
+// TODO(me): cover with documentation
 /// Default Elementary model for PlacesList module
 class PlacesListModel extends ElementaryModel {
   final PlacesService _placesService;

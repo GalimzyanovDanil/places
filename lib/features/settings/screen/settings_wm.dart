@@ -11,9 +11,9 @@ import 'package:provider/provider.dart';
 
 abstract class ISettingsWidgetModel extends IWidgetModel {
   ListenableState<bool> get themeState;
+  ThemeData get theme;
   void changeTheme(bool isDark);
   void onTapInfo();
-  ThemeData get theme;
 }
 
 SettingsWidgetModel defaultSettingsWidgetModelFactory(BuildContext context) {
@@ -25,18 +25,21 @@ SettingsWidgetModel defaultSettingsWidgetModelFactory(BuildContext context) {
   );
 }
 
-// TODO: cover with documentation
+// TODO(me): cover with documentation
 /// Default widget model for SettingsWidget
 class SettingsWidgetModel extends WidgetModel<SettingsScreen, SettingsModel>
     implements ISettingsWidgetModel {
-  SettingsWidgetModel({required SettingsModel model, required this.coordinator})
-      : super(model);
-
   final Coordinator coordinator;
   final _themeState = StateNotifier<bool>();
 
   @override
+  ListenableState<bool> get themeState => _themeState;
+
+  @override
   ThemeData get theme => Theme.of(context);
+
+  SettingsWidgetModel({required SettingsModel model, required this.coordinator})
+      : super(model);
 
   @override
   void initWidgetModel() {
@@ -57,9 +60,6 @@ class SettingsWidgetModel extends WidgetModel<SettingsScreen, SettingsModel>
       AppCoordinate.onboardingScreen,
     );
   }
-
-  @override
-  ListenableState<bool> get themeState => _themeState;
 
   void _init() {
     final currentTheme = model.getTheme();

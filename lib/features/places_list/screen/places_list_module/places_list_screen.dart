@@ -4,17 +4,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-
 import 'package:places/assets/res/app_assets.dart';
-import 'package:places/features/places_list/domain/entity/place.dart';
-import 'package:places/features/places_list/domain/entity/place_type.dart';
+import 'package:places/features/common/domain/entity/place.dart';
+import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/places_list/screen/places_list_module/builder_widgets/first_page_error_widget.dart';
 import 'package:places/features/places_list/screen/places_list_module/builder_widgets/new_page_error_widget.dart';
 import 'package:places/features/places_list/screen/places_list_module/places_list_wm.dart';
 import 'package:places/features/places_list/strings/places_list_strings.dart';
 import 'package:places/features/places_list/widgets/place_card_widgets/place_card_widget.dart';
 
-// TODO: cover with documentation
+// TODO(me): cover with documentation
 /// Main widget for PlacesList module
 class PlacesListScreen extends ElementaryWidget<IPlacesListWidgetModel> {
   final List<PlaceType>? placeTypes;
@@ -80,15 +79,15 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final AsyncCallback onSettingsTap;
   final VoidCallback onSearchBarTap;
 
-  const AppBarWidget(
-      {required this.onSettingsTap,
-      required this.onSearchBarTap,
-      this.toolbarHeight,
-      Key? key})
-      : super(key: key);
-
   @override
   Size get preferredSize => Size.fromHeight(toolbarHeight ?? kToolbarHeight);
+
+  const AppBarWidget({
+    required this.onSettingsTap,
+    required this.onSearchBarTap,
+    this.toolbarHeight,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -111,15 +110,16 @@ class SearchFieldWidget extends StatelessWidget implements PreferredSizeWidget {
   final double? toolbarHeight;
   final VoidCallback onSettingsTap;
   final VoidCallback onSearchBarTap;
-  const SearchFieldWidget(
-      {required this.onSettingsTap,
-      required this.onSearchBarTap,
-      this.toolbarHeight,
-      Key? key})
-      : super(key: key);
 
   @override
   Size get preferredSize => Size.fromHeight(toolbarHeight ?? kToolbarHeight);
+
+  const SearchFieldWidget({
+    required this.onSettingsTap,
+    required this.onSearchBarTap,
+    this.toolbarHeight,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -130,8 +130,9 @@ class SearchFieldWidget extends StatelessWidget implements PreferredSizeWidget {
       child: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            borderRadius: BorderRadiusDirectional.circular(12),
-            color: theme.primaryColor),
+          borderRadius: BorderRadiusDirectional.circular(12),
+          color: theme.primaryColor,
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Row(

@@ -3,12 +3,10 @@ import 'package:places/features/common/domain/repository/shared_prefs_storage.da
 
 class AppSettingsService {
   final SharedPrefsStorage _sharedPrefsStorage;
-  AppSettingsService(this._sharedPrefsStorage) {
-    _init();
-  }
 
   /// Стрим для управления темой приложения
   final _themeStreamController = StreamController<bool>();
+  Stream<bool> get themeStream => _themeStreamController.stream;
 
   /// Хранение текущего таба
   int _tabIndex = 0;
@@ -16,7 +14,9 @@ class AppSettingsService {
   /// Хранение текущей темы Темная-Светлая.  FALSE - Light, TRUE - Dark
   bool _isDarkCurrentTheme = false;
 
-  Stream<bool> get themeStream => _themeStreamController.stream;
+  AppSettingsService(this._sharedPrefsStorage) {
+    _init();
+  }
 
   ///Получение локальной темы
   bool getTheme() => _isDarkCurrentTheme;
@@ -63,13 +63,13 @@ class AppSettingsService {
   Future<bool> getOnboardingStatus() async =>
       _sharedPrefsStorage.getOnboardingStatus();
 
+  void dispose() {
+    _themeStreamController.close();
+  }
+
   Future<void> _init() async {
     _isDarkCurrentTheme = await _sharedPrefsStorage.getTheme();
     _themeStreamController.add(_isDarkCurrentTheme);
     _tabIndex = await _sharedPrefsStorage.getTabIndex();
-  }
-
-  void dispose() {
-    _themeStreamController.close();
   }
 }

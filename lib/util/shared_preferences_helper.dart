@@ -35,7 +35,8 @@ class SharedPreferencesHelper {
       await instance.setStringList(key, value);
     } else {
       throw Exception(
-          "SharedPreferencesHelper: Does't support type ${value.runtimeType} yet.");
+        "SharedPreferencesHelper: Does't support type ${value.runtimeType} yet.",
+      );
     }
   }
 }

@@ -5,8 +5,9 @@ import 'package:places/features/onboarding/screen/onboarding_screen.dart';
 
 /// Model fol [OnboardingScreen].
 class OnboardingModel extends ElementaryModel {
-  OnboardingModel(this.appSettingsService);
   final AppSettingsService appSettingsService;
+
+  OnboardingModel(this.appSettingsService);
 
   Future<void> setOnboardingStatus({required bool isComplete}) async =>
       appSettingsService.setOnboardingStatus(isComplete: isComplete);

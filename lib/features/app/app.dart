@@ -46,36 +46,36 @@ class _AppState extends State<App> {
         return _scope;
       },
       child: StreamBuilder<bool>(
-          stream: _scope.appSettingsService.themeStream,
-          builder: (context, value) {
-            return MaterialApp.router(
-              /// Localization.
-              locale: _localizations.first,
-              localizationsDelegates: _localizationsDelegates,
-              supportedLocales: _localizations,
+        stream: _scope.appSettingsService.themeStream,
+        builder: (context, value) {
+          return MaterialApp.router(
+            /// Localization.
+            locale: _localizations.first,
+            localizationsDelegates: _localizationsDelegates,
+            supportedLocales: _localizations,
 
-              /// Debug configuration.
-              showPerformanceOverlay: _getDebugConfig().showPerformanceOverlay,
-              debugShowMaterialGrid: _getDebugConfig().debugShowMaterialGrid,
-              checkerboardRasterCacheImages:
-                  _getDebugConfig().checkerboardRasterCacheImages,
-              checkerboardOffscreenLayers:
-                  _getDebugConfig().checkerboardOffscreenLayers,
-              showSemanticsDebugger: _getDebugConfig().showSemanticsDebugger,
-              debugShowCheckedModeBanner:
-                  _getDebugConfig().debugShowCheckedModeBanner,
+            /// Debug configuration.
+            showPerformanceOverlay: _getDebugConfig().showPerformanceOverlay,
+            debugShowMaterialGrid: _getDebugConfig().debugShowMaterialGrid,
+            checkerboardRasterCacheImages:
+                _getDebugConfig().checkerboardRasterCacheImages,
+            checkerboardOffscreenLayers:
+                _getDebugConfig().checkerboardOffscreenLayers,
+            showSemanticsDebugger: _getDebugConfig().showSemanticsDebugger,
+            debugShowCheckedModeBanner:
+                _getDebugConfig().debugShowCheckedModeBanner,
 
-              /// This is for navigation.
-              routeInformationParser: AppRouteInformationParser(),
-              routerDelegate: AppRouterDelegate(_scope.coordinator),
+            /// This is for navigation.
+            routeInformationParser: AppRouteInformationParser(),
+            routerDelegate: AppRouterDelegate(_scope.coordinator),
 
-              /// Theme
-              theme: AppTheme.lightTheme,
-              darkTheme: AppTheme.darkTheme,
-              themeMode:
-                  (value.data ?? false) ? ThemeMode.dark : ThemeMode.light,
-            );
-          }),
+            /// Theme
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: (value.data ?? false) ? ThemeMode.dark : ThemeMode.light,
+          );
+        },
+      ),
     );
   }
 

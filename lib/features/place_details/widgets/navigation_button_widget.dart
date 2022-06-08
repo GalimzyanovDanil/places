@@ -39,6 +39,12 @@ class NavigationButtonWidget extends StatelessWidget {
 }
 
 class _NotFinishedButtonWidget extends StatelessWidget {
+  final ThemeData theme;
+  final ColorScheme colorScheme;
+  final TextTheme textTheme;
+  final VoidCallback onTap;
+  final double radius;
+
   const _NotFinishedButtonWidget({
     required this.theme,
     required this.colorScheme,
@@ -47,12 +53,6 @@ class _NotFinishedButtonWidget extends StatelessWidget {
     required this.radius,
     Key? key,
   }) : super(key: key);
-
-  final ThemeData theme;
-  final ColorScheme colorScheme;
-  final TextTheme textTheme;
-  final VoidCallback onTap;
-  final double radius;
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +102,12 @@ class _NotFinishedButtonWidget extends StatelessWidget {
 }
 
 class _FinishedButtonWidget extends StatelessWidget {
+  final ThemeData theme;
+  final ColorScheme colorScheme;
+  final TextTheme textTheme;
+  final VoidCallback onTap;
+  final double radius;
+
   const _FinishedButtonWidget({
     required this.theme,
     required this.colorScheme,
@@ -110,12 +116,6 @@ class _FinishedButtonWidget extends StatelessWidget {
     required this.radius,
     Key? key,
   }) : super(key: key);
-
-  final ThemeData theme;
-  final ColorScheme colorScheme;
-  final TextTheme textTheme;
-  final VoidCallback onTap;
-  final double radius;
 
   @override
   Widget build(BuildContext context) {
@@ -186,7 +186,7 @@ class _FinishedButtonWidget extends StatelessWidget {
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );

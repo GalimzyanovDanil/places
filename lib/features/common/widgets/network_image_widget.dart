@@ -5,12 +5,12 @@ import 'package:places/assets/colors/app_colors.dart';
 import 'package:places/assets/res/app_assets.dart';
 
 class NetworkImageWidget extends StatelessWidget {
+  final String imageUrl;
+
   const NetworkImageWidget({
     required this.imageUrl,
     Key? key,
   }) : super(key: key);
-
-  final String imageUrl;
 
   @override
   Widget build(BuildContext context) {

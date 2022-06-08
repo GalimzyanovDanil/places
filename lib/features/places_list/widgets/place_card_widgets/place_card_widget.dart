@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:places/assets/colors/app_colors.dart';
 import 'package:places/assets/res/app_assets.dart';
-import 'package:places/features/places_list/domain/entity/place.dart';
-import 'package:places/features/places_list/widgets/place_card_widgets/description_widget.dart';
+import 'package:places/features/common/domain/entity/place.dart';
 import 'package:places/features/common/widgets/network_image_widget.dart';
+import 'package:places/features/places_list/widgets/place_card_widgets/description_widget.dart';
 
 /// [onTapCard] - Открытие делальной информации места
 /// [place] - Данные места
@@ -74,7 +75,7 @@ class PlaceCardWidget extends StatelessWidget {
                 place.placeType.title,
                 style: theme.textTheme.subtitle2,
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -82,15 +83,15 @@ class PlaceCardWidget extends StatelessWidget {
   }
 }
 
-// TODO: Сделать отдельный элементари модуль
+// TODO(me): Сделать отдельный элементари модуль
 class _FavoriteButtonWidget extends StatelessWidget {
-  _FavoriteButtonWidget({
-    Key? key,
-  }) : super(key: key);
-
   // ignore: prefer_function_declarations_over_variables
   final onTapFavorite = () {};
   final bool isFavorite = false;
+
+  _FavoriteButtonWidget({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

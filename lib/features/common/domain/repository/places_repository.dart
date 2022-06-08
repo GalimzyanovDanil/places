@@ -1,7 +1,7 @@
 import 'package:places/api/service/place_api.dart';
-import 'package:places/features/places_list/domain/entity/place.dart';
-import 'package:places/features/places_list/domain/entity/place_filter.dart';
-import 'package:places/features/places_list/domain/repository/mappers/place_mapper.dart';
+import 'package:places/features/common/domain/entity/place.dart';
+import 'package:places/features/common/domain/entity/place_filter.dart';
+import 'package:places/features/common/domain/repository/mappers/place_mapper.dart';
 
 class PlacesRepository {
   final PlaceApi _apiClient;

@@ -1,18 +1,25 @@
 import 'dart:async';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:elementary/elementary.dart';
 import 'package:places/features/common/app_exceptions/api_exception_handler.dart';
+import 'package:places/features/common/domain/entity/place.dart';
+import 'package:places/features/common/domain/entity/place_filter.dart';
+import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/common/service/app_settings_service.dart';
 import 'package:places/features/common/service/geoposition_bloc/geoposition_bloc.dart';
-import 'package:places/features/places_list/domain/entity/place.dart';
-import 'package:places/features/places_list/domain/entity/place_filter.dart';
-import 'package:places/features/places_list/domain/entity/place_type.dart';
-import 'package:places/features/places_list/service/places_service.dart';
+import 'package:places/features/common/service/places_service.dart';
 
-// TODO: cover with documentation
+// TODO(me): cover with documentation
 /// Default Elementary model for FilterSettings module
 class FilterSettingsModel extends ElementaryModel {
+  final AppSettingsService _appSettingsService;
+  final PlacesService _placesService;
+  final ErrorHandler _errorHandler;
+  final ConnectivityResult _connectivityResult;
+  final GeopositionBloc _geopositionBloc;
+
+  GeopositionState get geopositionState => _geopositionBloc.state;
+
   FilterSettingsModel({
     required ErrorHandler errorHandler,
     required AppSettingsService appSettingsService,
@@ -25,14 +32,6 @@ class FilterSettingsModel extends ElementaryModel {
         _placesService = placesService,
         _geopositionBloc = geopositionBloc;
 
-  final AppSettingsService _appSettingsService;
-  final PlacesService _placesService;
-  final ErrorHandler _errorHandler;
-  final ConnectivityResult _connectivityResult;
-  final GeopositionBloc _geopositionBloc;
-
-  GeopositionState get geopositionState => _geopositionBloc.state;
-
   Future<List<PlaceType>?> getFilterPlaceTypes() async {
     return _appSettingsService.getFilterPlaceTypes().then(
           (value) => value.map<PlaceType>(PlaceType.fromString).toList(),
@@ -43,8 +42,10 @@ class FilterSettingsModel extends ElementaryModel {
     return _appSettingsService.getFilterDistance();
   }
 
-  Future<void> setFilterSettings(
-      {required List<PlaceType> types, required double distance}) async {
+  Future<void> setFilterSettings({
+    required List<PlaceType> types,
+    required double distance,
+  }) async {
     unawaited(_appSettingsService
         .setFilterPlaceTypes(types.map((type) => type.name).toList()));
     unawaited(_appSettingsService.setFilterDistance(distance));

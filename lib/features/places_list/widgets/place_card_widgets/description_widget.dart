@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class DescriptionWidget extends StatelessWidget {
+  final String name;
+  final String description;
+
   const DescriptionWidget({
     required this.name,
     required this.description,
     Key? key,
   }) : super(key: key);
-
-  final String name;
-  final String description;
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +20,13 @@ class DescriptionWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(name,
-                style: theme.textTheme.headline3,
-                maxLines: 2,
-                softWrap: true,
-                overflow: TextOverflow.ellipsis),
+            Text(
+              name,
+              style: theme.textTheme.headline3,
+              maxLines: 2,
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
+            ),
             const SizedBox(
               height: 2,
             ),

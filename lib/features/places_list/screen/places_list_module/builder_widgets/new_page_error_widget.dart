@@ -3,14 +3,15 @@ import 'package:places/features/common/app_exceptions/api_exception.dart';
 import 'package:places/features/places_list/strings/places_list_strings.dart';
 
 class NewPageErrorWidget extends StatelessWidget {
-  final ApiException _error;
   final VoidCallback retryLastRequest;
-  const NewPageErrorWidget(
-      // ignore: avoid_annotating_with_dynamic
-      {required dynamic error,
-      required this.retryLastRequest,
-      Key? key})
-      : _error = error as ApiException,
+  final ApiException _error;
+
+  const NewPageErrorWidget({
+    // ignore: avoid_annotating_with_dynamic
+    required dynamic error,
+    required this.retryLastRequest,
+    Key? key,
+  })  : _error = error as ApiException,
         super(key: key);
 
   @override
@@ -26,16 +27,19 @@ class NewPageErrorWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-                (_error.exceptionType == ApiExceptionType.other)
-                    ? PlacesListStrings.otherErrorText
-                    : PlacesListStrings.networkErrorText,
-                style: theme.textTheme.subtitle1?.copyWith(
-                  color: color,
-                )),
-            Text(PlacesListStrings.pressForUpdate,
-                style: theme.textTheme.subtitle1?.copyWith(
-                  color: color,
-                )),
+              (_error.exceptionType == ApiExceptionType.other)
+                  ? PlacesListStrings.otherErrorText
+                  : PlacesListStrings.networkErrorText,
+              style: theme.textTheme.subtitle1?.copyWith(
+                color: color,
+              ),
+            ),
+            Text(
+              PlacesListStrings.pressForUpdate,
+              style: theme.textTheme.subtitle1?.copyWith(
+                color: color,
+              ),
+            ),
             // const SizedBox(height: 8),
             Icon(
               Icons.update,

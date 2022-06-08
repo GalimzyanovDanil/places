@@ -50,9 +50,10 @@ class OnboardingWidgetModel
   @override
   ListenableState<int> get currentPage => _currentPage;
 
-  OnboardingWidgetModel(
-      {required this.coordinator, required OnboardingModel model})
-      : super(model);
+  OnboardingWidgetModel({
+    required this.coordinator,
+    required OnboardingModel model,
+  }) : super(model);
 
   @override
   void initWidgetModel() {
@@ -89,11 +90,17 @@ class OnboardingWidgetModel
 
   void _nextScreen() {
     if (coordinator.pages.length > 1) {
-      coordinator.navigate(context, AppCoordinate.mainTabsScreen,
-          replaceRootCoordinate: true);
+      coordinator.navigate(
+        context,
+        AppCoordinate.mainTabsScreen,
+        replaceRootCoordinate: true,
+      );
     } else {
-      coordinator.navigate(context, AppCoordinate.mainTabsScreen,
-          replaceCurrentCoordinate: true);
+      coordinator.navigate(
+        context,
+        AppCoordinate.mainTabsScreen,
+        replaceCurrentCoordinate: true,
+      );
     }
   }
 }

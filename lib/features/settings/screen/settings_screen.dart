@@ -7,7 +7,7 @@ import 'package:places/assets/res/app_assets.dart';
 import 'package:places/features/settings/screen/settings_wm.dart';
 import 'package:places/features/settings/strings/settings_strings.dart';
 
-// TODO: cover with documentation
+// TODO(me): cover with documentation
 /// Main widget for Settings module
 class SettingsScreen extends ElementaryWidget<ISettingsWidgetModel> {
   const SettingsScreen({
@@ -47,16 +47,16 @@ class SettingsScreen extends ElementaryWidget<ISettingsWidgetModel> {
 }
 
 class _ThemeChangeWidget extends StatelessWidget {
+  final ValueChanged<bool> onChange;
+  final ThemeData theme;
+  final ListenableState<bool> themeState;
+
   const _ThemeChangeWidget({
     required this.onChange,
     required this.theme,
     required this.themeState,
     Key? key,
   }) : super(key: key);
-
-  final ValueChanged<bool> onChange;
-  final ThemeData theme;
-  final ListenableState<bool> themeState;
 
   @override
   Widget build(BuildContext context) {
@@ -71,10 +71,11 @@ class _ThemeChangeWidget extends StatelessWidget {
         StateNotifierBuilder<bool>(
           listenableState: themeState,
           builder: (_, value) => CupertinoSwitch(
-              value: value ?? false,
-              trackColor: colorScheme.outline,
-              activeColor: colorScheme.primary,
-              onChanged: onChange),
+            value: value ?? false,
+            trackColor: colorScheme.outline,
+            activeColor: colorScheme.primary,
+            onChanged: onChange,
+          ),
         ),
       ],
     );
@@ -82,14 +83,14 @@ class _ThemeChangeWidget extends StatelessWidget {
 }
 
 class _ShowOnboardingWidget extends StatelessWidget {
+  final ThemeData theme;
+  final VoidCallback onTapInfo;
+
   const _ShowOnboardingWidget({
     required this.theme,
     required this.onTapInfo,
     Key? key,
   }) : super(key: key);
-
-  final ThemeData theme;
-  final VoidCallback onTapInfo;
 
   @override
   Widget build(BuildContext context) {
@@ -101,12 +102,13 @@ class _ShowOnboardingWidget extends StatelessWidget {
           style: theme.textTheme.bodyText1,
         ),
         IconButton(
-            onPressed: onTapInfo,
-            splashRadius: 15,
-            icon: SvgPicture.asset(
-              AppAssets.iconInfo,
-              color: theme.colorScheme.primary,
-            )),
+          onPressed: onTapInfo,
+          splashRadius: 15,
+          icon: SvgPicture.asset(
+            AppAssets.iconInfo,
+            color: theme.colorScheme.primary,
+          ),
+        ),
       ],
     );
   }

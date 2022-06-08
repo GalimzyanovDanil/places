@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-Future<void> showSnackBar(
-    {required String text, required BuildContext context}) async {
+Future<void> showSnackBar({
+  required String text,
+  required BuildContext context,
+}) async {
   final theme = Theme.of(context);
   final snackBar = SnackBar(
     backgroundColor: theme.colorScheme.onPrimaryContainer,

@@ -4,15 +4,39 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-Widget alertDialogWidgetFactory({
-  required AsyncCallback onConfirm,
-  required String bodyText,
-  required String confirmTitle,
-  required String declineTitle,
-  required String title,
-}) {
-  if (Platform.isIOS) {
-    return _IosAlertDialog(
+abstract class WidgetsFactory {
+  static Widget alertDialogWidgetFactory({
+    required AsyncCallback onConfirm,
+    required String bodyText,
+    required String confirmTitle,
+    required String declineTitle,
+    required String title,
+  }) =>
+      _alertDialogWidgetFactory(
+        onConfirm: onConfirm,
+        bodyText: bodyText,
+        confirmTitle: confirmTitle,
+        declineTitle: declineTitle,
+        title: title,
+      );
+
+  static Widget _alertDialogWidgetFactory({
+    required AsyncCallback onConfirm,
+    required String bodyText,
+    required String confirmTitle,
+    required String declineTitle,
+    required String title,
+  }) {
+    if (Platform.isIOS) {
+      return _IosAlertDialog(
+        title: title,
+        bodyText: bodyText,
+        confirmTitle: confirmTitle,
+        declineTitle: declineTitle,
+        onConfirm: onConfirm,
+      );
+    }
+    return _AndroidAlertDialog(
       title: title,
       bodyText: bodyText,
       confirmTitle: confirmTitle,
@@ -20,13 +44,6 @@ Widget alertDialogWidgetFactory({
       onConfirm: onConfirm,
     );
   }
-  return _AndroidAlertDialog(
-    title: title,
-    bodyText: bodyText,
-    confirmTitle: confirmTitle,
-    declineTitle: declineTitle,
-    onConfirm: onConfirm,
-  );
 }
 
 class _IosAlertDialog extends StatelessWidget {

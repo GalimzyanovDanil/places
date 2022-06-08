@@ -1,15 +1,15 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:places/features/common/domain/entity/place.dart';
 import 'package:places/features/place_details/screen/place_details_wm.dart';
 import 'package:places/features/place_details/widgets/back_button_widget.dart';
 import 'package:places/features/place_details/widgets/buttons_widget.dart';
 import 'package:places/features/place_details/widgets/content_widget.dart';
 import 'package:places/features/place_details/widgets/image_view_widget.dart';
 import 'package:places/features/place_details/widgets/navigation_button_widget.dart';
-import 'package:places/features/places_list/domain/entity/place.dart';
 import 'package:places/util/triple_state_notifier_builder.dart';
 
-// TODO: cover with documentation
+// TODO(me): cover with documentation
 /// Main widget for PlaceDetails module
 class PlaceDetailsScreen extends ElementaryWidget<IPlaceDetailsWidgetModel> {
   final Place place;
@@ -73,7 +73,7 @@ class PlaceDetailsScreen extends ElementaryWidget<IPlaceDetailsWidgetModel> {
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );

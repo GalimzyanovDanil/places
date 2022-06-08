@@ -25,7 +25,8 @@ abstract class IPlaceDetailsWidgetModel extends IWidgetModel {
 }
 
 PlaceDetailsWidgetModel defaultPlaceDetailsWidgetModelFactory(
-    BuildContext context) {
+  BuildContext context,
+) {
   final appScope = context.read<IAppScope>();
   final model = PlaceDetailsModel(appScope.errorHandler);
   return PlaceDetailsWidgetModel(
@@ -34,18 +35,11 @@ PlaceDetailsWidgetModel defaultPlaceDetailsWidgetModelFactory(
   );
 }
 
-// TODO: cover with documentation
+// TODO(me): cover with documentation
 /// Default widget model for PlaceDetailsWidget
 class PlaceDetailsWidgetModel
     extends WidgetModel<PlaceDetailsScreen, PlaceDetailsModel>
     implements IPlaceDetailsWidgetModel {
-  PlaceDetailsWidgetModel(
-      {required PlaceDetailsModel model, required Coordinator coordinator})
-      : _coordinator = coordinator,
-        super(model) {
-    _init();
-  }
-
   final Coordinator _coordinator;
   final StateNotifier<bool> _favoriteState = StateNotifier(initValue: false);
   final StateNotifier<double> _imageViewState = StateNotifier(initValue: 0.0);
@@ -57,9 +51,6 @@ class PlaceDetailsWidgetModel
       StateNotifier(initValue: false);
 
   late final PageController _pageController;
-
-  DateTime? _plannedDate;
-  PlannedButtonState? _prevState;
 
   @override
   ListenableState<bool> get favoriteState => _favoriteState;
@@ -78,6 +69,17 @@ class PlaceDetailsWidgetModel
 
   @override
   ListenableState<bool> get routeCompleteState => _routeCompleteState;
+
+  DateTime? _plannedDate;
+  PlannedButtonState? _prevState;
+
+  PlaceDetailsWidgetModel({
+    required PlaceDetailsModel model,
+    required Coordinator coordinator,
+  })  : _coordinator = coordinator,
+        super(model) {
+    _init();
+  }
 
   @override
   void onTapBackButton() {
@@ -100,7 +102,7 @@ class PlaceDetailsWidgetModel
 
   @override
   void onTapNavigation() {
-    //TODO(me): Для проверки логики UI
+    // TODO(me): Для проверки логики UI
     final newValue = _routeCompleteState.value;
     if (newValue != null) {
       _routeCompleteState.accept(!newValue);
@@ -131,7 +133,7 @@ class PlaceDetailsWidgetModel
 
   @override
   void onTapShare() {
-    // TODO: implement onTapShare
+    // TODO(me): implement onTapShare
   }
 
   void _init() {

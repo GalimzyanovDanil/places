@@ -1,10 +1,10 @@
+import 'package:places/features/common/domain/entity/place.dart';
+import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/debug/screens/debug_screen/debug_screen.dart';
 import 'package:places/features/main_tabs/screen/main_tabs_module/main_tabs_screen.dart';
 import 'package:places/features/navigation/domain/entity/coordinate.dart';
 import 'package:places/features/onboarding/screen/onboarding_screen.dart';
 import 'package:places/features/place_details/screen/place_details_screen.dart';
-import 'package:places/features/places_list/domain/entity/place.dart';
-import 'package:places/features/places_list/domain/entity/place_type.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_screen.dart';
 import 'package:places/features/splash_screen/screen/splash_screen.dart';
 

@@ -2,13 +2,13 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/assets/res/app_assets.dart';
-import 'package:places/features/places_list/domain/entity/place.dart';
-import 'package:places/features/places_list/domain/entity/place_type.dart';
+import 'package:places/features/common/domain/entity/place.dart';
+import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_wm.dart';
 import 'package:places/features/places_list/strings/places_list_strings.dart';
 import 'package:places/features/places_list/widgets/filter_settings_widgets/show_result_button.dart';
 
-// TODO: cover with documentation
+// TODO(me): cover with documentation
 /// Main widget for FilterSettings module
 class FilterSettingsScreen
     extends ElementaryWidget<IFilterSettingsWidgetModel> {
@@ -38,7 +38,7 @@ class FilterSettingsScreen
                 ),
               ),
               const SizedBox(height: 25),
-              //TODO: Переделать Wrap на GridView
+              // TODO(me): Переделать Wrap на GridView
               StateNotifierBuilder<List<PlaceType>>(
                 listenableState: wm.filterState,
                 builder: (_, filterList) => Wrap(
@@ -102,15 +102,15 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback onBackButtonTap;
   final VoidCallback onClearTap;
 
-  const AppBarWidget(
-      {required this.onBackButtonTap,
-      required this.onClearTap,
-      this.toolbarHeight,
-      Key? key})
-      : super(key: key);
-
   @override
   Size get preferredSize => Size.fromHeight(toolbarHeight ?? kToolbarHeight);
+
+  const AppBarWidget({
+    required this.onBackButtonTap,
+    required this.onClearTap,
+    this.toolbarHeight,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -132,9 +132,11 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
           style: const ButtonStyle(
             splashFactory: NoSplash.splashFactory,
           ),
-          child: Text(PlacesListStrings.clearFilters,
-              style: theme.textTheme.caption),
-        )
+          child: Text(
+            PlacesListStrings.clearFilters,
+            style: theme.textTheme.caption,
+          ),
+        ),
       ],
     );
   }

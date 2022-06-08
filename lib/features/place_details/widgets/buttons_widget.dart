@@ -64,6 +64,11 @@ class ButtonsWidget extends StatelessWidget {
 }
 
 class _FavoriteButtonWidget extends StatelessWidget {
+  final VoidCallback onTapFavorite;
+  final ColorScheme colorScheme;
+  final TextTheme textTheme;
+  final bool isFavorite;
+
   const _FavoriteButtonWidget({
     required this.onTapFavorite,
     required this.colorScheme,
@@ -71,11 +76,6 @@ class _FavoriteButtonWidget extends StatelessWidget {
     required this.isFavorite,
     Key? key,
   }) : super(key: key);
-
-  final VoidCallback onTapFavorite;
-  final ColorScheme colorScheme;
-  final TextTheme textTheme;
-  final bool isFavorite;
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +96,14 @@ class _FavoriteButtonWidget extends StatelessWidget {
 }
 
 class _PlannedButtonWidget extends StatelessWidget {
+  final VoidCallback onTapPlanned;
+  final VoidCallback onTapShare;
+  final ThemeData theme;
+  final TextTheme textTheme;
+  final ColorScheme colorScheme;
+  final PlannedButtonState state;
+  final String? date;
+
   const _PlannedButtonWidget({
     required this.onTapPlanned,
     required this.theme,
@@ -106,14 +114,6 @@ class _PlannedButtonWidget extends StatelessWidget {
     required this.onTapShare,
     Key? key,
   }) : super(key: key);
-
-  final VoidCallback onTapPlanned;
-  final VoidCallback onTapShare;
-  final ThemeData theme;
-  final TextTheme textTheme;
-  final ColorScheme colorScheme;
-  final PlannedButtonState state;
-  final String? date;
 
   @override
   Widget build(BuildContext context) {

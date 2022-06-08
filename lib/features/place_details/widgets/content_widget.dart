@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:places/features/places_list/domain/entity/place.dart';
+import 'package:places/features/common/domain/entity/place.dart';
 
 class DetailsContentWidget extends StatelessWidget {
   final Place place;
