@@ -6,7 +6,7 @@ class SearchQueryDbService {
   SearchQueryDbService(this._queryDbRepository);
 
   /// Получение списка всех удачных поисковых запросов на запрос
-  Future<List<String>> searchQueryEntries(String queryText, {int? limit}) =>
+  Future<List<String>> searchQueryEntries({int? limit}) =>
       _queryDbRepository.searchQueryEntries(limit: limit);
 
   ///Удаление конкретной позиции
