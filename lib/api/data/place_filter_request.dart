@@ -4,11 +4,11 @@ part 'place_filter_request.g.dart';
 
 @JsonSerializable()
 class PlaceFilterRequest {
-  final double lat;
-  final double lng;
-  final double radius;
-  final List<String> typeFilter;
-  final String nameFilter;
+  final double? lat;
+  final double? lng;
+  final double? radius;
+  final List<String>? typeFilter;
+  final String? nameFilter;
   PlaceFilterRequest({
     required this.lat,
     required this.lng,
