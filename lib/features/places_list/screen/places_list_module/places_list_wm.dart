@@ -102,7 +102,7 @@ class PlacesListWidgetModel
 
   @override
   void onSearchBarTap() {
-    // TODO(me): implement onSearchBarTap
+    // TODO(me): Под
   }
 
   @override

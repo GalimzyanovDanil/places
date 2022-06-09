@@ -8,13 +8,13 @@ part of 'place_filter_request.dart';
 
 PlaceFilterRequest _$PlaceFilterRequestFromJson(Map<String, dynamic> json) =>
     PlaceFilterRequest(
-      lat: (json['lat'] as num).toDouble(),
-      lng: (json['lng'] as num).toDouble(),
-      radius: (json['radius'] as num).toDouble(),
-      typeFilter: (json['typeFilter'] as List<dynamic>)
-          .map((e) => e as String)
+      lat: (json['lat'] as num?)?.toDouble(),
+      lng: (json['lng'] as num?)?.toDouble(),
+      radius: (json['radius'] as num?)?.toDouble(),
+      typeFilter: (json['typeFilter'] as List<dynamic>?)
+          ?.map((e) => e as String)
           .toList(),
-      nameFilter: json['nameFilter'] as String,
+      nameFilter: json['nameFilter'] as String?,
     );
 
 Map<String, dynamic> _$PlaceFilterRequestToJson(PlaceFilterRequest instance) =>
