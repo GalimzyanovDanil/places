@@ -18,6 +18,7 @@ import 'package:provider/provider.dart';
 
 abstract class IPlacesListWidgetModel extends IWidgetModel {
   PagingController<int, Place> get pagingController;
+  ThemeData get theme;
   void onTapCard(int index);
   Future<void> onRefresh();
   void onSearchBarTap();
@@ -58,6 +59,9 @@ class PlacesListWidgetModel
   late final PagingController<int, Place> _pagingController;
   @override
   PagingController<int, Place> get pagingController => _pagingController;
+
+  @override
+  ThemeData get theme => Theme.of(context);
 
   /// Триггер последней страницы загрузки
   bool _isLastPage = false;
@@ -102,7 +106,7 @@ class PlacesListWidgetModel
 
   @override
   void onSearchBarTap() {
-    // TODO(me): Под
+    _coordinator.navigate(context, AppCoordinate.searchScreen);
   }
 
   @override

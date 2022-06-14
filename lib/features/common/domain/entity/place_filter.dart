@@ -7,10 +7,10 @@ class PlaceFilter {
   final List<PlaceType>? typeFilter;
   final String? nameFilter;
   PlaceFilter({
-    required this.lat,
-    required this.lng,
-    required double radius,
-    required this.typeFilter,
-    required this.nameFilter,
-  }) : radius = radius * 1000;
+    this.lat,
+    this.lng,
+    double? radius,
+    this.typeFilter,
+    this.nameFilter,
+  }) : radius = radius == null ? null : radius * 1000;
 }

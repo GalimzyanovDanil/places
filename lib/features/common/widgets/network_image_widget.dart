@@ -5,7 +5,7 @@ import 'package:places/assets/colors/app_colors.dart';
 import 'package:places/assets/res/app_assets.dart';
 
 class NetworkImageWidget extends StatelessWidget {
-  final String imageUrl;
+  final String? imageUrl;
 
   const NetworkImageWidget({
     required this.imageUrl,
@@ -19,23 +19,26 @@ class NetworkImageWidget extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           height: double.maxFinite,
-          child: CachedNetworkImage(
-            filterQuality: FilterQuality.medium,
-            imageUrl: imageUrl,
-            imageBuilder: (_, imageProvider) {
-              return DecoratedBox(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: imageProvider,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              );
-            },
-            placeholder: (context, url) => const _ImagePlaceholder(),
-            // ignore: implicit_dynamic_parameter
-            errorWidget: (context, url, error) => const _ImagePlaceholder(),
-          ),
+          child: imageUrl != null
+              ? CachedNetworkImage(
+                  filterQuality: FilterQuality.medium,
+                  imageUrl: imageUrl!,
+                  imageBuilder: (_, imageProvider) {
+                    return DecoratedBox(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                  placeholder: (context, url) => const _ImagePlaceholder(),
+                  // ignore: implicit_dynamic_parameter
+                  errorWidget: (context, url, error) =>
+                      const _ImagePlaceholder(),
+                )
+              : const _ImagePlaceholder(),
         ),
         SizedBox(
           width: double.infinity,

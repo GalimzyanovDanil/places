@@ -6,6 +6,7 @@ import 'package:places/features/navigation/domain/entity/coordinate.dart';
 import 'package:places/features/onboarding/screen/onboarding_screen.dart';
 import 'package:places/features/place_details/screen/place_details_screen.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_screen.dart';
+import 'package:places/features/search/screen/search_screen.dart';
 import 'package:places/features/splash_screen/screen/splash_screen.dart';
 
 /// A set of routes for the entire app.
@@ -27,6 +28,9 @@ class AppCoordinate extends Coordinate {
 
   ///Deatils screen
   static const detailsPlaceScreen = AppCoordinate._('details_place', true);
+
+  ///Deatils screen
+  static const searchScreen = AppCoordinate._('search', true);
 
   /// Initialization screens(it can be any screens).
   static const initial = initScreen;
@@ -54,4 +58,5 @@ final Map<AppCoordinate, CoordinateBuilder> appCoordinates = {
   AppCoordinate.filterSettingsScreen: (_, __) => const FilterSettingsScreen(),
   AppCoordinate.detailsPlaceScreen: (_, place) =>
       PlaceDetailsScreen(place: place as Place),
+  AppCoordinate.searchScreen: (_, __) => const SearchScreen(),
 };

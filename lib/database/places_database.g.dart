@@ -385,7 +385,7 @@ class $FavoritesTable extends Favorites
       type: const BoolType(),
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (is_visited IN (0, 1))',
-      defaultValue: const Variable(false));
+      defaultValue: const Constant(false));
   final VerificationMeta _distanceMeta = const VerificationMeta('distance');
   @override
   late final GeneratedColumn<double?> distance = GeneratedColumn<double?>(
@@ -487,24 +487,29 @@ class $FavoritesTable extends Favorites
 
 class SearchQuery extends DataClass implements Insertable<SearchQuery> {
   final String queryText;
-  SearchQuery({required this.queryText});
+  final int timestamp;
+  SearchQuery({required this.queryText, required this.timestamp});
   factory SearchQuery.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return SearchQuery(
       queryText: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}query_text'])!,
+      timestamp: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}timestamp'])!,
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['query_text'] = Variable<String>(queryText);
+    map['timestamp'] = Variable<int>(timestamp);
     return map;
   }
 
   SearchQueriesCompanion toCompanion(bool nullToAbsent) {
     return SearchQueriesCompanion(
       queryText: Value(queryText),
+      timestamp: Value(timestamp),
     );
   }
 
@@ -513,6 +518,7 @@ class SearchQuery extends DataClass implements Insertable<SearchQuery> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return SearchQuery(
       queryText: serializer.fromJson<String>(json['queryText']),
+      timestamp: serializer.fromJson<int>(json['timestamp']),
     );
   }
   @override
@@ -520,47 +526,60 @@ class SearchQuery extends DataClass implements Insertable<SearchQuery> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'queryText': serializer.toJson<String>(queryText),
+      'timestamp': serializer.toJson<int>(timestamp),
     };
   }
 
-  SearchQuery copyWith({String? queryText}) => SearchQuery(
+  SearchQuery copyWith({String? queryText, int? timestamp}) => SearchQuery(
         queryText: queryText ?? this.queryText,
+        timestamp: timestamp ?? this.timestamp,
       );
   @override
   String toString() {
     return (StringBuffer('SearchQuery(')
-          ..write('queryText: $queryText')
+          ..write('queryText: $queryText, ')
+          ..write('timestamp: $timestamp')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => queryText.hashCode;
+  int get hashCode => Object.hash(queryText, timestamp);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is SearchQuery && other.queryText == this.queryText);
+      (other is SearchQuery &&
+          other.queryText == this.queryText &&
+          other.timestamp == this.timestamp);
 }
 
 class SearchQueriesCompanion extends UpdateCompanion<SearchQuery> {
   final Value<String> queryText;
+  final Value<int> timestamp;
   const SearchQueriesCompanion({
     this.queryText = const Value.absent(),
+    this.timestamp = const Value.absent(),
   });
   SearchQueriesCompanion.insert({
     required String queryText,
-  }) : queryText = Value(queryText);
+    required int timestamp,
+  })  : queryText = Value(queryText),
+        timestamp = Value(timestamp);
   static Insertable<SearchQuery> custom({
     Expression<String>? queryText,
+    Expression<int>? timestamp,
   }) {
     return RawValuesInsertable({
       if (queryText != null) 'query_text': queryText,
+      if (timestamp != null) 'timestamp': timestamp,
     });
   }
 
-  SearchQueriesCompanion copyWith({Value<String>? queryText}) {
+  SearchQueriesCompanion copyWith(
+      {Value<String>? queryText, Value<int>? timestamp}) {
     return SearchQueriesCompanion(
       queryText: queryText ?? this.queryText,
+      timestamp: timestamp ?? this.timestamp,
     );
   }
 
@@ -570,13 +589,17 @@ class SearchQueriesCompanion extends UpdateCompanion<SearchQuery> {
     if (queryText.present) {
       map['query_text'] = Variable<String>(queryText.value);
     }
+    if (timestamp.present) {
+      map['timestamp'] = Variable<int>(timestamp.value);
+    }
     return map;
   }
 
   @override
   String toString() {
     return (StringBuffer('SearchQueriesCompanion(')
-          ..write('queryText: $queryText')
+          ..write('queryText: $queryText, ')
+          ..write('timestamp: $timestamp')
           ..write(')'))
         .toString();
   }
@@ -593,8 +616,13 @@ class $SearchQueriesTable extends SearchQueries
   late final GeneratedColumn<String?> queryText = GeneratedColumn<String?>(
       'query_text', aliasedName, false,
       type: const StringType(), requiredDuringInsert: true);
+  final VerificationMeta _timestampMeta = const VerificationMeta('timestamp');
   @override
-  List<GeneratedColumn> get $columns => [queryText];
+  late final GeneratedColumn<int?> timestamp = GeneratedColumn<int?>(
+      'timestamp', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [queryText, timestamp];
   @override
   String get aliasedName => _alias ?? 'search_queries';
   @override
@@ -609,6 +637,12 @@ class $SearchQueriesTable extends SearchQueries
           queryText.isAcceptableOrUnknown(data['query_text']!, _queryTextMeta));
     } else if (isInserting) {
       context.missing(_queryTextMeta);
+    }
+    if (data.containsKey('timestamp')) {
+      context.handle(_timestampMeta,
+          timestamp.isAcceptableOrUnknown(data['timestamp']!, _timestampMeta));
+    } else if (isInserting) {
+      context.missing(_timestampMeta);
     }
     return context;
   }

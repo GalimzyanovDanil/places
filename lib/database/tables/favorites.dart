@@ -13,6 +13,6 @@ class Favorites extends Table {
   TextColumn get placeType => text()();
   TextColumn get description => text()();
   DateTimeColumn get plannedDate => dateTime().nullable()();
-  BoolColumn get isVisited => boolean().withDefault(const Variable(false))();
+  BoolColumn get isVisited => boolean().withDefault(const Constant(false))();
   RealColumn get distance => real().nullable()();
 }
