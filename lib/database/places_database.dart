@@ -6,6 +6,7 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:places/database/tables/favorites.dart';
 import 'package:places/database/tables/search_queries.dart';
+import 'package:surf_lint_rules/surf_lint_rules.dart';
 
 part 'places_database.g.dart';
 
@@ -31,7 +32,14 @@ class PlacesDatabase extends _$PlacesDatabase {
   Future<List<String>> searchQueryEntries({
     int? limit,
   }) async {
-    final result = await ((select(searchQueries))..limit(limit ?? 5)).get();
+    final result = await ((select(searchQueries))
+          ..orderBy([
+            (t) =>
+                OrderingTerm(expression: t.timestamp, mode: OrderingMode.desc)
+          ])
+          ..limit(limit ?? 5))
+        .get();
+
     return result.map((searchQuery) => searchQuery.queryText).toList();
   }
 
@@ -41,14 +49,15 @@ class PlacesDatabase extends _$PlacesDatabase {
 
   /// Очистка всей базы запросов
   Future<void> clearSearchQueries() async {
-    delete(searchQueries);
+    unawaited(delete(searchQueries).go());
   }
 
   /// Добавление удачной поисковой строки
   Future<void> addSearchQuery(String queryText) =>
-      into(searchQueries).insertOnConflictUpdate(
+      searchQueries.insertOnConflictUpdate(
         SearchQueriesCompanion(
           queryText: Value(queryText),
+          timestamp: Value(DateTime.now().millisecondsSinceEpoch),
         ),
       );
 }

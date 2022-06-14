@@ -4,16 +4,17 @@ import 'package:places/assets/themes/app_typography.dart';
 
 ///Темы приложения
 class AppTheme {
-  static ThemeData get lightTheme => _getLigthTheme();
+  static ThemeData get lightTheme => _getLightTheme();
+
   static ThemeData get darkTheme => _getDarkTheme();
 
   AppTheme._();
 
   // Получение глобальной светлой темы
-  static ThemeData _getLigthTheme() {
+  static ThemeData _getLightTheme() {
     final base = ThemeData.light();
     return base.copyWith(
-      colorScheme: _ligthColorScheme(base),
+      colorScheme: _lightColorScheme(base),
       textTheme: _lightTextTheme(base),
       iconTheme: base.iconTheme.copyWith(
         color: AppColors.whiteMain,
@@ -39,7 +40,7 @@ class AppTheme {
   }
 
   //Получение цветовой палитры для светлой темы
-  static ColorScheme _ligthColorScheme(ThemeData base) {
+  static ColorScheme _lightColorScheme(ThemeData base) {
     return base.colorScheme.copyWith(
       primary: AppColors.whiteGreen,
       onPrimary: AppColors.whiteBase,
@@ -51,6 +52,8 @@ class AppTheme {
       onSecondaryContainer: AppColors.whiteSecondary,
       onBackground: AppColors.inactiveBlack,
       onSurface: AppColors.whiteSecondary,
+      onSurfaceVariant: AppColors.whiteBase,
+      surface: AppColors.whiteSecondary,
     );
   }
 
@@ -117,6 +120,8 @@ class AppTheme {
       onSecondaryContainer: AppColors.whiteBase,
       onBackground: AppColors.blackSecondary2,
       onSurface: AppColors.whiteBase,
+      onSurfaceVariant: AppColors.blackDark,
+      surface: AppColors.whiteBase,
     );
   }
 

@@ -6,12 +6,15 @@ import 'package:elementary/elementary.dart';
 import 'package:places/api/service/place_api.dart';
 import 'package:places/config/app_config.dart';
 import 'package:places/config/environment/environment.dart';
+import 'package:places/database/places_database.dart';
 import 'package:places/features/common/domain/repository/places_repository.dart';
 import 'package:places/features/common/domain/repository/shared_prefs_storage.dart';
 import 'package:places/features/common/service/app_settings_service.dart';
 import 'package:places/features/common/service/geoposition_bloc/geoposition_bloc.dart';
 import 'package:places/features/common/service/places_service.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
+import 'package:places/features/search/repository/search_query_db_repository.dart';
+import 'package:places/features/search/service/search_query_db_service.dart';
 import 'package:places/util/default_error_handler.dart';
 import 'package:places/util/shared_preferences_helper.dart';
 
@@ -23,12 +26,15 @@ class AppScope implements IAppScope {
   late final Coordinator _coordinator;
   late final PlacesService _placesService;
   late final AppSettingsService _appSettingsService;
+  late final SearchQueryDbService _searchDbService;
 
   late final PlaceApi _placeApi;
   late final PlacesRepository _placesRepository;
   late final SharedPreferencesHelper _sharedPreferencesHelper;
   late final SharedPrefsStorage _sharedPrefStorage;
   late final GeopositionBloc _geopositionBloc;
+  late final SearchQueryDbRepository _searchQueryDbRepository;
+  late final PlacesDatabase _database;
   @override
   Dio get dio => _dio;
 
@@ -53,6 +59,9 @@ class AppScope implements IAppScope {
   @override
   GeopositionBloc get geopositionBloc => _geopositionBloc;
 
+  @override
+  SearchQueryDbService get searchDbService => _searchDbService;
+
   late ConnectivityResult _connectivityResult;
 
   /// Create an instance [AppScope].
@@ -73,15 +82,23 @@ class AppScope implements IAppScope {
     _coordinator = Coordinator();
     _initConnectivity();
 
+    // Places API service
     _placeApi = PlaceApi(dio);
     _placesService = _initPlacesService();
 
+    // Shared Preference storage
     _sharedPreferencesHelper = SharedPreferencesHelper();
     _sharedPrefStorage = SharedPrefsStorage(_sharedPreferencesHelper);
     _appSettingsService = AppSettingsService(_sharedPrefStorage);
 
+    // Geoposition BLoC
     _geopositionBloc = GeopositionBloc()
       ..add(const GeopositionEvent.checkAndRequestPermission());
+
+    // Search Query Database service
+    _database = PlacesDatabase();
+    _searchQueryDbRepository = SearchQueryDbRepository(_database);
+    _searchDbService = SearchQueryDbService(_searchQueryDbRepository);
   }
 
   // For dispose any controllers
@@ -166,6 +183,9 @@ abstract class IAppScope {
 
   ///Geolocation service
   GeopositionBloc get geopositionBloc;
+
+  /// Service for work with SearchQuries Database
+  SearchQueryDbService get searchDbService;
 
   /// For dispose any controllers
   void dispose();
