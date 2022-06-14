@@ -116,7 +116,6 @@ class _SearchFieldWidget extends StatelessWidget
                     controller: controller,
                     enabled: enabled,
                     autofocus: autofocus ?? false,
-                    // onTap: onSearchBarTap,
                     decoration: InputDecoration(
                       hintText: PlacesListStrings.hintText,
                       hintStyle: theme.textTheme.overline,

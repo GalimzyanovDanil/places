@@ -35,7 +35,7 @@ class PlacesDatabase extends _$PlacesDatabase {
     final result = await ((select(searchQueries))
           ..orderBy([
             (t) =>
-                OrderingTerm(expression: t.timestamp, mode: OrderingMode.desc)
+                OrderingTerm(expression: t.timestamp, mode: OrderingMode.desc),
           ])
           ..limit(limit ?? 5))
         .get();
@@ -49,7 +49,7 @@ class PlacesDatabase extends _$PlacesDatabase {
 
   /// Очистка всей базы запросов
   Future<void> clearSearchQueries() async {
-    unawaited(delete(searchQueries).go());
+    unawaited(searchQueries.delete().go());
   }
 
   /// Добавление удачной поисковой строки
