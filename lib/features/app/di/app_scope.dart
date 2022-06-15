@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
@@ -7,9 +8,11 @@ import 'package:places/api/service/place_api.dart';
 import 'package:places/config/app_config.dart';
 import 'package:places/config/environment/environment.dart';
 import 'package:places/database/places_database.dart';
+import 'package:places/features/common/domain/repository/favorite_db_repository.dart';
 import 'package:places/features/common/domain/repository/places_repository.dart';
 import 'package:places/features/common/domain/repository/shared_prefs_storage.dart';
 import 'package:places/features/common/service/app_settings_service.dart';
+import 'package:places/features/common/service/favorite_db_service.dart';
 import 'package:places/features/common/service/geoposition_bloc/geoposition_bloc.dart';
 import 'package:places/features/common/service/places_service.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
@@ -27,6 +30,7 @@ class AppScope implements IAppScope {
   late final PlacesService _placesService;
   late final AppSettingsService _appSettingsService;
   late final SearchQueryDbService _searchDbService;
+  late final FavoriteDbService _favoriteDbService;
 
   late final PlaceApi _placeApi;
   late final PlacesRepository _placesRepository;
@@ -34,7 +38,9 @@ class AppScope implements IAppScope {
   late final SharedPrefsStorage _sharedPrefStorage;
   late final GeopositionBloc _geopositionBloc;
   late final SearchQueryDbRepository _searchQueryDbRepository;
+  late final FavoriteDbRepository _favoriteDbRepository;
   late final PlacesDatabase _database;
+
   @override
   Dio get dio => _dio;
 
@@ -61,6 +67,9 @@ class AppScope implements IAppScope {
 
   @override
   SearchQueryDbService get searchDbService => _searchDbService;
+
+  @override
+  FavoriteDbService get favoriteDbService => _favoriteDbService;
 
   late ConnectivityResult _connectivityResult;
 
@@ -97,8 +106,12 @@ class AppScope implements IAppScope {
 
     // Search Query Database service
     _database = PlacesDatabase();
+
     _searchQueryDbRepository = SearchQueryDbRepository(_database);
     _searchDbService = SearchQueryDbService(_searchQueryDbRepository);
+
+    _favoriteDbRepository = FavoriteDbRepository(_database);
+    _favoriteDbService = FavoriteDbService(_favoriteDbRepository);
   }
 
   // For dispose any controllers
@@ -178,14 +191,17 @@ abstract class IAppScope {
   /// Connect to Internet status.
   ConnectivityResult get connectivityResult;
 
-  /// App setings service.
+  /// App settings service.
   AppSettingsService get appSettingsService;
 
   ///Geolocation service
   GeopositionBloc get geopositionBloc;
 
-  /// Service for work with SearchQuries Database
+  /// Service for work with SearchQueries Database
   SearchQueryDbService get searchDbService;
+
+  /// Service for work with Favorite Database
+  FavoriteDbService get favoriteDbService;
 
   /// For dispose any controllers
   void dispose();

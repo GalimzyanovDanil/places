@@ -2,16 +2,16 @@ import 'package:elementary/elementary.dart';
 import 'package:places/features/common/domain/entity/place.dart';
 import 'package:places/features/common/service/favorite_db_service.dart';
 
-// TODO(me): cover with documentation
-/// Default Elementary model for Favorite module
-class FavoriteModel extends ElementaryModel {
+// TODO: cover with documentation
+/// Default Elementary model for FavoriteButton module
+class FavoriteButtonModel extends ElementaryModel {
   final FavoriteDbService _favoriteDbService;
 
-  FavoriteModel(this._favoriteDbService);
+  FavoriteButtonModel(this._favoriteDbService);
 
-  /// Получить список всех избранных мест
-  Future<List<Place>> allFavoriteEntries() =>
-      _favoriteDbService.allFavoriteEntries();
+  /// Проверка является ли данное место избранным
+  Future<Place?> checkPlaceIsFavorite(int id) =>
+      _favoriteDbService.checkPlaceIsFavorite(id);
 
   /// Добавление/обновление избанного
   Future<void> addFavorite(Place place) =>

@@ -54,6 +54,8 @@ class AppTheme {
       onSurface: AppColors.whiteSecondary,
       onSurfaceVariant: AppColors.whiteBase,
       surface: AppColors.whiteSecondary,
+      error: AppColors.whiteRed,
+      onError: AppColors.whiteBase,
     );
   }
 
@@ -122,6 +124,8 @@ class AppTheme {
       onSurface: AppColors.whiteBase,
       onSurfaceVariant: AppColors.blackDark,
       surface: AppColors.whiteBase,
+      error: AppColors.blackRed,
+      onError: AppColors.whiteBase,
     );
   }
 

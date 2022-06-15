@@ -20,6 +20,10 @@ class PlacesDatabase extends _$PlacesDatabase {
   /// Получить список всех избранных мест
   Future<List<Favorite>> allFavoriteEntries() => select(favorites).get();
 
+  /// Проверка является ли данное место избранным
+  Future<Favorite?> getFavoriteByIdOrNull(int id) =>
+      (select(favorites)..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
+
   /// Добавление/обновление избанного
   Future<void> addFavorite(Favorite favorite) =>
       favorites.insertOnConflictUpdate(favorite);

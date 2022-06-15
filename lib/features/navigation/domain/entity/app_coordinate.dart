@@ -44,6 +44,11 @@ class AppCoordinate extends Coordinate {
         );
 }
 
+final Map<String, AppCoordinate> appCoordinatesPaths = {
+  '/main_tabs': AppCoordinate.mainTabsScreen,
+  '/search': AppCoordinate.searchScreen,
+};
+
 /// List of main routes of the app.
 final Map<AppCoordinate, CoordinateBuilder> appCoordinates = {
   AppCoordinate.initial: (_, __) => const SplashScreen(),

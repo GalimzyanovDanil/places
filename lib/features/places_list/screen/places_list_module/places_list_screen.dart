@@ -34,16 +34,6 @@ class PlacesListScreen extends ElementaryWidget<IPlacesListWidgetModel> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        appBar: CommonAppBarWidget(
-          onSearchBarTap: wm.onSearchBarTap,
-          trailingButtonIcon: SvgPicture.asset(
-            AppAssets.iconFilter,
-            color: wm.theme.indicatorColor,
-          ),
-          onTrailingButtonTap: wm.onSettingsTap,
-          toolbarHeight: 100,
-          enabled: false,
-        ),
         body: Center(
           child: RefreshIndicator(
             triggerMode: RefreshIndicatorTriggerMode.anywhere,
@@ -71,6 +61,16 @@ class PlacesListScreen extends ElementaryWidget<IPlacesListWidgetModel> {
               ),
             ),
           ),
+        ),
+        appBar: CommonAppBarWidget(
+          onSearchBarTap: wm.onSearchBarTap,
+          trailingButtonIcon: SvgPicture.asset(
+            AppAssets.iconFilter,
+            color: wm.theme.indicatorColor,
+          ),
+          onTrailingButtonTap: wm.onSettingsTap,
+          toolbarHeight: 100,
+          enabled: false,
         ),
       ),
     );
