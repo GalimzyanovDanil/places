@@ -76,7 +76,7 @@ class SearchWidgetModel extends WidgetModel<SearchScreen, SearchModel>
 
   @override
   void onBackButton() {
-    _coordinator.pop();
+    _coordinator.pop(context);
   }
 
   @override

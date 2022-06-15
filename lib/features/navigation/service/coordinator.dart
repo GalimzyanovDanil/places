@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
 import 'package:places/features/navigation/domain/entity/coordinate.dart';
 import 'package:places/features/navigation/domain/entity/coordinate_key.dart';
 import 'package:places/features/navigation/domain/entity/coordinate_route.dart';
@@ -79,10 +80,16 @@ class Coordinator extends ChangeNotifier {
   }
 
   /// Method for removing the topmost route.
-  void pop() {
-    assert(_pages.isNotEmpty);
+  void pop(BuildContext context, {bool forceRebuild = false}) {
+    assert(_pages.length >= 2, 'Incorrect use pop');
 
     _pages.removeLast();
+    if (forceRebuild) {
+      final target = appCoordinatesPaths[_pages.last.name];
+      _pages.removeLast();
+      final coordianteRoute = _getCoordinateRoute(target!);
+      _pages.add(_buildMaterialPage(context, coordinateRoute: coordianteRoute));
+    }
 
     debugPrint(_pages.map((e) => e.name).toList().toString());
 

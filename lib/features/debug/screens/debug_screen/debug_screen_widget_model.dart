@@ -74,7 +74,7 @@ class DebugScreenWidgetModel extends WidgetModel<DebugScreen, DebugScreenModel>
 
   @override
   void closeScreen() {
-    coordinator.pop();
+    coordinator.pop(context);
   }
 
   @override

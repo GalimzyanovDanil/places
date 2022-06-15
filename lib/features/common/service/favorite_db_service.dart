@@ -17,4 +17,8 @@ class FavoriteDbService {
   /// Удаление из избранных
   Future<void> deleteFavorite(int id) =>
       _favoriteDbRepository.deleteFavorite(id);
+
+  /// Проверка является ли данное место избранным
+  Future<Place?> checkPlaceIsFavorite(int id) =>
+      _favoriteDbRepository.checkPlaceIsFavorite(id);
 }

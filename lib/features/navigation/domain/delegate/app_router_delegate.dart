@@ -38,7 +38,7 @@ class AppRouterDelegate extends RouterDelegate<Coordinate>
         if (!route.didPop(result)) {
           return false;
         } else {
-          coordinator.pop();
+          coordinator.pop(context);
 
           return true;
         }

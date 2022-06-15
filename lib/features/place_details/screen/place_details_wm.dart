@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:places/features/app/di/app_scope.dart';
+import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
 import 'package:places/features/place_details/screen/place_details_model.dart';
 import 'package:places/features/place_details/screen/place_details_screen.dart';
@@ -12,15 +15,25 @@ enum PlannedButtonState { disable, active, haveDate, share }
 
 abstract class IPlaceDetailsWidgetModel extends IWidgetModel {
   ListenableState<PlannedButtonState> get plannedState;
+
   ListenableState<String?> get plannedDateState;
+
   ListenableState<bool> get favoriteState;
+
   ListenableState<double> get imageViewState;
+
   ListenableState<bool> get routeCompleteState;
+
   PageController get pageController;
+
   void onTapBackButton();
+
   void onTapFavorite();
+
   void onTapNavigation();
+
   Future<void> onTapPlanned();
+
   void onTapShare();
 }
 
@@ -28,7 +41,7 @@ PlaceDetailsWidgetModel defaultPlaceDetailsWidgetModelFactory(
   BuildContext context,
 ) {
   final appScope = context.read<IAppScope>();
-  final model = PlaceDetailsModel(appScope.errorHandler);
+  final model = PlaceDetailsModel(appScope.favoriteDbService);
   return PlaceDetailsWidgetModel(
     model: model,
     coordinator: appScope.coordinator,
@@ -51,6 +64,8 @@ class PlaceDetailsWidgetModel
       StateNotifier(initValue: false);
 
   late final PageController _pageController;
+
+  final _format = DateFormat('d MMM y', 'ru_RU');
 
   @override
   ListenableState<bool> get favoriteState => _favoriteState;
@@ -83,20 +98,24 @@ class PlaceDetailsWidgetModel
 
   @override
   void onTapBackButton() {
-    _coordinator.pop();
+    _coordinator.pop(context, forceRebuild: true);
   }
 
   @override
   void onTapFavorite() {
     final prevValue = _favoriteState.value;
-    if (prevValue != null) {
-      _favoriteState.accept(!prevValue);
 
-      if (!_routeCompleteState.value!) {
-        _plannedState.accept(
-          prevValue ? PlannedButtonState.disable : PlannedButtonState.active,
-        );
-      }
+    if (prevValue!) {
+      model.deleteFavorite(widget.place.id);
+    } else {
+      model.addFavorite(widget.place);
+    }
+    _favoriteState.accept(!prevValue);
+
+    if (!_routeCompleteState.value!) {
+      _plannedState.accept(
+        prevValue ? PlannedButtonState.disable : PlannedButtonState.active,
+      );
     }
   }
 
@@ -120,10 +139,11 @@ class PlaceDetailsWidgetModel
     await _selectDate();
 
     if (_plannedDate != null) {
-      final format = DateFormat('d MMM y', 'ru_RU');
-
       assert(_plannedDate != null, 'Planned date can not be null');
-      _plannedDateState.accept(format.format(_plannedDate!));
+      _plannedDateState.accept(_format.format(_plannedDate!));
+      unawaited(
+        model.addFavorite(widget.place.copyWith(plannedDate: _plannedDate)),
+      );
 
       if (_plannedState.value != PlannedButtonState.haveDate) {
         _plannedState.accept(PlannedButtonState.haveDate);
@@ -136,11 +156,37 @@ class PlaceDetailsWidgetModel
     // TODO(me): implement onTapShare
   }
 
-  void _init() {
+  @override
+  void initWidgetModel() {
+    super.initWidgetModel();
+    _initWM();
+  }
+
+  Future<void> _init() async {
     _pageController = PageController()
       ..addListener(() {
         _imageViewState.accept(_pageController.page);
       });
+  }
+
+  Future<void> _initWM() async {
+    final favoritePlaceOrNull =
+        await model.checkPlaceIsFavorite(widget.place.id);
+    if (favoritePlaceOrNull == null) {
+      _favoriteState.accept(false);
+    } else {
+      _favoriteState.accept(true);
+
+      if (favoritePlaceOrNull.plannedDate != null) {
+        _plannedDate = favoritePlaceOrNull.plannedDate;
+
+        _plannedDateState
+            .accept(_format.format(favoritePlaceOrNull.plannedDate!));
+        _plannedState.accept(PlannedButtonState.haveDate);
+      } else {
+        _plannedState.accept(PlannedButtonState.active);
+      }
+    }
   }
 
   Future<void> _selectDate() async {
