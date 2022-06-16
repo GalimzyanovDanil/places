@@ -52,7 +52,7 @@ class CommonAppBarWidget extends StatelessWidget
         PlacesListStrings.appBarTitle,
         style: Theme.of(context).textTheme.headline4,
       ),
-      bottom: _SearchFieldWidget(
+      bottom: SearchFieldWidget(
         onSearchBarTap: onSearchBarTap,
         onTrailingButtonTap: onTrailingButtonTap,
         trailingButtonIcon: trailingButtonIcon,
@@ -64,8 +64,7 @@ class CommonAppBarWidget extends StatelessWidget
   }
 }
 
-class _SearchFieldWidget extends StatelessWidget
-    implements PreferredSizeWidget {
+class SearchFieldWidget extends StatelessWidget implements PreferredSizeWidget {
   final double? toolbarHeight;
   final VoidCallback onTrailingButtonTap;
   final VoidCallback? onSearchBarTap;
@@ -77,7 +76,7 @@ class _SearchFieldWidget extends StatelessWidget
   @override
   Size get preferredSize => Size.fromHeight(toolbarHeight ?? kToolbarHeight);
 
-  const _SearchFieldWidget({
+  const SearchFieldWidget({
     required this.onTrailingButtonTap,
     required this.onSearchBarTap,
     required this.trailingButtonIcon,

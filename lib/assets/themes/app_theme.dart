@@ -62,7 +62,7 @@ class AppTheme {
   // Получение цветовой палитры текстов для светлой темы
   static TextTheme _lightTextTheme(ThemeData base) {
     return base.textTheme.copyWith(
-      headline1: AppTypography.title.copyWith(color: AppColors.whiteSecondary),
+      headline1: AppTypography.largeTitle.copyWith(color: AppColors.whiteMain),
       headline2: AppTypography.title.copyWith(color: AppColors.whiteMain),
       headline3: AppTypography.text.copyWith(color: AppColors.whiteSecondary),
       headline4: AppTypography.subtitle.copyWith(color: AppColors.whiteMain),

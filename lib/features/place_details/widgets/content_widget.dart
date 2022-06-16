@@ -17,7 +17,8 @@ class DetailsContentWidget extends StatelessWidget {
       children: [
         Text(
           place.name,
-          style: textTheme.headline1,
+          style: textTheme.headline2
+              ?.copyWith(color: theme.colorScheme.onSecondaryContainer),
         ),
         const SizedBox(height: 2),
         Text(

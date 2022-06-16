@@ -7,6 +7,7 @@ class PlacesListStrings {
   static const otherType = 'особое место';
 
   static const appBarTitle = 'Список интересных мест';
+  static const appBarLargeTitle = 'Список\nинтересных мест';
 
   static const errorTitle = 'Ошибка';
   static const otherErrorText = 'Что то пошло не так. \nПопробуйте позже.';
