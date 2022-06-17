@@ -18,18 +18,37 @@ class OnboardingScreen extends ElementaryWidget<IOnboardingWidgetModel> {
 
   @override
   Widget build(IOnboardingWidgetModel wm) {
+    const iconPaths = [
+      AppAssets.iconOnboard1,
+      AppAssets.iconOnboard2,
+      AppAssets.iconOnboard3,
+    ];
+    const titles = [
+      OnboardingStrings.title1,
+      OnboardingStrings.title2,
+      OnboardingStrings.title3,
+    ];
+    const texts = [
+      OnboardingStrings.text1,
+      OnboardingStrings.text2,
+      OnboardingStrings.text3,
+    ];
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         actions: [
           StateNotifierBuilder<bool>(
             listenableState: wm.isLastPage,
-            builder: (_, isLastPage) => (!(isLastPage ?? false))
-                ? SkipButton(
-                    key: const ValueKey('SkipButton'),
-                    onPressed: wm.onSkipButton,
-                  )
-                : const SizedBox.shrink(),
+            builder: (_, isLastPage) => AnimatedOpacity(
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeIn,
+              opacity: isLastPage ?? false ? 0.0 : 1.0,
+              child: SkipButton(
+                key: const ValueKey('SkipButton'),
+                onPressed: wm.onSkipButton,
+              ),
+            ),
           ),
         ],
       ),
@@ -37,26 +56,15 @@ class OnboardingScreen extends ElementaryWidget<IOnboardingWidgetModel> {
         child: DisableOverscroll(
           child: Stack(
             children: [
-              PageView(
+              PageView.builder(
                 onPageChanged: wm.onPageChanged,
                 controller: wm.pageController,
-                children: const <Widget>[
-                  OnboardingPage(
-                    iconPath: AppAssets.iconOnboard1,
-                    tittle: OnboardingStrings.title1,
-                    text: OnboardingStrings.text1,
-                  ),
-                  OnboardingPage(
-                    iconPath: AppAssets.iconOnboard2,
-                    tittle: OnboardingStrings.title2,
-                    text: OnboardingStrings.text2,
-                  ),
-                  OnboardingPage(
-                    iconPath: AppAssets.iconOnboard3,
-                    tittle: OnboardingStrings.title3,
-                    text: OnboardingStrings.text3,
-                  ),
-                ],
+                itemBuilder: (_, index) => OnboardingPage(
+                  iconPath: iconPaths[index],
+                  tittle: titles[index],
+                  text: texts[index],
+                ),
+                itemCount: wm.pageCount,
               ),
               StateNotifierBuilder<int>(
                 listenableState: wm.currentPage,
@@ -70,12 +78,17 @@ class OnboardingScreen extends ElementaryWidget<IOnboardingWidgetModel> {
       ),
       floatingActionButton: StateNotifierBuilder<bool>(
         listenableState: wm.isLastPage,
-        builder: (_, isLastPage) => (isLastPage ?? false)
-            ? StartButton(
-                key: const ValueKey('StartButton'),
-                onPressed: wm.onStartButton,
-              )
-            : const SizedBox.shrink(),
+        builder: (_, isLastPage) {
+          return AnimatedSlide(
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeIn,
+            offset: isLastPage ?? false ? Offset.zero : const Offset(0, 2),
+            child: StartButton(
+              key: const ValueKey('StartButton'),
+              onPressed: wm.onStartButton,
+            ),
+          );
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       resizeToAvoidBottomInset: false,

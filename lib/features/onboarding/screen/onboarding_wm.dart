@@ -11,6 +11,7 @@ abstract class IOnboardingWidgetModel extends IWidgetModel {
   PageController get pageController;
   ListenableState<bool> get isLastPage;
   ListenableState<int> get currentPage;
+  int get pageCount;
   void onPageChanged(int index);
   void onSkipButton();
   void onStartButton();
@@ -33,8 +34,10 @@ class OnboardingWidgetModel
     implements IOnboardingWidgetModel {
   final Coordinator coordinator;
   // Количество страниц онбординга
-  @visibleForTesting
-  final int pageCount = 3;
+  final int _pageCount = 3;
+
+  @override
+  int get pageCount => _pageCount;
 
   late final PageController _pageController;
 
@@ -69,7 +72,7 @@ class OnboardingWidgetModel
 
   @override
   void onPageChanged(int index) {
-    _isLastPage.accept(pageCount - 1 == index);
+    _isLastPage.accept(_pageCount - 1 == index);
     _currentPage.accept(index);
   }
 
