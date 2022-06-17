@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:places/features/onboarding/screen/animation_icon_module/animation_icon_widget.dart';
 
 class OnboardingPage extends StatelessWidget {
   final String iconPath;
@@ -21,11 +21,8 @@ class OnboardingPage extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const Spacer(flex: 4),
-          SvgPicture.asset(
-            iconPath,
-            color: theme.iconTheme.color,
-            height: 125,
-            width: 125,
+          AnimationIconWidget(
+            iconPath: iconPath,
           ),
           const SizedBox(height: 40),
           Padding(
