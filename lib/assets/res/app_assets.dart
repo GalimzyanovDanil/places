@@ -55,6 +55,7 @@ class AppAssets {
   static const iconWayArrows = '$_otherPath/way_arrows.svg';
   static const iconWayArrowsL = '$_otherPath/way_arrows_l.svg';
   static const iconWayArrowsR = '$_otherPath/way_arrows_r.svg';
+  static const iconSplashLogo = '$_rootPath/splash_logo.svg';
 
   ///Базовые пути
   static const _rootPath = 'assets/icons';
