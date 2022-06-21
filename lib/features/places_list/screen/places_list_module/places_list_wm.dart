@@ -19,10 +19,12 @@ import 'package:provider/provider.dart';
 abstract class IPlacesListWidgetModel extends IWidgetModel {
   PagingController<int, Place> get pagingController;
   ThemeData get theme;
+  Animation<Offset> get animation;
   void onTapCard(int index);
   Future<void> onRefresh();
   void onSearchBarTap();
   Future<void> onSettingsTap();
+  void onAddPlaceTap();
 }
 
 PlacesListWidgetModel defaultPlacesListWidgetModelFactory(
@@ -47,6 +49,7 @@ PlacesListWidgetModel defaultPlacesListWidgetModelFactory(
 /// Default widget model for PlacesListWidget
 class PlacesListWidgetModel
     extends WidgetModel<PlacesListScreen, PlacesListModel>
+    with TickerProviderWidgetModelMixin
     implements IPlacesListWidgetModel {
   /// Отступ от начального элемента базы
   final int currentOffset = 0;
@@ -57,11 +60,18 @@ class PlacesListWidgetModel
   final Coordinator _coordinator;
 
   late final PagingController<int, Place> _pagingController;
+  late final AnimationController _animationController;
+  late final Animation<Offset> _animation;
+
   @override
   PagingController<int, Place> get pagingController => _pagingController;
 
   @override
   ThemeData get theme => Theme.of(context);
+
+  @override
+  // TODO: implement animation
+  Animation<Offset> get animation => _animation;
 
   /// Триггер последней страницы загрузки
   bool _isLastPage = false;
@@ -76,6 +86,22 @@ class PlacesListWidgetModel
   void initWidgetModel() {
     super.initWidgetModel();
     _init();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+    _animation = Tween<Offset>(
+      begin: const Offset(-2, 0),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeInOut,
+      ),
+    );
+
+    _animationController.forward();
   }
 
   @override
@@ -116,6 +142,11 @@ class PlacesListWidgetModel
         _coordinator.navigate(context, AppCoordinate.filterSettingsScreen);
       }
     });
+  }
+
+  @override
+  void onAddPlaceTap() {
+    _coordinator.navigate(context, AppCoordinate.addPlaceScreen);
   }
 
   // Инициализация
