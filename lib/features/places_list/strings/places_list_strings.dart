@@ -42,6 +42,6 @@ class PlacesListStrings {
   static const description = 'ОПИСАНИЕ';
   static const create = 'СОЗДАТЬ';
 
-  static const categorySmallTitle = 'Категория';  
-  static const save = 'СОХРАНИТЬ';  
+  static const categorySmallTitle = 'Категория';
+  static const save = 'СОХРАНИТЬ';
 }
