@@ -29,4 +29,19 @@ class PlacesListStrings {
   static const hotelTypeFilter = 'Отель';
   static const museumTypeFilter = 'Музей';
   static const otherTypeFilter = 'Особое место';
+
+  static const addNewPlace = 'НОВОЕ МЕСТО';
+  static const addNewPlaceTittle = 'Новое место';
+  static const cancel = 'Отмена';
+  static const categoryTitle = 'КАТЕГОРИЯ';
+  static const categoryNotSelect = 'Не выбрано';
+  static const name = 'НАЗВАНИЕ';
+  static const lng = 'ШИРОТА';
+  static const lat = 'ДОЛГОТА';
+  static const setOnMap = 'Указать на карте';
+  static const description = 'ОПИСАНИЕ';
+  static const create = 'СОЗДАТЬ';
+
+  static const categorySmallTitle = 'Категория';
+  static const save = 'СОХРАНИТЬ';
 }

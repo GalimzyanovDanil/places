@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:places/features/common/domain/entity/place.dart';
 import 'package:places/features/common/widgets/network_image_widget.dart';
 import 'package:places/features/places_list/screen/places_list_module/favorite_button/favorite_button_widget.dart';
-import 'package:places/features/places_list/widgets/place_card_widgets/description_widget.dart';
+import 'package:places/features/places_list/widgets/place_list_widgets/description_widget.dart';
 
 /// [onTapCard] - Открытие делальной информации места
 /// [place] - Данные места

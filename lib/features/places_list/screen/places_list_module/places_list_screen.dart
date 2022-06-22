@@ -11,7 +11,8 @@ import 'package:places/features/places_list/screen/places_list_module/builder_wi
 import 'package:places/features/places_list/screen/places_list_module/builder_widgets/new_page_error_widget.dart';
 import 'package:places/features/places_list/screen/places_list_module/places_list_wm.dart';
 import 'package:places/features/places_list/strings/places_list_strings.dart';
-import 'package:places/features/places_list/widgets/place_card_widgets/place_card_widget.dart';
+import 'package:places/features/places_list/widgets/place_list_widgets/add_place_button_widget.dart';
+import 'package:places/features/places_list/widgets/place_list_widgets/place_card_widget.dart';
 
 // TODO(me): cover with documentation
 /// Main widget for PlacesList module
@@ -119,6 +120,12 @@ class PlacesListScreen extends ElementaryWidget<IPlacesListWidgetModel> {
               ),
             ),
           ),
+        ),
+        floatingActionButtonLocation:
+            FloatingActionButtonLocation.miniCenterFloat,
+        floatingActionButton: AddPlaceButtonWidget(
+          onAddPlaceTap: wm.onAddPlaceTap,
+          animation: wm.animation,
         ),
       ),
     );

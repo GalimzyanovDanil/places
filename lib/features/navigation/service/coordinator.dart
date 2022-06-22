@@ -80,15 +80,23 @@ class Coordinator extends ChangeNotifier {
   }
 
   /// Method for removing the topmost route.
-  void pop(BuildContext context, {bool forceRebuild = false}) {
+  void pop(
+    BuildContext context, {
+    Object? arguments,
+    bool forceRebuild = false,
+  }) {
     assert(_pages.length >= 2, 'Incorrect use pop');
 
     _pages.removeLast();
-    if (forceRebuild) {
+    if (forceRebuild || arguments != null) {
       final target = appCoordinatesPaths[_pages.last.name];
       _pages.removeLast();
       final coordianteRoute = _getCoordinateRoute(target!);
-      _pages.add(_buildMaterialPage(context, coordinateRoute: coordianteRoute));
+      _pages.add(_buildMaterialPage(
+        context,
+        coordinateRoute: coordianteRoute,
+        arguments: arguments,
+      ));
     }
 
     debugPrint(_pages.map((e) => e.name).toList().toString());

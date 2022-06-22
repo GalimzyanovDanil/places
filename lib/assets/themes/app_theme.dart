@@ -56,6 +56,7 @@ class AppTheme {
       surface: AppColors.whiteSecondary,
       error: AppColors.whiteRed,
       onError: AppColors.whiteBase,
+      onInverseSurface: AppColors.whiteSecondary2,
     );
   }
 
@@ -126,6 +127,7 @@ class AppTheme {
       surface: AppColors.whiteBase,
       error: AppColors.blackRed,
       onError: AppColors.whiteBase,
+      onInverseSurface: AppColors.blackSecondary2,
     );
   }
 
