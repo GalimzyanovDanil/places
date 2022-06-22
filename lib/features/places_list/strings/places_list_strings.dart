@@ -41,4 +41,7 @@ class PlacesListStrings {
   static const setOnMap = 'Указать на карте';
   static const description = 'ОПИСАНИЕ';
   static const create = 'СОЗДАТЬ';
+
+  static const categorySmallTitle = 'Категория';  
+  static const save = 'СОХРАНИТЬ';  
 }

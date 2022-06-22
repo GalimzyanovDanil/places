@@ -6,6 +6,7 @@ import 'package:places/features/navigation/domain/entity/coordinate.dart';
 import 'package:places/features/onboarding/screen/onboarding_screen.dart';
 import 'package:places/features/place_details/screen/place_details_screen.dart';
 import 'package:places/features/places_list/screen/add_place_module/add_place_screen.dart';
+import 'package:places/features/places_list/screen/add_place_module/select_category/select_category_screen.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_screen.dart';
 import 'package:places/features/search/screen/search_screen.dart';
 import 'package:places/features/splash_screen/screen/splash_screen.dart';
@@ -34,7 +35,10 @@ class AppCoordinate extends Coordinate {
   static const searchScreen = AppCoordinate._('search', true);
 
   ///Deatils screen
-  static const addPlaceScreen = AppCoordinate._('add_place', true);
+  static const addPlaceScreen = AppCoordinate._('add_place', false);
+
+  ///Select category screen
+  static const selectCategory = AppCoordinate._('category', true);
 
   /// Initialization screens(it can be any screens).
   static const initial = initScreen;
@@ -51,6 +55,7 @@ class AppCoordinate extends Coordinate {
 final Map<String, AppCoordinate> appCoordinatesPaths = {
   '/main_tabs': AppCoordinate.mainTabsScreen,
   '/search': AppCoordinate.searchScreen,
+  '/add_place': AppCoordinate.addPlaceScreen,
 };
 
 /// List of main routes of the app.
@@ -68,5 +73,8 @@ final Map<AppCoordinate, CoordinateBuilder> appCoordinates = {
   AppCoordinate.detailsPlaceScreen: (_, place) =>
       PlaceDetailsScreen(place: place as Place),
   AppCoordinate.searchScreen: (_, __) => const SearchScreen(),
-  AppCoordinate.addPlaceScreen: (_, __) => const AddPlaceScreen(),
+  AppCoordinate.addPlaceScreen: (_, type) =>
+      AddPlaceScreen(type: type as PlaceType?),
+  AppCoordinate.selectCategory: (_, type) =>
+      SelectCategoryScreen(type: type as PlaceType?),
 };

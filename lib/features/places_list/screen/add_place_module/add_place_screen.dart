@@ -1,5 +1,6 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/places_list/screen/add_place_module/add_place_screen_wm.dart';
 import 'package:places/features/places_list/strings/places_list_strings.dart';
 import 'package:places/features/places_list/widgets/add_place_widgets/add_image_widget.dart';
@@ -9,7 +10,10 @@ import 'package:places/features/places_list/widgets/add_place_widgets/select_cat
 // TODO: cover with documentation
 /// Main widget for AddPlaceScreen module
 class AddPlaceScreen extends ElementaryWidget<IAddPlaceScreenWidgetModel> {
+  final PlaceType? type;
+
   const AddPlaceScreen({
+    this.type,
     Key? key,
     WidgetModelFactory wmFactory = defaultAddPlaceScreenWidgetModelFactory,
   }) : super(wmFactory, key: key);
@@ -53,8 +57,8 @@ class AddPlaceScreen extends ElementaryWidget<IAddPlaceScreenWidgetModel> {
                 ),
                 const SizedBox(height: 24),
                 SelectCategoryWidget(
-                  categoryText: null,
-                  onSelecetCategory: () {},
+                  categoryText: type?.filterTitle,
+                  onSelecetCategory: wm.onSelectCategory,
                 ),
                 const SizedBox(height: 24),
                 CommonTextField(
