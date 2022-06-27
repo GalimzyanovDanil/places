@@ -46,4 +46,13 @@ class PlacesListStrings {
   static const save = 'СОХРАНИТЬ';
   static const camera = 'Камера';
   static const photo = 'Фотография';
+
+  static const infoDialogTitleOk = 'Новое место добавлено';
+  static const infoDialogTitleBad = 'Новое место не добавлено';
+
+  static const infoDialogBodyOk = 'Поздравляю. Новое место успешно добавлено.';
+  static const infoDialogBodyBad = 'При добавлении места что-то пошло нет.';
+
+  static const infoDialogConfirmOk = 'Отлично';
+  static const infoDialogConfirmBad = 'Попробовать еще раз';
 }

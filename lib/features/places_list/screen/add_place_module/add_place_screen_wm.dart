@@ -8,6 +8,7 @@ import 'package:places/features/common/domain/entity/place.dart';
 import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/common/strings/dialog_strings.dart';
 import 'package:places/features/common/widgets/ui_func.dart';
+import 'package:places/features/common/widgets/widgets_factory.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
 import 'package:places/features/places_list/screen/add_place_module/add_place_screen.dart';
 import 'package:places/features/places_list/screen/add_place_module/add_place_screen_model.dart';
@@ -173,8 +174,39 @@ class AddPlaceScreenWidgetModel
           _uploadImageState.value!.map(File.new).toList(growable: false);
 
       await model.addNewPlace(place, images).then(
-            (result) => result != null ? Navigator.of(context).pop() : null,
+        (value) {
+          showDialog<void>(
+            context: context,
+            builder: (_) {
+              final isNewPlaceCreated = value != null;
+
+              final VoidCallback onConfirm;
+              final String bodyText;
+              final String confirmTitle;
+              final String title;
+
+              if (isNewPlaceCreated) {
+                onConfirm = coordinator.popUntilRoot;
+                bodyText = PlacesListStrings.infoDialogBodyOk;
+                confirmTitle = PlacesListStrings.infoDialogConfirmOk;
+                title = PlacesListStrings.infoDialogTitleOk;
+              } else {
+                onConfirm = Navigator.of(context).pop;
+                bodyText = PlacesListStrings.infoDialogBodyBad;
+                confirmTitle = PlacesListStrings.infoDialogConfirmBad;
+                title = PlacesListStrings.infoDialogTitleBad;
+              }
+
+              return WidgetsFactory.informDialogWidgetFactory(
+                onConfirm: onConfirm,
+                bodyText: bodyText,
+                confirmTitle: confirmTitle,
+                title: title,
+              );
+            },
           );
+        },
+      );
     } on ApiException catch (error) {
       _isLoadingProgressState.accept(false);
       switch (error.exceptionType) {
