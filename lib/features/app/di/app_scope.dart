@@ -16,6 +16,8 @@ import 'package:places/features/common/service/favorite_db_service.dart';
 import 'package:places/features/common/service/geoposition_bloc/geoposition_bloc.dart';
 import 'package:places/features/common/service/places_service.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
+import 'package:places/features/places_list/domain/repository/image_pick_repository.dart';
+import 'package:places/features/places_list/service/image_picker_service.dart';
 import 'package:places/features/search/repository/search_query_db_repository.dart';
 import 'package:places/features/search/service/search_query_db_service.dart';
 import 'package:places/util/default_error_handler.dart';
@@ -31,6 +33,7 @@ class AppScope implements IAppScope {
   late final AppSettingsService _appSettingsService;
   late final SearchQueryDbService _searchDbService;
   late final FavoriteDbService _favoriteDbService;
+  late final ImagePickerService _imagePickerService;
 
   late final PlaceApi _placeApi;
   late final PlacesRepository _placesRepository;
@@ -40,6 +43,7 @@ class AppScope implements IAppScope {
   late final SearchQueryDbRepository _searchQueryDbRepository;
   late final FavoriteDbRepository _favoriteDbRepository;
   late final PlacesDatabase _database;
+  late final ImagePickerRepositry _imagePickerRepositry;
 
   @override
   Dio get dio => _dio;
@@ -70,6 +74,9 @@ class AppScope implements IAppScope {
 
   @override
   FavoriteDbService get favoriteDbService => _favoriteDbService;
+
+  @override
+  ImagePickerService get imagePickerService => _imagePickerService;
 
   late ConnectivityResult _connectivityResult;
 
@@ -112,6 +119,9 @@ class AppScope implements IAppScope {
 
     _favoriteDbRepository = FavoriteDbRepository(_database);
     _favoriteDbService = FavoriteDbService(_favoriteDbRepository);
+
+    _imagePickerRepositry = ImagePickerRepositry();
+    _imagePickerService = ImagePickerService(_imagePickerRepositry);
   }
 
   // For dispose any controllers
@@ -202,6 +212,9 @@ abstract class IAppScope {
 
   /// Service for work with Favorite Database
   FavoriteDbService get favoriteDbService;
+
+  /// Service for pick image gallery or camera
+  ImagePickerService get imagePickerService;
 
   /// For dispose any controllers
   void dispose();

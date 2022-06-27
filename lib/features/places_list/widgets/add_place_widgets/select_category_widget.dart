@@ -34,7 +34,9 @@ class SelectCategoryWidget extends StatelessWidget {
               Expanded(
                 child: Text(
                   categoryText ?? PlacesListStrings.categoryNotSelect,
-                  style: textTheme.overline,
+                  style: categoryText == null
+                      ? textTheme.overline
+                      : textTheme.bodyText1,
                 ),
               ),
               SvgPicture.asset(AppAssets.iconView),

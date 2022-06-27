@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:places/features/places_list/widgets/add_place_widgets/delete_icon_button.dart';
 
 class CommonTextField extends StatefulWidget {
-  final VoidCallback onClearText;
   final String title;
   final TextInputType? keyboardType;
   final int? maxLines;
   final TextInputAction? textInputAction;
-  final TextEditingController? controller;
+  final FormFieldValidator<String?>? validator;
+  final ValueChanged<String?> onFieldSubmitted;
 
-  CommonTextField({
-    required this.onClearText,
+  const CommonTextField({
     required this.title,
+    required this.onFieldSubmitted,
+    this.validator,
     this.maxLines,
     this.textInputAction,
     this.keyboardType,
-    this.controller,
     Key? key,
   }) : super(key: key);
 
@@ -29,7 +29,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
 
   @override
   void initState() {
-    controller = widget.controller ?? TextEditingController();
+    controller = TextEditingController();
     focusNode = FocusNode();
     super.initState();
   }
@@ -44,6 +44,8 @@ class _CommonTextFieldState extends State<CommonTextField> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+    final colorScheme = theme.colorScheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,7 +53,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
       children: [
         Text(
           widget.title,
-          style: theme.textTheme.overline,
+          style: textTheme.overline,
         ),
         const SizedBox(height: 12),
         AnimatedBuilder(
@@ -61,9 +63,15 @@ class _CommonTextFieldState extends State<CommonTextField> {
           builder: (_, __) {
             final isActive = controller.text.isNotEmpty && focusNode.hasFocus;
 
+            const border = OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(8.0)),
+            );
+
             return TextFormField(
+              onSaved: (newValue) => widget.onFieldSubmitted(newValue),
+              validator: widget.validator,
               focusNode: focusNode,
-              style: theme.textTheme.bodyText1,
+              style: textTheme.bodyText1,
               maxLines: widget.maxLines ?? 1,
               textCapitalization: TextCapitalization.sentences,
               keyboardType: widget.keyboardType,
@@ -76,16 +84,22 @@ class _CommonTextFieldState extends State<CommonTextField> {
                     ? Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         child: DeleteIconButton(
-                          onTap: widget.onClearText,
-                          backgroundColor: theme.colorScheme.tertiary,
-                          iconColor: theme.colorScheme.onTertiary,
+                          onTap: controller.clear,
+                          backgroundColor: colorScheme.tertiary,
+                          iconColor: colorScheme.onTertiary,
                         ),
                       )
                     : const SizedBox.shrink(),
                 isDense: true,
-                border: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                ),
+                border: border,
+                enabledBorder: controller.text.isNotEmpty && !focusNode.hasFocus
+                    ? border.copyWith(
+                        borderSide: BorderSide(
+                          color: colorScheme.primary,
+                          width: 0.5,
+                        ),
+                      )
+                    : null,
               ),
             );
           },

@@ -36,12 +36,14 @@ class PlacesListStrings {
   static const categoryTitle = 'КАТЕГОРИЯ';
   static const categoryNotSelect = 'Не выбрано';
   static const name = 'НАЗВАНИЕ';
-  static const lng = 'ШИРОТА';
-  static const lat = 'ДОЛГОТА';
+  static const lng = 'ДОЛГОТА';
+  static const lat = 'ШИРОТА';
   static const setOnMap = 'Указать на карте';
   static const description = 'ОПИСАНИЕ';
   static const create = 'СОЗДАТЬ';
 
   static const categorySmallTitle = 'Категория';
   static const save = 'СОХРАНИТЬ';
+  static const camera = 'Камера';
+  static const photo = 'Фотография';
 }

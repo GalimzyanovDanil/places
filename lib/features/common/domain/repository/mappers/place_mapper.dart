@@ -1,3 +1,4 @@
+import 'package:places/api/data/place_add_request.dart';
 import 'package:places/api/data/place_filter_request.dart';
 import 'package:places/api/data/place_response.dart';
 import 'package:places/database/places_database.dart';
@@ -56,5 +57,16 @@ Place mapFavoriteToPlace(Favorite favorite) {
     distance: favorite.distance,
     isVisited: favorite.isVisited,
     plannedDate: favorite.plannedDate,
+  );
+}
+
+PlaceAddRequest mapPlaceToPlaceAddRequest(Place place) {
+  return PlaceAddRequest(
+    lat: place.lat,
+    lng: place.lng,
+    name: place.name,
+    urls: place.urls,
+    placeType: place.placeType.name,
+    description: place.description,
   );
 }
