@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:places/features/places_list/widgets/add_place_widgets/delete_icon_button.dart';
 
 class CommonTextField extends StatefulWidget {
@@ -8,10 +9,12 @@ class CommonTextField extends StatefulWidget {
   final TextInputAction? textInputAction;
   final FormFieldValidator<String?>? validator;
   final ValueChanged<String?> onFieldSave;
+  final List<TextInputFormatter>? inputFormatters;
 
   const CommonTextField({
     required this.title,
     required this.onFieldSave,
+    this.inputFormatters,
     this.validator,
     this.maxLines,
     this.textInputAction,
@@ -70,6 +73,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
             return TextFormField(
               onSaved: (newValue) => widget.onFieldSave(newValue),
               validator: widget.validator,
+              inputFormatters: widget.inputFormatters,
               focusNode: focusNode,
               style: textTheme.bodyText1,
               maxLines: widget.maxLines ?? 1,

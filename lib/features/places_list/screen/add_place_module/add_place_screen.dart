@@ -1,5 +1,6 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/places_list/screen/add_place_module/add_place_screen_wm.dart';
 import 'package:places/features/places_list/strings/places_list_strings.dart';
@@ -99,7 +100,13 @@ class AddPlaceScreen extends ElementaryWidget<IAddPlaceScreenWidgetModel> {
                                 Expanded(
                                   child: CommonTextField(
                                     title: PlacesListStrings.lat,
-                                    keyboardType: TextInputType.datetime,
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(
+                                        // ignore: unnecessary_string_escapes
+                                        RegExp('[0-9\,\.]'),
+                                      ),
+                                    ],
                                     validator:
                                         TextFieldsValidators.checkLatitude,
                                     onFieldSave: (lat) => wm.data.addAll(
@@ -111,7 +118,13 @@ class AddPlaceScreen extends ElementaryWidget<IAddPlaceScreenWidgetModel> {
                                 Expanded(
                                   child: CommonTextField(
                                     title: PlacesListStrings.lng,
-                                    keyboardType: TextInputType.datetime,
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(
+                                        // ignore: unnecessary_string_escapes
+                                        RegExp('[0-9\,\.]'),
+                                      ),
+                                    ],
                                     validator:
                                         TextFieldsValidators.checkLongitude,
                                     onFieldSave: (lng) => wm.data.addAll(
