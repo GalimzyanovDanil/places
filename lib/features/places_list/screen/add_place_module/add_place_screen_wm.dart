@@ -92,8 +92,6 @@ class AddPlaceScreenWidgetModel
   @override
   ListenableState<bool> get isLoadingProgressState => _isLoadingProgressState;
 
-  bool _isValidOverFields = false;
-
   AddPlaceScreenWidgetModel({
     required this.coordinator,
     required AddPlaceScreenModel model,
@@ -103,18 +101,8 @@ class AddPlaceScreenWidgetModel
   void initWidgetModel() {
     super.initWidgetModel();
 
-    Listenable.merge([_categoryState, _uploadImageState]).addListener(() {
-      if ((_uploadImageState.value?.isNotEmpty ?? false) &&
-          (_categoryState.value != null)) {
-        _isValidOverFields = true;
-        if (formKey.currentState?.validate() ?? false) {
-          _isValidState.accept(true);
-        }
-      } else {
-        _isValidOverFields = false;
-        _isValidState.accept(false);
-      }
-    });
+    Listenable.merge([_categoryState, _uploadImageState])
+        .addListener(_validateFields);
   }
 
   @override
@@ -148,15 +136,14 @@ class AddPlaceScreenWidgetModel
   @override
   void onChangeFields() {
     formKey.currentState?.save();
-    if ((formKey.currentState?.validate() ?? false) && _isValidOverFields) {
-      _isValidState.accept(true);
-    } else {
-      _isValidState.accept(false);
-    }
+    _validateFields();
   }
 
   @override
   Future<void> onAddNewPlace() async {
+    final formValidate = formKey.currentState?.validate() ?? false;
+    if (!formValidate) return;
+
     _isLoadingProgressState.accept(true);
 
     try {
@@ -233,6 +220,16 @@ class AddPlaceScreenWidgetModel
 
   @override
   void onSetOnMapButton() {}
+
+  void _validateFields() {
+    final isNotEmptyImage = _uploadImageState.value?.isNotEmpty ?? false;
+    final isNotEmptyCategory = _categoryState.value != null;
+    final isNotEmptyFields = _data.values.length == 4 &&
+        !_data.values.any((element) => element.isEmpty);
+
+    _isValidState
+        .accept(isNotEmptyImage && isNotEmptyCategory && isNotEmptyFields);
+  }
 
   Future<File?> _showSelectImageSource() async {
     final result = await showModalBottomSheet<File?>(

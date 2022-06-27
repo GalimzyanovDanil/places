@@ -7,11 +7,11 @@ class CommonTextField extends StatefulWidget {
   final int? maxLines;
   final TextInputAction? textInputAction;
   final FormFieldValidator<String?>? validator;
-  final ValueChanged<String?> onFieldSubmitted;
+  final ValueChanged<String?> onFieldSave;
 
   const CommonTextField({
     required this.title,
-    required this.onFieldSubmitted,
+    required this.onFieldSave,
     this.validator,
     this.maxLines,
     this.textInputAction,
@@ -68,7 +68,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
             );
 
             return TextFormField(
-              onSaved: (newValue) => widget.onFieldSubmitted(newValue),
+              onSaved: (newValue) => widget.onFieldSave(newValue),
               validator: widget.validator,
               focusNode: focusNode,
               style: textTheme.bodyText1,
