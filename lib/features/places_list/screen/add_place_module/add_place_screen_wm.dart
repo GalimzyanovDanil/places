@@ -35,6 +35,7 @@ abstract class IAddPlaceScreenWidgetModel extends IWidgetModel {
   void onChangeFields();
   void onCancelButton();
   void onSetOnMapButton();
+  void saveFields(String key, String? value);
 }
 
 AddPlaceScreenWidgetModel defaultAddPlaceScreenWidgetModelFactory(
@@ -137,6 +138,11 @@ class AddPlaceScreenWidgetModel
   void onChangeFields() {
     formKey.currentState?.save();
     _validateFields();
+  }
+
+  @override
+  void saveFields(String key, String? value) {
+    return _data.addAll({key: value ?? ''});
   }
 
   @override

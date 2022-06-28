@@ -86,12 +86,8 @@ class AddPlaceScreen extends ElementaryWidget<IAddPlaceScreenWidgetModel> {
                             CommonTextField(
                               title: PlacesListStrings.name,
                               validator: TextFieldsValidators.checkNotEmpty,
-                              onFieldSave: (name) {
-                                wm.data.addAll(
-                                  {PlacesListStrings.name: name ?? ''},
-                                );
-                                debugPrint(name);
-                              },
+                              onFieldSave: (name) =>
+                                  wm.saveFields(PlacesListStrings.name, name),
                             ),
                             const SizedBox(height: 24),
                             Row(
@@ -109,8 +105,9 @@ class AddPlaceScreen extends ElementaryWidget<IAddPlaceScreenWidgetModel> {
                                     ],
                                     validator:
                                         TextFieldsValidators.checkLatitude,
-                                    onFieldSave: (lat) => wm.data.addAll(
-                                      {PlacesListStrings.lat: lat ?? ''},
+                                    onFieldSave: (lat) => wm.saveFields(
+                                      PlacesListStrings.lat,
+                                      lat,
                                     ),
                                   ),
                                 ),
@@ -127,8 +124,9 @@ class AddPlaceScreen extends ElementaryWidget<IAddPlaceScreenWidgetModel> {
                                     ],
                                     validator:
                                         TextFieldsValidators.checkLongitude,
-                                    onFieldSave: (lng) => wm.data.addAll(
-                                      {PlacesListStrings.lng: lng ?? ''},
+                                    onFieldSave: (lng) => wm.saveFields(
+                                      PlacesListStrings.lng,
+                                      lng,
                                     ),
                                   ),
                                 ),
@@ -151,11 +149,9 @@ class AddPlaceScreen extends ElementaryWidget<IAddPlaceScreenWidgetModel> {
                               maxLines: 3,
                               textInputAction: TextInputAction.done,
                               validator: TextFieldsValidators.checkNotEmpty,
-                              onFieldSave: (description) => wm.data.addAll(
-                                {
-                                  PlacesListStrings.description:
-                                      description ?? '',
-                                },
+                              onFieldSave: (description) => wm.saveFields(
+                                PlacesListStrings.description,
+                                description,
                               ),
                             ),
                             const SizedBox(height: 40),
