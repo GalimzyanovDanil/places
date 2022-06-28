@@ -44,6 +44,42 @@ abstract class WidgetsFactory {
       onConfirm: onConfirm,
     );
   }
+
+  // ignore: member-ordering-extended
+  static Widget informDialogWidgetFactory({
+    required VoidCallback onConfirm,
+    required String bodyText,
+    required String confirmTitle,
+    required String title,
+  }) =>
+      _informDialogWidgetFactory(
+        onConfirm: onConfirm,
+        bodyText: bodyText,
+        confirmTitle: confirmTitle,
+        title: title,
+      );
+
+  static Widget _informDialogWidgetFactory({
+    required VoidCallback onConfirm,
+    required String bodyText,
+    required String confirmTitle,
+    required String title,
+  }) {
+    if (Platform.isIOS) {
+      return _IosInformDialog(
+        title: title,
+        bodyText: bodyText,
+        confirmTitle: confirmTitle,
+        onConfirm: onConfirm,
+      );
+    }
+    return _AndroidInformDialog(
+      title: title,
+      bodyText: bodyText,
+      confirmTitle: confirmTitle,
+      onConfirm: onConfirm,
+    );
+  }
 }
 
 class _IosAlertDialog extends StatelessWidget {
@@ -133,6 +169,76 @@ class _AndroidAlertDialog extends StatelessWidget {
           onPressed: () async {
             unawaited(onConfirm().then((value) => Navigator.of(context).pop()));
           },
+        ),
+      ],
+    );
+  }
+}
+
+class _IosInformDialog extends StatelessWidget {
+  final String bodyText;
+  final String confirmTitle;
+  final VoidCallback onConfirm;
+  final String title;
+
+  const _IosInformDialog({
+    required this.bodyText,
+    required this.confirmTitle,
+    required this.onConfirm,
+    required this.title,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoAlertDialog(
+      title: Text(title),
+      content: Text(bodyText),
+      actions: <CupertinoDialogAction>[
+        CupertinoDialogAction(
+          isDefaultAction: true,
+          onPressed: onConfirm,
+          child: Text(confirmTitle),
+        ),
+      ],
+    );
+  }
+}
+
+class _AndroidInformDialog extends StatelessWidget {
+  final String bodyText;
+  final String confirmTitle;
+  final VoidCallback onConfirm;
+  final String title;
+
+  const _AndroidInformDialog({
+    required this.bodyText,
+    required this.confirmTitle,
+    required this.onConfirm,
+    required this.title,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return AlertDialog(
+      backgroundColor: colorScheme.onPrimaryContainer,
+      title: Text(title),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(bodyText),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            confirmTitle,
+          ),
+          onPressed: onConfirm,
         ),
       ],
     );

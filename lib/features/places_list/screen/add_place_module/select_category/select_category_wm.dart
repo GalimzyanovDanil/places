@@ -1,11 +1,8 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
-import 'package:places/features/app/di/app_scope.dart';
 import 'package:places/features/common/domain/entity/place_type.dart';
-import 'package:places/features/navigation/service/coordinator.dart';
 import 'package:places/features/places_list/screen/add_place_module/select_category/select_category_model.dart';
 import 'package:places/features/places_list/screen/add_place_module/select_category/select_category_screen.dart';
-import 'package:provider/provider.dart';
 
 abstract class ISelectCategoryWidgetModel extends IWidgetModel {
   ThemeData get theme;
@@ -18,11 +15,9 @@ abstract class ISelectCategoryWidgetModel extends IWidgetModel {
 SelectCategoryWidgetModel defaultSelectCategoryWidgetModelFactory(
   BuildContext context,
 ) {
-  final appScope = context.read<IAppScope>();
   final model = SelectCategoryModel();
   return SelectCategoryWidgetModel(
     model: model,
-    coordinator: appScope.coordinator,
   );
 }
 
@@ -34,7 +29,6 @@ class SelectCategoryWidgetModel
   late final StateNotifier<int> _selectCategoryState;
 
   final _typeList = PlaceType.values;
-  final Coordinator coordinator;
 
   @override
   ThemeData get theme => Theme.of(context);
@@ -43,7 +37,6 @@ class SelectCategoryWidgetModel
   ListenableState<int> get selectCategoryState => _selectCategoryState;
 
   SelectCategoryWidgetModel({
-    required this.coordinator,
     required SelectCategoryModel model,
   }) : super(model);
 
@@ -65,10 +58,10 @@ class SelectCategoryWidgetModel
   }
 
   @override
-  void onBackButton() => coordinator.pop(context);
+  void onBackButton() => Navigator.of(context).pop(widget.type);
 
   @override
   void onSaveButton() {
-    coordinator.pop(context, arguments: _typeList[_selectCategoryState.value!]);
+    Navigator.of(context).pop(_typeList[_selectCategoryState.value!]);
   }
 }

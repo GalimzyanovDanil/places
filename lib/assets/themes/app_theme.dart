@@ -57,6 +57,9 @@ class AppTheme {
       error: AppColors.whiteRed,
       onError: AppColors.whiteBase,
       onInverseSurface: AppColors.whiteSecondary2,
+      background: AppColors.background,
+      secondary: AppColors.whiteBase,
+      onTertiaryContainer: AppColors.whiteSecondary2,
     );
   }
 
@@ -128,6 +131,9 @@ class AppTheme {
       error: AppColors.blackRed,
       onError: AppColors.whiteBase,
       onInverseSurface: AppColors.blackSecondary2,
+      background: AppColors.blackDark,
+      secondary: AppColors.blackMain,
+      onTertiaryContainer: AppColors.whiteBase,
     );
   }
 
