@@ -26,19 +26,19 @@ class AddImageWidget extends StatelessWidget {
     final cardWidgets = <Widget>[];
 
     if (imagePathList.isNotEmpty) {
-      for (var i = 0; i <= imagePathList.length - 1; i++) {
-        cardWidgets.addAll(
-          [
-            const SizedBox(width: 16),
-            _CardWidget(
-              deletePicture: deletePicture,
-              theme: theme,
-              imagePath: imagePathList[i],
-              index: i,
+      cardWidgets.addAll(
+        imagePathList.asMap().entries.expand<Widget>(
+              (element) => [
+                const SizedBox(width: 16),
+                _CardWidget(
+                  deletePicture: deletePicture,
+                  theme: theme,
+                  imagePath: element.value,
+                  index: element.key,
+                ),
+              ],
             ),
-          ],
-        );
-      }
+      );
     }
 
     return SizedBox(
