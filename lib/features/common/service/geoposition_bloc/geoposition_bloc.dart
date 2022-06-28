@@ -60,14 +60,8 @@ class GeopositionBloc extends Bloc<GeopositionEvent, GeopositionState> {
         if (!isServiceEnbled) {
           await Geolocator.openLocationSettings();
         }
-        final position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high,
-        );
 
-        final geoposition = Geoposition(
-          latitude: position.latitude,
-          longitude: position.longitude,
-        );
+        final geoposition = await _getCurrentPosition();
 
         emit(GeopositionState.succsess(
           status: state.status,
@@ -83,10 +77,29 @@ class GeopositionBloc extends Bloc<GeopositionEvent, GeopositionState> {
     GeopositionEvent event,
     Emitter<GeopositionState> emit,
   ) async {
-    emit(GeopositionState.succsess(
+    emit(GeopositionState.getPositionInProgress(
       status: state.status,
       geoposition: state.geoposition,
     ));
+    final geoposition = await _getCurrentPosition();
+
+    emit(
+      GeopositionState.succsess(
+        status: state.status,
+        geoposition: geoposition,
+      ),
+    );
+  }
+
+  Future<Geoposition> _getCurrentPosition() async {
+    final position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
+    return Geoposition(
+      latitude: position.latitude,
+      longitude: position.longitude,
+    );
   }
 }
 

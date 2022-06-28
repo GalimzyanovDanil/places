@@ -96,6 +96,7 @@ class AddPlaceScreen extends ElementaryWidget<IAddPlaceScreenWidgetModel> {
                                 Expanded(
                                   child: CommonTextField(
                                     title: PlacesListStrings.lat,
+                                    controller: wm.latController,
                                     keyboardType: TextInputType.number,
                                     inputFormatters: [
                                       FilteringTextInputFormatter.allow(
@@ -115,6 +116,7 @@ class AddPlaceScreen extends ElementaryWidget<IAddPlaceScreenWidgetModel> {
                                 Expanded(
                                   child: CommonTextField(
                                     title: PlacesListStrings.lng,
+                                    controller: wm.lngController,
                                     keyboardType: TextInputType.number,
                                     inputFormatters: [
                                       FilteringTextInputFormatter.allow(

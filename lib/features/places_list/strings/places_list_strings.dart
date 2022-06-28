@@ -55,4 +55,13 @@ class PlacesListStrings {
 
   static const infoDialogConfirmOk = 'Отлично';
   static const infoDialogConfirmBad = 'Попробовать еще раз';
+
+  static const selectPositionTitle = 'Местоположение';
+  static const selectPositionAccept = 'Готово';
+  static const selectPositionInfo = 'Укажите точку достопримечательства';
+
+  static const lightModeUrl =
+      'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png';
+  static const darkModeUrl =
+      'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png';
 }

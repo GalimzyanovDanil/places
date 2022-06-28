@@ -4,6 +4,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:places/features/app/di/app_scope.dart';
 import 'package:places/features/common/app_exceptions/api_exception.dart';
+import 'package:places/features/common/domain/entity/geoposition.dart';
 import 'package:places/features/common/domain/entity/place.dart';
 import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/common/strings/dialog_strings.dart';
@@ -13,6 +14,7 @@ import 'package:places/features/navigation/service/coordinator.dart';
 import 'package:places/features/places_list/screen/add_place_module/add_place_screen.dart';
 import 'package:places/features/places_list/screen/add_place_module/add_place_screen_model.dart';
 import 'package:places/features/places_list/screen/add_place_module/select_category/select_category_route.dart';
+import 'package:places/features/places_list/screen/add_place_module/select_position/select_position_route.dart';
 import 'package:places/features/places_list/strings/places_list_strings.dart';
 import 'package:places/features/places_list/widgets/add_place_widgets/select_image_source_widget.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +26,8 @@ abstract class IAddPlaceScreenWidgetModel extends IWidgetModel {
   ListenableState<PlaceType> get categoryState;
   ListenableState<bool> get isValidState;
   ListenableState<bool> get isLoadingProgressState;
+  TextEditingController get latController;
+  TextEditingController get lngController;
 
   GlobalKey<FormState> get formKey;
   Map<String, String> get data;
@@ -69,6 +73,8 @@ class AddPlaceScreenWidgetModel
   final _data = <String, String>{};
   final _formKey = GlobalKey<FormState>();
   final _isLoadingProgressState = StateNotifier<bool>(initValue: false);
+  late final TextEditingController _latController;
+  late final TextEditingController _lngController;
 
   @override
   ThemeData get theme => Theme.of(context);
@@ -93,6 +99,12 @@ class AddPlaceScreenWidgetModel
   @override
   ListenableState<bool> get isLoadingProgressState => _isLoadingProgressState;
 
+  @override
+  TextEditingController get latController => _latController;
+
+  @override
+  TextEditingController get lngController => _lngController;
+
   AddPlaceScreenWidgetModel({
     required this.coordinator,
     required AddPlaceScreenModel model,
@@ -102,13 +114,11 @@ class AddPlaceScreenWidgetModel
   void initWidgetModel() {
     super.initWidgetModel();
 
+    _latController = TextEditingController();
+    _lngController = TextEditingController();
+
     Listenable.merge([_categoryState, _uploadImageState])
         .addListener(_validateFields);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override
@@ -225,7 +235,21 @@ class AddPlaceScreenWidgetModel
   }
 
   @override
-  void onSetOnMapButton() {}
+  Future<void> onSetOnMapButton() async {
+    final oldPosition =
+        (_latController.text.isNotEmpty && _lngController.text.isNotEmpty)
+            ? Geoposition(
+                latitude: double.parse(_latController.text),
+                longitude: double.parse(_lngController.text),
+              )
+            : null;
+    final newPosition = await Navigator.of(context)
+        .push<Geoposition?>(SelectPositionRoute(oldPosition));
+    if (newPosition != null) {
+      _latController.text = newPosition.latitude.toString();
+      _lngController.text = newPosition.longitude.toString();
+    }
+  }
 
   void _validateFields() {
     final isNotEmptyImage = _uploadImageState.value?.isNotEmpty ?? false;

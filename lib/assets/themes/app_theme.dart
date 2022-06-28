@@ -60,6 +60,7 @@ class AppTheme {
       background: AppColors.background,
       secondary: AppColors.whiteBase,
       onTertiaryContainer: AppColors.whiteSecondary2,
+      secondaryContainer: AppColors.whiteBase,
     );
   }
 
@@ -134,6 +135,7 @@ class AppTheme {
       background: AppColors.blackDark,
       secondary: AppColors.blackMain,
       onTertiaryContainer: AppColors.whiteBase,
+      secondaryContainer: AppColors.blackSecondary,
     );
   }
 

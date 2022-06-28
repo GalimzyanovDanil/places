@@ -10,10 +10,12 @@ class CommonTextField extends StatefulWidget {
   final FormFieldValidator<String?>? validator;
   final ValueChanged<String?> onFieldSave;
   final List<TextInputFormatter>? inputFormatters;
+  final TextEditingController? controller;
 
   const CommonTextField({
     required this.title,
     required this.onFieldSave,
+    this.controller,
     this.inputFormatters,
     this.validator,
     this.maxLines,
@@ -32,7 +34,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
 
   @override
   void initState() {
-    controller = TextEditingController();
+    controller = widget.controller ?? TextEditingController();
     focusNode = FocusNode();
     super.initState();
   }
