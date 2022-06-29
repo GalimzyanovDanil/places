@@ -32,7 +32,7 @@ class Skeleton extends StatelessWidget {
       child: ClipRRect(
         borderRadius: borderRadius ?? BorderRadius.zero,
         child: Container(
-          // TODO(me) Почему если убрать цвет или заменить на контейнер на SizedBox,
+          // TODO(me): Почему если убрать цвет или заменить на контейнер на SizedBox,
           // то шиммер перестает отображаться
           color: Colors.green,
           width: width ?? double.infinity,

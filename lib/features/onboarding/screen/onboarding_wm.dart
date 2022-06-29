@@ -36,13 +36,13 @@ class OnboardingWidgetModel
   // Количество страниц онбординга
   final int _pageCount = 3;
 
-  @override
-  int get pageCount => _pageCount;
-
   late final PageController _pageController;
 
   final StateNotifier<bool> _isLastPage = StateNotifier<bool>(initValue: false);
   final StateNotifier<int> _currentPage = StateNotifier<int>(initValue: 0);
+
+  @override
+  int get pageCount => _pageCount;
 
   @override
   PageController get pageController => _pageController;

@@ -8,7 +8,7 @@ import 'package:places/features/common/service/places_service.dart';
 import 'package:places/features/places_list/domain/repository/image_pick_repository.dart';
 import 'package:places/features/places_list/service/image_picker_service.dart';
 
-// TODO: cover with documentation
+// TODO(me): cover with documentation
 /// Default Elementary model for AddPlaceScreen module
 class AddPlaceScreenModel extends ElementaryModel {
   final PlacesService _placesService;

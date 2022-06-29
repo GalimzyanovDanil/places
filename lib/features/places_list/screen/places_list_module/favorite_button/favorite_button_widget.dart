@@ -6,7 +6,7 @@ import 'package:places/assets/res/app_assets.dart';
 import 'package:places/features/common/domain/entity/place.dart';
 import 'package:places/features/places_list/screen/places_list_module/favorite_button/favorite_button_wm.dart';
 
-// TODO: cover with documentation
+// TODO(me): cover with documentation
 /// Main widget for FavoriteButton module
 class FavoriteButtonWidget
     extends ElementaryWidget<IFavoriteButtonWidgetModel> {

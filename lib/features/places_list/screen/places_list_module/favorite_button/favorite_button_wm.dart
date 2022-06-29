@@ -18,7 +18,7 @@ FavoriteButtonWidgetModel defaultFavoriteButtonWidgetModelFactory(
   return FavoriteButtonWidgetModel(model);
 }
 
-// TODO: cover with documentation
+// TODO(me): cover with documentation
 /// Default widget model for FavoriteButtonWidget
 class FavoriteButtonWidgetModel
     extends WidgetModel<FavoriteButtonWidget, FavoriteButtonModel>

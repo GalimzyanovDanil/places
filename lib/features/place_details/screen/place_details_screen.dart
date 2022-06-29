@@ -8,9 +8,7 @@ import 'package:places/features/place_details/widgets/buttons_widget.dart';
 import 'package:places/features/place_details/widgets/content_widget.dart';
 import 'package:places/features/place_details/widgets/image_view_widget.dart';
 import 'package:places/features/place_details/widgets/navigation_button_widget.dart';
-import 'package:places/features/common/widgets/skeleton.dart';
 import 'package:places/util/triple_state_notifier_builder.dart';
-import 'package:shimmer/shimmer.dart';
 
 // TODO(me): cover with documentation
 /// Main widget for PlaceDetails module

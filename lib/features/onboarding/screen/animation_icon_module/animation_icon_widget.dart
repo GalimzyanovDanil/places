@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/features/onboarding/screen/animation_icon_module/animation_icon_wm.dart';
 
-// TODO: cover with documentation
+// TODO(me): cover with documentation
 /// Main widget for AnimationIcon module
 class AnimationIconWidget extends ElementaryWidget<IAnimationIconWidgetModel> {
   final String _iconPath;

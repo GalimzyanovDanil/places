@@ -70,7 +70,7 @@ class PlacesListWidgetModel
   ThemeData get theme => Theme.of(context);
 
   @override
-  // TODO: implement animation
+  // TODO(me): implement animation
   Animation<Offset> get animation => _animation;
 
   /// Триггер последней страницы загрузки

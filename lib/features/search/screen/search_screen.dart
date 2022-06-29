@@ -11,7 +11,7 @@ import 'package:places/features/search/widgets/find_place_list_widget.dart';
 import 'package:places/features/search/widgets/query_list_widget.dart';
 import 'package:places/util/double_state_notifier_builder.dart';
 
-/// TODO(me): cover with documentation
+// TODO(me): cover with documentation
 /// Main widget for Search module
 class SearchScreen extends ElementaryWidget<ISearchWidgetModel> {
   const SearchScreen({

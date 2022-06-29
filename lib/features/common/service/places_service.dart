@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:places/api/strings/api_strings.dart';
 import 'package:places/features/common/domain/entity/place.dart';
 import 'package:places/features/common/domain/entity/place_filter.dart';
@@ -26,7 +25,7 @@ class PlacesService {
         final imagePath = await _placesRepository.uploadFiles(file);
         requestPlace.urls.add('${PlaceApiStrings.basePath}/$imagePath');
       }
-    } on Object catch (e) {
+    } on Object catch (_) {
       rethrow;
     }
     return _placesRepository.addNewPlace(requestPlace);

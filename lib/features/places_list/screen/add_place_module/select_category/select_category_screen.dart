@@ -6,7 +6,7 @@ import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/places_list/screen/add_place_module/select_category/select_category_wm.dart';
 import 'package:places/features/places_list/strings/places_list_strings.dart';
 
-// TODO: cover with documentation
+// TODO(me): cover with documentation
 /// Main widget for SelectCategory module
 class SelectCategoryScreen
     extends ElementaryWidget<ISelectCategoryWidgetModel> {

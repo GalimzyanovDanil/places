@@ -15,7 +15,7 @@ AnimationIconWidgetModel defaultAnimationIconWidgetModelFactory(
   return AnimationIconWidgetModel(model);
 }
 
-// TODO: cover with documentation
+// TODO(me): cover with documentation
 /// Default widget model for AnimationIconWidget
 class AnimationIconWidgetModel
     extends WidgetModel<AnimationIconWidget, AnimationIconModel>

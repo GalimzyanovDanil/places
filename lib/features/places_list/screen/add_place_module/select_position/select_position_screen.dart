@@ -9,7 +9,7 @@ import 'package:places/features/places_list/screen/add_place_module/select_posit
 import 'package:places/features/places_list/strings/places_list_strings.dart';
 import 'package:places/util/double_state_notifier_builder.dart';
 
-// TODO: cover with documentation
+// TODO(me): cover with documentation
 /// Main widget for SelectPosition module
 class SelectPositionScreen
     extends ElementaryWidget<ISelectPositionWidgetModel> {

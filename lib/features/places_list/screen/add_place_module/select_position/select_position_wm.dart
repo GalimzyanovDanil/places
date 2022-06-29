@@ -32,7 +32,7 @@ SelectPositionWidgetModel defaultSelectPositionWidgetModelFactory(
   return SelectPositionWidgetModel(model);
 }
 
-// TODO: cover with documentation
+// TODO(me): cover with documentation
 /// Default widget model for SelectPositionWidget
 class SelectPositionWidgetModel
     extends WidgetModel<SelectPositionScreen, SelectPositionModel>

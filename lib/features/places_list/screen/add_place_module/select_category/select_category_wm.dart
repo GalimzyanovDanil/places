@@ -21,7 +21,7 @@ SelectCategoryWidgetModel defaultSelectCategoryWidgetModelFactory(
   );
 }
 
-// TODO: cover with documentation
+// TODO(me): cover with documentation
 /// Default widget model for SelectCategoryWidget
 class SelectCategoryWidgetModel
     extends WidgetModel<SelectCategoryScreen, SelectCategoryModel>
