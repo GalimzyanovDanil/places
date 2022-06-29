@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/assets/colors/app_colors.dart';
 import 'package:places/assets/res/app_assets.dart';
+import 'package:places/features/common/widgets/skeleton.dart';
 
 class NetworkImageWidget extends StatelessWidget {
   final String? imageUrl;
@@ -33,10 +34,13 @@ class NetworkImageWidget extends StatelessWidget {
                       ),
                     );
                   },
-                  placeholder: (context, url) => const _ImagePlaceholder(),
+                  progressIndicatorBuilder: (_, __, ___) {
+                    return const Center(
+                      child: Skeleton(height: double.infinity),
+                    );
+                  },
                   // ignore: implicit_dynamic_parameter
-                  errorWidget: (context, url, error) =>
-                      const _ImagePlaceholder(),
+                  errorWidget: (_, __, ___) => const _ImagePlaceholder(),
                 )
               : const _ImagePlaceholder(),
         ),

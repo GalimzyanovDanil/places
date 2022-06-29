@@ -186,7 +186,7 @@ class PlacesListWidgetModel
     required List<PlaceType> placeTypes,
   }) async {
     // TODO(me): Удалить после проверки
-    await Future<void>.delayed(const Duration(seconds: 1));
+    await Future<void>.delayed(const Duration(seconds: 2));
     await model
         .getFilteredPlacesList(
       lat: lat,
@@ -208,7 +208,7 @@ class PlacesListWidgetModel
     await model.getPlacesList(placeCount, offset).then(
       (content) async {
         // TODO(me): Удалить после проверки
-        await Future<void>.delayed(const Duration(seconds: 1));
+        await Future<void>.delayed(const Duration(seconds: 2));
         for (final element in content) {
           _correctImageUrls(element.urls);
         }

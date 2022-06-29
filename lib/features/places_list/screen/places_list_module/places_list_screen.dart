@@ -9,6 +9,7 @@ import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/common/widgets/app_bar_widget.dart';
 import 'package:places/features/places_list/screen/places_list_module/builder_widgets/first_page_error_widget.dart';
 import 'package:places/features/places_list/screen/places_list_module/builder_widgets/new_page_error_widget.dart';
+import 'package:places/features/places_list/screen/places_list_module/builder_widgets/progress_indicator_widget.dart';
 import 'package:places/features/places_list/screen/places_list_module/places_list_wm.dart';
 import 'package:places/features/places_list/strings/places_list_strings.dart';
 import 'package:places/features/places_list/widgets/place_list_widgets/add_place_button_widget.dart';
@@ -107,6 +108,8 @@ class PlacesListScreen extends ElementaryWidget<IPlacesListWidgetModel> {
                       index: index,
                       place: place,
                     ),
+                    firstPageProgressIndicatorBuilder: (_) =>
+                        const ProgresIndicatorWidget(),
                     firstPageErrorIndicatorBuilder: (_) =>
                         FirstPageErrorWidget(wm.pagingController.error),
                     newPageErrorIndicatorBuilder: (_) => NewPageErrorWidget(
