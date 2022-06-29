@@ -4,7 +4,6 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:places/features/app/di/app_scope.dart';
-import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
 import 'package:places/features/place_details/screen/place_details_model.dart';
 import 'package:places/features/place_details/screen/place_details_screen.dart';
@@ -23,6 +22,8 @@ abstract class IPlaceDetailsWidgetModel extends IWidgetModel {
   ListenableState<double> get imageViewState;
 
   ListenableState<bool> get routeCompleteState;
+
+  ListenableState<EntityState<bool>> get isLoadingProgressState;
 
   PageController get pageController;
 
@@ -62,6 +63,7 @@ class PlaceDetailsWidgetModel
   final StateNotifier<String?> _plannedDateState = StateNotifier();
   final StateNotifier<bool> _routeCompleteState =
       StateNotifier(initValue: false);
+  final _isLoadingProgressState = EntityStateNotifier<bool>.value(true);
 
   late final PageController _pageController;
 
@@ -85,6 +87,10 @@ class PlaceDetailsWidgetModel
   @override
   ListenableState<bool> get routeCompleteState => _routeCompleteState;
 
+  @override
+  ListenableState<EntityState<bool>> get isLoadingProgressState =>
+      _isLoadingProgressState;
+
   DateTime? _plannedDate;
   PlannedButtonState? _prevState;
 
@@ -93,7 +99,14 @@ class PlaceDetailsWidgetModel
     required Coordinator coordinator,
   })  : _coordinator = coordinator,
         super(model) {
+    _loadingImitation();
     _init();
+  }
+
+  @override
+  void initWidgetModel() {
+    super.initWidgetModel();
+    _initWM();
   }
 
   @override
@@ -156,12 +169,6 @@ class PlaceDetailsWidgetModel
     // TODO(me): implement onTapShare
   }
 
-  @override
-  void initWidgetModel() {
-    super.initWidgetModel();
-    _initWM();
-  }
-
   Future<void> _init() async {
     _pageController = PageController()
       ..addListener(() {
@@ -197,5 +204,11 @@ class PlaceDetailsWidgetModel
       lastDate: DateTime(2122),
       onDateTimeChanged: (newDate) => _plannedDate = newDate,
     );
+  }
+
+  Future<void> _loadingImitation() async {
+    _isLoadingProgressState.loading();
+    await Future<void>.delayed(const Duration(seconds: 3));
+    _isLoadingProgressState.content(false);
   }
 }
