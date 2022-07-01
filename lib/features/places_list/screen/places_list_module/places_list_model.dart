@@ -4,6 +4,7 @@ import 'package:places/features/common/app_exceptions/api_exception_handler.dart
 import 'package:places/features/common/domain/entity/place.dart';
 import 'package:places/features/common/domain/entity/place_filter.dart';
 import 'package:places/features/common/domain/entity/place_type.dart';
+import 'package:places/features/common/service/app_settings_service.dart';
 import 'package:places/features/common/service/geoposition_bloc/geoposition_bloc.dart';
 import 'package:places/features/common/service/places_service.dart';
 
@@ -14,6 +15,7 @@ class PlacesListModel extends ElementaryModel {
   final ErrorHandler _errorHandler;
   final ConnectivityResult _connectivityResult;
   final GeopositionBloc _geopositionBloc;
+  final AppSettingsService _appSettingsService;
 
   GeopositionState get geopositionState => _geopositionBloc.state;
 
@@ -22,10 +24,12 @@ class PlacesListModel extends ElementaryModel {
     required PlacesService placesService,
     required ConnectivityResult connectivityResult,
     required GeopositionBloc geopositionBloc,
+    required AppSettingsService appSettingsService,
   })  : _placesService = placesService,
         _errorHandler = errorHandler,
         _connectivityResult = connectivityResult,
         _geopositionBloc = geopositionBloc,
+        _appSettingsService = appSettingsService,
         super(errorHandler: errorHandler);
 
   Future<List<Place>> getPlacesList(int count, [int offset = 0]) async {
@@ -72,4 +76,8 @@ class PlacesListModel extends ElementaryModel {
   void requsetAndIsCheckPermission() {
     _geopositionBloc.add(const GeopositionEvent.checkAndRequestPermission());
   }
+
+  Future<double> getFilterDistance() => _appSettingsService.getFilterDistance();
+  Future<List<String>> getFilterPlaceType() =>
+      _appSettingsService.getFilterPlaceTypes();
 }

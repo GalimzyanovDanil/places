@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/common/strings/local_storage_keys.dart';
 import 'package:places/util/shared_preferences_helper.dart';
 
@@ -9,8 +10,10 @@ class SharedPrefsStorage {
 
   /// Получение настроек фильтра по типам мест
   Future<List<String>> getFilterPlaceTypes() async {
-    return _sharedPreferencesHelper
-        .get<List<String>>(LocalStorageKeys.filterPlaceTypes, []);
+    return _sharedPreferencesHelper.get<List<String>>(
+      LocalStorageKeys.filterPlaceTypes,
+      PlaceType.values.map((e) => e.name).toList(),
+    );
   }
 
   /// Запись настроек фильтра по типам мест
@@ -25,7 +28,7 @@ class SharedPrefsStorage {
   Future<double> getFilterDistance() async {
     return _sharedPreferencesHelper.get<double>(
       LocalStorageKeys.filterDistance,
-      10.0,
+      30.0,
     );
   }
 

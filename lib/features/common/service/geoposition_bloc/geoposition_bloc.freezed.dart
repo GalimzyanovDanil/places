@@ -301,45 +301,48 @@ abstract class _GetGeopositionEvent implements GeopositionEvent {
 /// @nodoc
 mixin _$GeopositionState {
   GeopositionStatus get status => throw _privateConstructorUsedError;
-  Geoposition get geoposition => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         initial,
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         getStatusInProgress,
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         getPositionInProgress,
     required TResult Function(GeopositionStatus status, Geoposition geoposition)
         succsess,
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         initial,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getStatusInProgress,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getPositionInProgress,
     TResult Function(GeopositionStatus status, Geoposition geoposition)?
         succsess,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)? error,
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         initial,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getStatusInProgress,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getPositionInProgress,
     TResult Function(GeopositionStatus status, Geoposition geoposition)?
         succsess,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)? error,
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -384,7 +387,7 @@ abstract class $GeopositionStateCopyWith<$Res> {
   factory $GeopositionStateCopyWith(
           GeopositionState value, $Res Function(GeopositionState) then) =
       _$GeopositionStateCopyWithImpl<$Res>;
-  $Res call({GeopositionStatus status, Geoposition geoposition});
+  $Res call({GeopositionStatus status});
 }
 
 /// @nodoc
@@ -399,17 +402,12 @@ class _$GeopositionStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? status = freezed,
-    Object? geoposition = freezed,
   }) {
     return _then(_value.copyWith(
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as GeopositionStatus,
-      geoposition: geoposition == freezed
-          ? _value.geoposition
-          : geoposition // ignore: cast_nullable_to_non_nullable
-              as Geoposition,
     ));
   }
 }
@@ -421,7 +419,7 @@ abstract class _$$_InitialStateCopyWith<$Res>
           _$_InitialState value, $Res Function(_$_InitialState) then) =
       __$$_InitialStateCopyWithImpl<$Res>;
   @override
-  $Res call({GeopositionStatus status, Geoposition geoposition});
+  $Res call({GeopositionStatus status, Geoposition? geoposition});
 }
 
 /// @nodoc
@@ -448,24 +446,24 @@ class __$$_InitialStateCopyWithImpl<$Res>
       geoposition: geoposition == freezed
           ? _value.geoposition
           : geoposition // ignore: cast_nullable_to_non_nullable
-              as Geoposition,
+              as Geoposition?,
     ));
   }
 }
 
 /// @nodoc
 
-class _$_InitialState implements _InitialState {
+class _$_InitialState extends _InitialState {
   const _$_InitialState(
-      {this.status = GeopositionStatus.denied,
-      this.geoposition = const Geoposition.notReceived()});
+      {this.status = GeopositionStatus.denied, this.geoposition = null})
+      : super._();
 
   @override
   @JsonKey()
   final GeopositionStatus status;
   @override
   @JsonKey()
-  final Geoposition geoposition;
+  final Geoposition? geoposition;
 
   @override
   String toString() {
@@ -496,15 +494,19 @@ class _$_InitialState implements _InitialState {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         initial,
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         getStatusInProgress,
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         getPositionInProgress,
     required TResult Function(GeopositionStatus status, Geoposition geoposition)
         succsess,
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         error,
   }) {
     return initial(status, geoposition);
@@ -513,15 +515,15 @@ class _$_InitialState implements _InitialState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         initial,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getStatusInProgress,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getPositionInProgress,
     TResult Function(GeopositionStatus status, Geoposition geoposition)?
         succsess,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)? error,
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)? error,
   }) {
     return initial?.call(status, geoposition);
   }
@@ -529,15 +531,15 @@ class _$_InitialState implements _InitialState {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         initial,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getStatusInProgress,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getPositionInProgress,
     TResult Function(GeopositionStatus status, Geoposition geoposition)?
         succsess,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)? error,
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)? error,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -589,15 +591,15 @@ class _$_InitialState implements _InitialState {
   }
 }
 
-abstract class _InitialState implements GeopositionState {
+abstract class _InitialState extends GeopositionState {
   const factory _InitialState(
       {final GeopositionStatus status,
-      final Geoposition geoposition}) = _$_InitialState;
+      final Geoposition? geoposition}) = _$_InitialState;
+  const _InitialState._() : super._();
 
   @override
   GeopositionStatus get status => throw _privateConstructorUsedError;
-  @override
-  Geoposition get geoposition => throw _privateConstructorUsedError;
+  Geoposition? get geoposition => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_InitialStateCopyWith<_$_InitialState> get copyWith =>
@@ -612,7 +614,7 @@ abstract class _$$_GetStatusInProgressStateCopyWith<$Res>
           $Res Function(_$_GetStatusInProgressState) then) =
       __$$_GetStatusInProgressStateCopyWithImpl<$Res>;
   @override
-  $Res call({GeopositionStatus status, Geoposition geoposition});
+  $Res call({GeopositionStatus status, Geoposition? geoposition});
 }
 
 /// @nodoc
@@ -640,24 +642,24 @@ class __$$_GetStatusInProgressStateCopyWithImpl<$Res>
       geoposition: geoposition == freezed
           ? _value.geoposition
           : geoposition // ignore: cast_nullable_to_non_nullable
-              as Geoposition,
+              as Geoposition?,
     ));
   }
 }
 
 /// @nodoc
 
-class _$_GetStatusInProgressState implements _GetStatusInProgressState {
+class _$_GetStatusInProgressState extends _GetStatusInProgressState {
   const _$_GetStatusInProgressState(
-      {this.status = GeopositionStatus.denied,
-      this.geoposition = const Geoposition.notReceived()});
+      {this.status = GeopositionStatus.denied, this.geoposition = null})
+      : super._();
 
   @override
   @JsonKey()
   final GeopositionStatus status;
   @override
   @JsonKey()
-  final Geoposition geoposition;
+  final Geoposition? geoposition;
 
   @override
   String toString() {
@@ -689,15 +691,19 @@ class _$_GetStatusInProgressState implements _GetStatusInProgressState {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         initial,
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         getStatusInProgress,
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         getPositionInProgress,
     required TResult Function(GeopositionStatus status, Geoposition geoposition)
         succsess,
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         error,
   }) {
     return getStatusInProgress(status, geoposition);
@@ -706,15 +712,15 @@ class _$_GetStatusInProgressState implements _GetStatusInProgressState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         initial,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getStatusInProgress,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getPositionInProgress,
     TResult Function(GeopositionStatus status, Geoposition geoposition)?
         succsess,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)? error,
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)? error,
   }) {
     return getStatusInProgress?.call(status, geoposition);
   }
@@ -722,15 +728,15 @@ class _$_GetStatusInProgressState implements _GetStatusInProgressState {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         initial,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getStatusInProgress,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getPositionInProgress,
     TResult Function(GeopositionStatus status, Geoposition geoposition)?
         succsess,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)? error,
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)? error,
     required TResult orElse(),
   }) {
     if (getStatusInProgress != null) {
@@ -782,15 +788,15 @@ class _$_GetStatusInProgressState implements _GetStatusInProgressState {
   }
 }
 
-abstract class _GetStatusInProgressState implements GeopositionState {
+abstract class _GetStatusInProgressState extends GeopositionState {
   const factory _GetStatusInProgressState(
       {final GeopositionStatus status,
-      final Geoposition geoposition}) = _$_GetStatusInProgressState;
+      final Geoposition? geoposition}) = _$_GetStatusInProgressState;
+  const _GetStatusInProgressState._() : super._();
 
   @override
   GeopositionStatus get status => throw _privateConstructorUsedError;
-  @override
-  Geoposition get geoposition => throw _privateConstructorUsedError;
+  Geoposition? get geoposition => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_GetStatusInProgressStateCopyWith<_$_GetStatusInProgressState>
@@ -805,7 +811,7 @@ abstract class _$$_GetPositionInProgressStateCopyWith<$Res>
           $Res Function(_$_GetPositionInProgressState) then) =
       __$$_GetPositionInProgressStateCopyWithImpl<$Res>;
   @override
-  $Res call({GeopositionStatus status, Geoposition geoposition});
+  $Res call({GeopositionStatus status, Geoposition? geoposition});
 }
 
 /// @nodoc
@@ -834,23 +840,23 @@ class __$$_GetPositionInProgressStateCopyWithImpl<$Res>
       geoposition: geoposition == freezed
           ? _value.geoposition
           : geoposition // ignore: cast_nullable_to_non_nullable
-              as Geoposition,
+              as Geoposition?,
     ));
   }
 }
 
 /// @nodoc
 
-class _$_GetPositionInProgressState implements _GetPositionInProgressState {
+class _$_GetPositionInProgressState extends _GetPositionInProgressState {
   const _$_GetPositionInProgressState(
-      {required this.status,
-      this.geoposition = const Geoposition.notReceived()});
+      {required this.status, this.geoposition = null})
+      : super._();
 
   @override
   final GeopositionStatus status;
   @override
   @JsonKey()
-  final Geoposition geoposition;
+  final Geoposition? geoposition;
 
   @override
   String toString() {
@@ -882,15 +888,19 @@ class _$_GetPositionInProgressState implements _GetPositionInProgressState {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         initial,
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         getStatusInProgress,
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         getPositionInProgress,
     required TResult Function(GeopositionStatus status, Geoposition geoposition)
         succsess,
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         error,
   }) {
     return getPositionInProgress(status, geoposition);
@@ -899,15 +909,15 @@ class _$_GetPositionInProgressState implements _GetPositionInProgressState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         initial,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getStatusInProgress,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getPositionInProgress,
     TResult Function(GeopositionStatus status, Geoposition geoposition)?
         succsess,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)? error,
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)? error,
   }) {
     return getPositionInProgress?.call(status, geoposition);
   }
@@ -915,15 +925,15 @@ class _$_GetPositionInProgressState implements _GetPositionInProgressState {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         initial,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getStatusInProgress,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getPositionInProgress,
     TResult Function(GeopositionStatus status, Geoposition geoposition)?
         succsess,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)? error,
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)? error,
     required TResult orElse(),
   }) {
     if (getPositionInProgress != null) {
@@ -975,15 +985,15 @@ class _$_GetPositionInProgressState implements _GetPositionInProgressState {
   }
 }
 
-abstract class _GetPositionInProgressState implements GeopositionState {
+abstract class _GetPositionInProgressState extends GeopositionState {
   const factory _GetPositionInProgressState(
       {required final GeopositionStatus status,
-      final Geoposition geoposition}) = _$_GetPositionInProgressState;
+      final Geoposition? geoposition}) = _$_GetPositionInProgressState;
+  const _GetPositionInProgressState._() : super._();
 
   @override
   GeopositionStatus get status => throw _privateConstructorUsedError;
-  @override
-  Geoposition get geoposition => throw _privateConstructorUsedError;
+  Geoposition? get geoposition => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_GetPositionInProgressStateCopyWith<_$_GetPositionInProgressState>
@@ -1031,8 +1041,9 @@ class __$$_SuccsessStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_SuccsessState implements _SuccsessState {
-  const _$_SuccsessState({required this.status, required this.geoposition});
+class _$_SuccsessState extends _SuccsessState {
+  const _$_SuccsessState({required this.status, required this.geoposition})
+      : super._();
 
   @override
   final GeopositionStatus status;
@@ -1068,15 +1079,19 @@ class _$_SuccsessState implements _SuccsessState {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         initial,
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         getStatusInProgress,
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         getPositionInProgress,
     required TResult Function(GeopositionStatus status, Geoposition geoposition)
         succsess,
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         error,
   }) {
     return succsess(status, geoposition);
@@ -1085,15 +1100,15 @@ class _$_SuccsessState implements _SuccsessState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         initial,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getStatusInProgress,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getPositionInProgress,
     TResult Function(GeopositionStatus status, Geoposition geoposition)?
         succsess,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)? error,
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)? error,
   }) {
     return succsess?.call(status, geoposition);
   }
@@ -1101,15 +1116,15 @@ class _$_SuccsessState implements _SuccsessState {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         initial,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getStatusInProgress,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getPositionInProgress,
     TResult Function(GeopositionStatus status, Geoposition geoposition)?
         succsess,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)? error,
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)? error,
     required TResult orElse(),
   }) {
     if (succsess != null) {
@@ -1161,14 +1176,14 @@ class _$_SuccsessState implements _SuccsessState {
   }
 }
 
-abstract class _SuccsessState implements GeopositionState {
+abstract class _SuccsessState extends GeopositionState {
   const factory _SuccsessState(
       {required final GeopositionStatus status,
       required final Geoposition geoposition}) = _$_SuccsessState;
+  const _SuccsessState._() : super._();
 
   @override
   GeopositionStatus get status => throw _privateConstructorUsedError;
-  @override
   Geoposition get geoposition => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
@@ -1183,7 +1198,7 @@ abstract class _$$_ErrorStateCopyWith<$Res>
           _$_ErrorState value, $Res Function(_$_ErrorState) then) =
       __$$_ErrorStateCopyWithImpl<$Res>;
   @override
-  $Res call({GeopositionStatus status, Geoposition geoposition});
+  $Res call({GeopositionStatus status, Geoposition? geoposition});
 }
 
 /// @nodoc
@@ -1210,23 +1225,22 @@ class __$$_ErrorStateCopyWithImpl<$Res>
       geoposition: geoposition == freezed
           ? _value.geoposition
           : geoposition // ignore: cast_nullable_to_non_nullable
-              as Geoposition,
+              as Geoposition?,
     ));
   }
 }
 
 /// @nodoc
 
-class _$_ErrorState implements _ErrorState {
-  const _$_ErrorState(
-      {required this.status,
-      this.geoposition = const Geoposition.notReceived()});
+class _$_ErrorState extends _ErrorState {
+  const _$_ErrorState({required this.status, this.geoposition = null})
+      : super._();
 
   @override
   final GeopositionStatus status;
   @override
   @JsonKey()
-  final Geoposition geoposition;
+  final Geoposition? geoposition;
 
   @override
   String toString() {
@@ -1257,15 +1271,19 @@ class _$_ErrorState implements _ErrorState {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         initial,
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         getStatusInProgress,
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         getPositionInProgress,
     required TResult Function(GeopositionStatus status, Geoposition geoposition)
         succsess,
-    required TResult Function(GeopositionStatus status, Geoposition geoposition)
+    required TResult Function(
+            GeopositionStatus status, Geoposition? geoposition)
         error,
   }) {
     return error(status, geoposition);
@@ -1274,15 +1292,15 @@ class _$_ErrorState implements _ErrorState {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         initial,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getStatusInProgress,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getPositionInProgress,
     TResult Function(GeopositionStatus status, Geoposition geoposition)?
         succsess,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)? error,
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)? error,
   }) {
     return error?.call(status, geoposition);
   }
@@ -1290,15 +1308,15 @@ class _$_ErrorState implements _ErrorState {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         initial,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getStatusInProgress,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)?
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)?
         getPositionInProgress,
     TResult Function(GeopositionStatus status, Geoposition geoposition)?
         succsess,
-    TResult Function(GeopositionStatus status, Geoposition geoposition)? error,
+    TResult Function(GeopositionStatus status, Geoposition? geoposition)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -1350,15 +1368,15 @@ class _$_ErrorState implements _ErrorState {
   }
 }
 
-abstract class _ErrorState implements GeopositionState {
+abstract class _ErrorState extends GeopositionState {
   const factory _ErrorState(
       {required final GeopositionStatus status,
-      final Geoposition geoposition}) = _$_ErrorState;
+      final Geoposition? geoposition}) = _$_ErrorState;
+  const _ErrorState._() : super._();
 
   @override
   GeopositionStatus get status => throw _privateConstructorUsedError;
-  @override
-  Geoposition get geoposition => throw _privateConstructorUsedError;
+  Geoposition? get geoposition => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_ErrorStateCopyWith<_$_ErrorState> get copyWith =>

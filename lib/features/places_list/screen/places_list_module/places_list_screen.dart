@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:places/assets/res/app_assets.dart';
 import 'package:places/features/common/domain/entity/place.dart';
-import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/common/widgets/app_bar_widget.dart';
 import 'package:places/features/places_list/screen/places_list_module/builder_widgets/first_page_error_widget.dart';
 import 'package:places/features/places_list/screen/places_list_module/builder_widgets/new_page_error_widget.dart';
@@ -18,18 +17,9 @@ import 'package:places/features/places_list/widgets/place_list_widgets/place_car
 // TODO(me): cover with documentation
 /// Main widget for PlacesList module
 class PlacesListScreen extends ElementaryWidget<IPlacesListWidgetModel> {
-  final List<PlaceType>? placeTypes;
-  final double? radius;
-  final double? lat;
-  final double? lng;
-
   const PlacesListScreen({
     Key? key,
     WidgetModelFactory wmFactory = defaultPlacesListWidgetModelFactory,
-    this.placeTypes,
-    this.radius,
-    this.lat,
-    this.lng,
   }) : super(wmFactory, key: key);
 
   @override
@@ -54,7 +44,7 @@ class PlacesListScreen extends ElementaryWidget<IPlacesListWidgetModel> {
                       visible: top < 180,
                       child: AnimatedOpacity(
                         duration: const Duration(milliseconds: 300),
-                        opacity: top < 105 ? 1.0 : 0.0,
+                        opacity: top < 110 ? 1.0 : 0.0,
                         child: Text(
                           PlacesListStrings.appBarTitle,
                           style: theme.textTheme.headline4,

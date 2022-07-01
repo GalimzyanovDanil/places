@@ -7,10 +7,6 @@ class Geoposition {
     required this.longitude,
   });
 
-  const Geoposition.notReceived()
-      : latitude = 0.0,
-        longitude = 0.0;
-
   Geoposition copyWith({
     double? latitude,
     double? longitude,

@@ -1,7 +1,6 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:places/assets/res/app_assets.dart';
-import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/favorite_list/screens/favorite_screen.dart';
 import 'package:places/features/main_tabs/screen/main_tabs_module/main_tabs_wm.dart';
 import 'package:places/features/main_tabs/widgets/svg_navigation_bar_item.dart';
@@ -11,16 +10,7 @@ import 'package:places/features/settings/screen/settings_screen.dart';
 // TODO(me): cover with documentation
 /// Main widget for Settings module
 class MainTabsScreen extends ElementaryWidget<IMainTabsWidgetModel> {
-  final List<PlaceType>? placeTypes;
-  final double? radius;
-  final double? lat;
-  final double? lng;
-
   const MainTabsScreen({
-    this.placeTypes,
-    this.radius,
-    this.lat,
-    this.lng,
     Key? key,
     WidgetModelFactory wmFactory = defaultSettingsWidgetModelFactory,
   }) : super(wmFactory, key: key);
@@ -31,15 +21,10 @@ class MainTabsScreen extends ElementaryWidget<IMainTabsWidgetModel> {
       body: TabBarView(
         controller: wm.tabController,
         physics: const NeverScrollableScrollPhysics(),
-        children: [
-          PlacesListScreen(
-            lat: lat,
-            lng: lng,
-            radius: radius,
-            placeTypes: placeTypes,
-          ),
-          const FavoriteScreen(),
-          const SettingsScreen(),
+        children: const [
+          PlacesListScreen(),
+          FavoriteScreen(),
+          SettingsScreen(),
         ],
       ),
       bottomNavigationBar: StateNotifierBuilder<int>(

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart' as bloc_transformer;
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:places/features/common/domain/entity/geoposition.dart';
@@ -9,23 +10,26 @@ part 'geoposition_bloc.freezed.dart';
 
 class GeopositionBloc extends Bloc<GeopositionEvent, GeopositionState> {
   GeopositionBloc() : super(const _InitialState()) {
-    on<GeopositionEvent>((event, emit) async {
-      await event.map<Future<void>>(
-        checkAndRequestPermission: (value) =>
-            _onCheckAndRequestPermission(event, emit),
-        getGeoposition: (event) => _onGetGeoposition(event, emit),
-      );
-    });
+    on<GeopositionEvent>(
+      (event, emit) async {
+        await event.map<Future<void>>(
+          checkAndRequestPermission: (value) =>
+              _onCheckAndRequestPermission(event, emit),
+          getGeoposition: (event) => _onGetGeoposition(event, emit),
+        );
+      },
+      transformer: bloc_transformer.droppable(),
+    );
   }
 
   Future<void> _onCheckAndRequestPermission(
     GeopositionEvent event,
     Emitter<GeopositionState> emit,
   ) async {
-    if (state.status == GeopositionStatus.ok) {
+    if (state.status == GeopositionStatus.ok && state.geoposition != null) {
       emit(GeopositionState.succsess(
         status: state.status,
-        geoposition: state.geoposition,
+        geoposition: state.geoposition!,
       ));
       return;
     }
@@ -53,20 +57,7 @@ class GeopositionBloc extends Bloc<GeopositionEvent, GeopositionState> {
         ));
         break;
       case GeopositionStatus.ok:
-        emit(const GeopositionState.getPositionInProgress(
-          status: GeopositionStatus.ok,
-        ));
-        final isServiceEnbled = await Geolocator.isLocationServiceEnabled();
-        if (!isServiceEnbled) {
-          await Geolocator.openLocationSettings();
-        }
-
-        final geoposition = await _getCurrentPosition();
-
-        emit(GeopositionState.succsess(
-          status: state.status,
-          geoposition: geoposition,
-        ));
+        await _onGetGeoposition(event, emit);
         break;
       case GeopositionStatus.firstDenied:
         throw UnimplementedError();
@@ -77,29 +68,40 @@ class GeopositionBloc extends Bloc<GeopositionEvent, GeopositionState> {
     GeopositionEvent event,
     Emitter<GeopositionState> emit,
   ) async {
-    emit(GeopositionState.getPositionInProgress(
-      status: state.status,
-      geoposition: state.geoposition,
+    emit(const GeopositionState.getPositionInProgress(
+      status: GeopositionStatus.ok,
     ));
-    final geoposition = await _getCurrentPosition();
+    final isServiceEnbled = await Geolocator.isLocationServiceEnabled();
+    if (!isServiceEnbled) {
+      await Geolocator.openLocationSettings();
+    }
 
-    emit(
-      GeopositionState.succsess(
+    final geoposition = await _getCurrentPosition();
+    if (geoposition != null) {
+      emit(GeopositionState.succsess(
         status: state.status,
         geoposition: geoposition,
-      ),
-    );
+      ));
+    } else {
+      emit(const GeopositionState.error(
+        status: GeopositionStatus.denied,
+      ));
+    }
   }
 
-  Future<Geoposition> _getCurrentPosition() async {
-    final position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
+  Future<Geoposition?> _getCurrentPosition() async {
+    try {
+      final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.medium,
+      );
 
-    return Geoposition(
-      latitude: position.latitude,
-      longitude: position.longitude,
-    );
+      return Geoposition(
+        latitude: position.latitude,
+        longitude: position.longitude,
+      );
+    } on Object catch (_) {
+      return null;
+    }
   }
 }
 

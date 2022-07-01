@@ -58,12 +58,7 @@ final Map<AppCoordinate, CoordinateBuilder> appCoordinates = {
   AppCoordinate.initial: (_, __) => const SplashScreen(),
   AppCoordinate.debugScreen: (_, __) => const DebugScreen(),
   AppCoordinate.onboardingScreen: (_, __) => const OnboardingScreen(),
-  AppCoordinate.mainTabsScreen: (_, args) => MainTabsScreen(
-        lat: (args as Map?)?['lat'] as double?,
-        lng: args?['lng'] as double?,
-        radius: args?['radius'] as double?,
-        placeTypes: args?['placeTypes'] as List<PlaceType>?,
-      ),
+  AppCoordinate.mainTabsScreen: (_, __) => const MainTabsScreen(),
   AppCoordinate.filterSettingsScreen: (_, __) => const FilterSettingsScreen(),
   AppCoordinate.detailsPlaceScreen: (_, place) =>
       PlaceDetailsScreen(place: place as Place),

@@ -108,8 +108,7 @@ class AppScope implements IAppScope {
     _appSettingsService = AppSettingsService(_sharedPrefStorage);
 
     // Geoposition BLoC
-    _geopositionBloc = GeopositionBloc()
-      ..add(const GeopositionEvent.checkAndRequestPermission());
+    _geopositionBloc = GeopositionBloc();
 
     // Search Query Database service
     _database = PlacesDatabase();

@@ -88,8 +88,6 @@ class SearchWidgetModel extends WidgetModel<SearchScreen, SearchModel>
   @override
   Future<void> onClearText() async {
     _searchBarController.clear();
-    // _listPlaceState.accept(null);
-    // await _acceptSearhQueriesState();
   }
 
   @override
@@ -101,12 +99,14 @@ class SearchWidgetModel extends WidgetModel<SearchScreen, SearchModel>
 
   @override
   void onTapPlace(int index) {
+    FocusScope.of(context).unfocus();
     final currentPlace = _listPlaceState.value![index];
-    _coordinator.navigate(
-      context,
-      AppCoordinate.detailsPlaceScreen,
-      arguments: currentPlace,
-    );
+    Future<void>.delayed(const Duration(milliseconds: 100))
+        .whenComplete(() => _coordinator.navigate(
+              context,
+              AppCoordinate.detailsPlaceScreen,
+              arguments: currentPlace,
+            ));
   }
 
   Future<void> _init() async {

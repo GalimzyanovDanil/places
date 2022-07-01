@@ -52,7 +52,7 @@ class PlaceDetailsLoadingWidget extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             ...List.generate(
-              8,
+              5,
               (index) => Column(
                 children: [
                   Skeleton(

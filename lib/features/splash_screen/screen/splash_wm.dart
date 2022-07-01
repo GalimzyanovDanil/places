@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:places/features/app/di/app_scope.dart';
+import 'package:places/features/common/service/geoposition_bloc/geoposition_bloc.dart';
 import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
 import 'package:places/features/splash_screen/screen/splash_model.dart';
@@ -14,7 +15,10 @@ abstract class ISplashWidgetModel extends IWidgetModel {
 
 SplashWidgetModel defaultSplashWidgetModelFactory(BuildContext context) {
   final appScope = context.read<IAppScope>();
-  final model = SplashModel(appSettingsService: appScope.appSettingsService);
+  final model = SplashModel(
+    appSettingsService: appScope.appSettingsService,
+    geopositionBloc: appScope.geopositionBloc,
+  );
   return SplashWidgetModel(model: model, coordinator: appScope.coordinator);
 }
 
@@ -28,6 +32,7 @@ class SplashWidgetModel extends WidgetModel<SplashScreen, SplashModel>
   late final bool isOnboardingFinish;
   late final Animation<double> _animation;
   late final AnimationController _controller;
+  late final StreamSubscription<GeopositionState> _geopositionSub;
 
   @override
   Animation<double> get animation => _animation;
@@ -38,6 +43,20 @@ class SplashWidgetModel extends WidgetModel<SplashScreen, SplashModel>
   @override
   void initWidgetModel() {
     super.initWidgetModel();
+
+    _geopositionSub = model.geopositionStream.listen((state) {
+      final isEndGeopositionCheck = state.maybeMap<bool>(
+        orElse: () => false,
+        succsess: (_) => true,
+        error: (_) => true,
+      );
+
+      if (isEndGeopositionCheck) {
+        Future<void>.delayed(const Duration(seconds: 2)).whenComplete(() async {
+          _navigate();
+        });
+      }
+    });
 
     _controller = AnimationController(
       duration: const Duration(seconds: 1),
@@ -62,15 +81,12 @@ class SplashWidgetModel extends WidgetModel<SplashScreen, SplashModel>
   @override
   void dispose() {
     _controller.dispose();
+    _geopositionSub.cancel();
     super.dispose();
   }
 
   Future<void> _initialize() async {
     isOnboardingFinish = await model.getOnboardingStatus();
-    await Future<void>.delayed(const Duration(seconds: 3))
-        .whenComplete(() async {
-      _navigate();
-    });
   }
 
   void _navigate() {

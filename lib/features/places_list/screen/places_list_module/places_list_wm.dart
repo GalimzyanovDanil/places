@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:places/features/app/di/app_scope.dart';
 import 'package:places/features/common/app_exceptions/api_exception.dart';
+import 'package:places/features/common/domain/entity/geoposition.dart';
 import 'package:places/features/common/domain/entity/place.dart';
 import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/common/service/geoposition_bloc/geoposition_bloc.dart';
@@ -37,6 +38,7 @@ PlacesListWidgetModel defaultPlacesListWidgetModelFactory(
     placesService: appScope.placesService,
     connectivityResult: appScope.connectivityResult,
     geopositionBloc: appScope.geopositionBloc,
+    appSettingsService: appScope.appSettingsService,
   );
 
   return PlacesListWidgetModel(
@@ -70,8 +72,11 @@ class PlacesListWidgetModel
   ThemeData get theme => Theme.of(context);
 
   @override
-  // TODO(me): implement animation
   Animation<Offset> get animation => _animation;
+
+  Geoposition? _currentGeoposition;
+  List<String>? _filteredPlaceType;
+  double? _radius;
 
   /// Триггер последней страницы загрузки
   bool _isLastPage = false;
@@ -159,24 +164,31 @@ class PlacesListWidgetModel
   // Получение списка мест
   Future<void> _getPlacesList(int offset) async {
     try {
-      final lat = widget.lat;
-      final lng = widget.lng;
-      final placeTypes = widget.placeTypes;
-      final radius = widget.radius;
+      final isAllPlaces = await _loadAllDeterminate();
 
-      if (lat == null || lng == null || placeTypes == null || radius == null) {
+      if (isAllPlaces) {
         await _getAllPlacesList(offset);
       } else {
         await _getFilteredPlaces(
-          lat: lat,
-          lng: lng,
-          radius: radius,
-          placeTypes: placeTypes,
+          lat: _currentGeoposition!.latitude,
+          lng: _currentGeoposition!.longitude,
+          radius: _radius!,
+          placeTypes: _filteredPlaceType!.map(PlaceType.fromString).toList(),
         );
       }
     } on ApiException catch (error) {
       _pagingController.error = error;
     }
+  }
+
+  Future<bool> _loadAllDeterminate() async {
+    _currentGeoposition = model.geopositionState.whenOrNull<Geoposition?>(
+      succsess: (_, geoposition) => geoposition,
+    );
+    if (_currentGeoposition == null) return true;
+    _filteredPlaceType = await model.getFilterPlaceType();
+    _radius = await model.getFilterDistance();
+    return false;
   }
 
   Future<void> _getFilteredPlaces({

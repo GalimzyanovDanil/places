@@ -129,27 +129,8 @@ class FilterSettingsWidgetModel
 
   @override
   void onShowResultTap() {
-    _saveSetttings();
-    assert(
-      _filterState.value != null &&
-          _sliderState.value != null &&
-          _position != null,
-      'Filter parametrs and position can not be null!',
-    );
-
-    final arguments = {
-      'lat': _position!.latitude,
-      'lng': _position!.longitude,
-      'radius': _sliderState.value!,
-      'placeTypes': _filterState.value!,
-    };
-
-    coordinator.navigate(
-      context,
-      AppCoordinate.mainTabsScreen,
-      replaceRootCoordinate: true,
-      arguments: arguments,
-    );
+    _saveSetttings()
+        .whenComplete(() => coordinator.pop(context, forceRebuild: true));
   }
 
   @override
