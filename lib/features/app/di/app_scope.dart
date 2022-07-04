@@ -15,6 +15,7 @@ import 'package:places/features/common/service/app_settings_service.dart';
 import 'package:places/features/common/service/favorite_db_service.dart';
 import 'package:places/features/common/service/geoposition_bloc/geoposition_bloc.dart';
 import 'package:places/features/common/service/places_service.dart';
+import 'package:places/features/common/widgets/ui_func.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
 import 'package:places/features/places_list/domain/repository/image_pick_repository.dart';
 import 'package:places/features/places_list/service/image_picker_service.dart';
@@ -44,6 +45,8 @@ class AppScope implements IAppScope {
   late final FavoriteDbRepository _favoriteDbRepository;
   late final PlacesDatabase _database;
   late final ImagePickerRepositry _imagePickerRepositry;
+
+  late final UiFuncController _uiFuncController;
 
   @override
   Dio get dio => _dio;
@@ -77,6 +80,9 @@ class AppScope implements IAppScope {
 
   @override
   ImagePickerService get imagePickerService => _imagePickerService;
+
+  @override
+  UiFuncController get uiFuncController => _uiFuncController;
 
   late ConnectivityResult _connectivityResult;
 
@@ -121,6 +127,8 @@ class AppScope implements IAppScope {
 
     _imagePickerRepositry = ImagePickerRepositry();
     _imagePickerService = ImagePickerService(_imagePickerRepositry);
+
+    _uiFuncController = UiFuncController();
   }
 
   // For dispose any controllers
@@ -214,6 +222,9 @@ abstract class IAppScope {
 
   /// Service for pick image gallery or camera
   ImagePickerService get imagePickerService;
+
+  ///UI Function Controller
+  UiFuncController get uiFuncController;
 
   /// For dispose any controllers
   void dispose();
