@@ -46,7 +46,7 @@ class AppScope implements IAppScope {
   late final PlacesDatabase _database;
   late final ImagePickerRepositry _imagePickerRepositry;
 
-  late final UiFuncController _uiFuncController;
+  late final MessageController _messageController;
 
   @override
   Dio get dio => _dio;
@@ -82,7 +82,7 @@ class AppScope implements IAppScope {
   ImagePickerService get imagePickerService => _imagePickerService;
 
   @override
-  UiFuncController get uiFuncController => _uiFuncController;
+  MessageController get messageController => _messageController;
 
   late ConnectivityResult _connectivityResult;
 
@@ -128,7 +128,7 @@ class AppScope implements IAppScope {
     _imagePickerRepositry = ImagePickerRepositry();
     _imagePickerService = ImagePickerService(_imagePickerRepositry);
 
-    _uiFuncController = UiFuncController();
+    _messageController = MessageController();
   }
 
   // For dispose any controllers
@@ -224,7 +224,7 @@ abstract class IAppScope {
   ImagePickerService get imagePickerService;
 
   ///UI Function Controller
-  UiFuncController get uiFuncController;
+  MessageController get messageController;
 
   /// For dispose any controllers
   void dispose();

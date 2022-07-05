@@ -57,7 +57,7 @@ AddPlaceScreenWidgetModel defaultAddPlaceScreenWidgetModelFactory(
   return AddPlaceScreenWidgetModel(
     model: model,
     coordinator: appScope.coordinator,
-    uiFuncController: appScope.uiFuncController,
+    messageController: appScope.messageController,
   );
 }
 
@@ -67,7 +67,7 @@ class AddPlaceScreenWidgetModel
     extends WidgetModel<AddPlaceScreen, AddPlaceScreenModel>
     implements IAddPlaceScreenWidgetModel {
   final Coordinator coordinator;
-  final UiFuncController uiFuncController;
+  final MessageController messageController;
 
   final _uploadImageState = StateNotifier<List<String>>(initValue: []);
   final _categoryState = StateNotifier<PlaceType>();
@@ -110,7 +110,7 @@ class AddPlaceScreenWidgetModel
   AddPlaceScreenWidgetModel({
     required this.coordinator,
     required AddPlaceScreenModel model,
-    required this.uiFuncController,
+    required this.messageController,
   }) : super(model);
 
   @override
@@ -217,13 +217,13 @@ class AddPlaceScreenWidgetModel
       _isLoadingProgressState.accept(false);
       switch (error.exceptionType) {
         case ApiExceptionType.network:
-          unawaited(uiFuncController.showSnackBar(
+          unawaited(messageController.showSnackBar(
             text: DialogStrings.networkErrorSnackBarText,
             context: context,
           ));
           break;
         case ApiExceptionType.other:
-          unawaited(uiFuncController.showSnackBar(
+          unawaited(messageController.showSnackBar(
             text: DialogStrings.otherErrorSnackBarText,
             context: context,
           ));

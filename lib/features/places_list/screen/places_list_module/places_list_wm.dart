@@ -44,7 +44,7 @@ PlacesListWidgetModel defaultPlacesListWidgetModelFactory(
   return PlacesListWidgetModel(
     model: model,
     coordinator: appScope.coordinator,
-    uiFuncController: appScope.uiFuncController,
+    messageController: appScope.messageController,
   );
 }
 
@@ -61,7 +61,7 @@ class PlacesListWidgetModel
   final placeCount = 15;
 
   final Coordinator _coordinator;
-  final UiFuncController uiFuncController;
+  final MessageController messageController;
 
   late final PagingController<int, Place> _pagingController;
   late final AnimationController _animationController;
@@ -86,7 +86,7 @@ class PlacesListWidgetModel
   PlacesListWidgetModel({
     required PlacesListModel model,
     required Coordinator coordinator,
-    required this.uiFuncController,
+    required this.messageController,
   })  : _coordinator = coordinator,
         super(model);
 
@@ -263,7 +263,7 @@ class PlacesListWidgetModel
       succsess: (_) => true,
       error: (state) {
         if (state.status == GeopositionStatus.deniedForever) {
-          uiFuncController.showSnackBar(
+          messageController.showSnackBar(
             text: DialogStrings.geoPermissinoSnackBarText,
             context: context,
           );

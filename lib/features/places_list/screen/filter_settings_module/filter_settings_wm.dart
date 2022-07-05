@@ -43,7 +43,7 @@ FilterSettingsWidgetModel defaultFilterSettingsWidgetModelFactory(
   return FilterSettingsWidgetModel(
     model: model,
     coordinator: appScope.coordinator,
-    uiFuncController: appScope.uiFuncController,
+    messageController: appScope.messageController,
   );
 }
 
@@ -67,7 +67,7 @@ class FilterSettingsWidgetModel
   ];
 
   final Coordinator coordinator;
-  final UiFuncController uiFuncController;
+  final MessageController messageController;
 
   final StateNotifier<List<PlaceType>> _filterState =
       StateNotifier<List<PlaceType>>(initValue: <PlaceType>[]);
@@ -108,7 +108,7 @@ class FilterSettingsWidgetModel
   FilterSettingsWidgetModel({
     required FilterSettingsModel model,
     required this.coordinator,
-    required this.uiFuncController,
+    required this.messageController,
   }) : super(model);
 
   @override
@@ -214,13 +214,13 @@ class FilterSettingsWidgetModel
     } on ApiException catch (error) {
       switch (error.exceptionType) {
         case ApiExceptionType.network:
-          unawaited(uiFuncController.showSnackBar(
+          unawaited(messageController.showSnackBar(
             text: DialogStrings.networkErrorSnackBarText,
             context: context,
           ));
           break;
         case ApiExceptionType.other:
-          unawaited(uiFuncController.showSnackBar(
+          unawaited(messageController.showSnackBar(
             text: DialogStrings.otherErrorSnackBarText,
             context: context,
           ));

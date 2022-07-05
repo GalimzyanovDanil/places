@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class UiFuncController {
+class MessageController {
   Future<void> showSnackBar({
     required String text,
     required BuildContext context,

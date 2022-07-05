@@ -32,7 +32,7 @@ class GeopositionBlocMock extends Mock implements GeopositionBloc {}
 
 class PlaceFilterFake extends Fake implements PlaceFilter {}
 
-class UiFuncControllerMock extends Mock implements UiFuncController {}
+class MessageControllerMock extends Mock implements MessageController {}
 
 final allPlaceType = <PlaceType>[
   PlaceType.hotel,
@@ -89,7 +89,7 @@ void main() {
     late ErrorHandler errorHandlerMock;
     late GeopositionBloc geopositionBlocMock;
     late Coordinator coordinatorMock;
-    late UiFuncController uiFuncControllerMock;
+    late MessageController messageControllerMock;
 
     setUpAll(() {
       registerFallbackValue(PlaceFilterFake());
@@ -101,7 +101,7 @@ void main() {
       errorHandlerMock = ErrorHandlerMock();
       geopositionBlocMock = GeopositionBlocMock();
       coordinatorMock = CoordinatorMock();
-      uiFuncControllerMock = UiFuncControllerMock();
+      messageControllerMock = MessageControllerMock();
 
       when(() => appSettingsServiceMock.getFilterPlaceTypes())
           .thenAnswer((_) => Future.value(
@@ -118,7 +118,7 @@ void main() {
     FilterSettingsWidgetModel setupWm(ConnectivityResult connectivityResult) =>
         FilterSettingsWidgetModel(
           coordinator: coordinatorMock,
-          uiFuncController: uiFuncControllerMock,
+          messageController: messageControllerMock,
           model: FilterSettingsModel(
             appSettingsService: appSettingsServiceMock,
             connectivityResult: connectivityResult,
@@ -321,7 +321,7 @@ void main() {
         when(() => placesServiceMock.getFilteredPlace(any()))
             .thenThrow(exception);
 
-        when(() => uiFuncControllerMock.showSnackBar(
+        when(() => messageControllerMock.showSnackBar(
               text: any(named: 'text'),
               context: context,
             )).thenAnswer((_) => Future.value());
@@ -330,7 +330,7 @@ void main() {
 
         await Future<void>.delayed(Duration.zero);
 
-        verify(() => uiFuncControllerMock.showSnackBar(
+        verify(() => messageControllerMock.showSnackBar(
               context: context,
               text: DialogStrings.networkErrorSnackBarText,
             ));
@@ -349,7 +349,7 @@ void main() {
         when(() => placesServiceMock.getFilteredPlace(any()))
             .thenThrow(exception);
 
-        when(() => uiFuncControllerMock.showSnackBar(
+        when(() => messageControllerMock.showSnackBar(
               text: any(named: 'text'),
               context: context,
             )).thenAnswer((_) => Future.value());
@@ -358,7 +358,7 @@ void main() {
 
         await Future<void>.delayed(Duration.zero);
 
-        verify(() => uiFuncControllerMock.showSnackBar(
+        verify(() => messageControllerMock.showSnackBar(
               context: context,
               text: DialogStrings.otherErrorSnackBarText,
             ));
