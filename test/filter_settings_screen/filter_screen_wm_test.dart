@@ -20,7 +20,7 @@ import 'package:places/features/places_list/screen/filter_settings_module/filter
 
 class CoordinatorMock extends Mock implements Coordinator {}
 
-class ModelMock extends Mock implements FilterSettingsModel {}
+class MessageControllerMock extends Mock implements MessageController {}
 
 class AppSettingsServiceMock extends Mock implements AppSettingsService {}
 
@@ -31,8 +31,6 @@ class ErrorHandlerMock extends Mock implements ErrorHandler {}
 class GeopositionBlocMock extends Mock implements GeopositionBloc {}
 
 class PlaceFilterFake extends Fake implements PlaceFilter {}
-
-class MessageControllerMock extends Mock implements MessageController {}
 
 final allPlaceType = <PlaceType>[
   PlaceType.hotel,

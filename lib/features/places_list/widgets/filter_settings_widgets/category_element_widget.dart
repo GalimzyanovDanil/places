@@ -54,18 +54,9 @@ class CategoryElementWidget extends StatelessWidget {
               top: 54,
               left: 54,
               child: isSelect
-                  ? Material(
-                      color: theme.colorScheme.tertiary,
-                      shape: const CircleBorder(),
-                      child: Padding(
-                        padding: const EdgeInsets.all(3),
-                        child: SvgPicture.asset(
-                          AppAssets.iconTick,
-                          height: 12,
-                          width: 17,
-                          color: theme.colorScheme.onTertiary,
-                        ),
-                      ),
+                  ? SelectTickWidget(
+                      theme: theme,
+                      key: ValueKey(placeType.name),
                     )
                   : const SizedBox.shrink(),
             ),
@@ -77,6 +68,32 @@ class CategoryElementWidget extends StatelessWidget {
           style: theme.textTheme.headline5,
         ),
       ],
+    );
+  }
+}
+
+class SelectTickWidget extends StatelessWidget {
+  final ThemeData theme;
+
+  const SelectTickWidget({
+    required this.theme,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: theme.colorScheme.tertiary,
+      shape: const CircleBorder(),
+      child: Padding(
+        padding: const EdgeInsets.all(3),
+        child: SvgPicture.asset(
+          AppAssets.iconTick,
+          height: 12,
+          width: 17,
+          color: theme.colorScheme.onTertiary,
+        ),
+      ),
     );
   }
 }
