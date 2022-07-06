@@ -6,6 +6,7 @@ import 'package:places/features/common/domain/entity/place.dart';
 import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_wm.dart';
 import 'package:places/features/places_list/strings/places_list_strings.dart';
+import 'package:places/features/places_list/widgets/filter_settings_widgets/category_element_widget.dart';
 import 'package:places/features/places_list/widgets/filter_settings_widgets/show_result_button.dart';
 
 // TODO(me): cover with documentation
@@ -45,7 +46,17 @@ class FilterSettingsScreen
                   alignment: WrapAlignment.spaceAround,
                   spacing: 40,
                   runSpacing: 40,
-                  children: wm.getCategoryElements(),
+                  children: PlaceType.values
+                      .map<CategoryElementWidget>(
+                        (type) => CategoryElementWidget(
+                          key: ObjectKey(type),
+                          iconPath: type.iconPath,
+                          isSelect: filterList?.contains(type) ?? false,
+                          onElementTap: wm.onElementTap,
+                          placeType: type,
+                        ),
+                      )
+                      .toList(),
                 ),
               ),
               const SizedBox(height: 75),
@@ -119,6 +130,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       toolbarHeight: toolbarHeight,
       leading: IconButton(
+        key: const ValueKey('BackButton'),
         onPressed: onBackButtonTap,
         splashRadius: 15,
         icon: SvgPicture.asset(
@@ -128,6 +140,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         TextButton(
+          key: const ValueKey('ClearButton'),
           onPressed: onClearTap,
           style: const ButtonStyle(
             splashFactory: NoSplash.splashFactory,

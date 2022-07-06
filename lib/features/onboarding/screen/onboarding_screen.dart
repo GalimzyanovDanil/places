@@ -41,11 +41,11 @@ class OnboardingScreen extends ElementaryWidget<IOnboardingWidgetModel> {
           StateNotifierBuilder<bool>(
             listenableState: wm.isLastPage,
             builder: (_, isLastPage) => AnimatedOpacity(
+              key: const ValueKey('SkipButton'),
               duration: const Duration(milliseconds: 500),
               curve: Curves.easeIn,
               opacity: isLastPage ?? false ? 0.0 : 1.0,
               child: SkipButton(
-                key: const ValueKey('SkipButton'),
                 onPressed: wm.onSkipButton,
               ),
             ),
@@ -80,11 +80,11 @@ class OnboardingScreen extends ElementaryWidget<IOnboardingWidgetModel> {
         listenableState: wm.isLastPage,
         builder: (_, isLastPage) {
           return AnimatedSlide(
+            key: const ValueKey('StartButton'),
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeIn,
             offset: isLastPage ?? false ? Offset.zero : const Offset(0, 2),
             child: StartButton(
-              key: const ValueKey('StartButton'),
               onPressed: wm.onStartButton,
             ),
           );

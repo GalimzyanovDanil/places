@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_positional_boolean_parameters
+
 import 'dart:async';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +13,6 @@ import 'package:places/features/common/widgets/ui_func.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_model.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_screen.dart';
-import 'package:places/features/places_list/widgets/filter_settings_widgets/category_element_widget.dart';
 import 'package:provider/provider.dart';
 
 abstract class IFilterSettingsWidgetModel extends IWidgetModel {
@@ -25,7 +26,7 @@ abstract class IFilterSettingsWidgetModel extends IWidgetModel {
   void onClearTap();
   void onShowResultTap();
   void onSliderChange(double value);
-  List<Widget> getCategoryElements();
+  void onElementTap(bool isSel, PlaceType type);
 }
 
 FilterSettingsWidgetModel defaultFilterSettingsWidgetModelFactory(
@@ -141,28 +142,8 @@ class FilterSettingsWidgetModel
     _loadPlaceListDebounce();
   }
 
-  @override
-  List<Widget> getCategoryElements() {
-    final result = allPlaceType.map<CategoryElementWidget>(
-      (type) => CategoryElementWidget(
-        iconPath: type.iconPath,
-        isSelect: _filterState.value?.contains(type) ?? false,
-        onElementTap: onElementTap,
-        placeType: type,
-      ),
-    );
-    return result.toList();
-  }
-
-  @visibleForTesting
-  Future<void> init() async {
-    await _initFilterSettings();
-    await _loadPlaceList();
-  }
-
   // Обработка нажатия на элемент фильтра
-  @visibleForTesting
-  // ignore: avoid_positional_boolean_parameters
+  @override
   void onElementTap(bool isSel, PlaceType type) {
     final filterList = _filterState.value?.toList();
 
@@ -178,6 +159,12 @@ class FilterSettingsWidgetModel
       );
     }
     _loadPlaceListDebounce();
+  }
+
+  @visibleForTesting
+  Future<void> init() async {
+    await _initFilterSettings();
+    await _loadPlaceList();
   }
 
   Future<void> _initFilterSettings() async {
