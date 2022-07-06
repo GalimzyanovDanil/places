@@ -8,7 +8,6 @@ import 'package:places/features/common/domain/entity/place.dart';
 import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/common/strings/dialog_strings.dart';
 import 'package:places/features/common/widgets/ui_func.dart';
-import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
 import 'package:places/features/navigation/service/coordinator.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_model.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_screen.dart';
@@ -44,6 +43,7 @@ FilterSettingsWidgetModel defaultFilterSettingsWidgetModelFactory(
   return FilterSettingsWidgetModel(
     model: model,
     coordinator: appScope.coordinator,
+    messageController: appScope.messageController,
   );
 }
 
@@ -67,6 +67,7 @@ class FilterSettingsWidgetModel
   ];
 
   final Coordinator coordinator;
+  final MessageController messageController;
 
   final StateNotifier<List<PlaceType>> _filterState =
       StateNotifier<List<PlaceType>>(initValue: <PlaceType>[]);
@@ -107,17 +108,18 @@ class FilterSettingsWidgetModel
   FilterSettingsWidgetModel({
     required FilterSettingsModel model,
     required this.coordinator,
+    required this.messageController,
   }) : super(model);
 
   @override
   void initWidgetModel() {
     super.initWidgetModel();
-    _init();
+    init();
   }
 
   @override
   void onBackButtonTap() {
-    Navigator.of(context).pop();
+    coordinator.pop(context);
   }
 
   @override
@@ -145,23 +147,44 @@ class FilterSettingsWidgetModel
       (type) => CategoryElementWidget(
         iconPath: type.iconPath,
         isSelect: _filterState.value?.contains(type) ?? false,
-        onElementTap: _onElementTap,
+        onElementTap: onElementTap,
         placeType: type,
       ),
     );
     return result.toList();
   }
 
-  Future<void> _init() async {
+  @visibleForTesting
+  Future<void> init() async {
     await _initFilterSettings();
     await _loadPlaceList();
+  }
+
+  // Обработка нажатия на элемент фильтра
+  @visibleForTesting
+  // ignore: avoid_positional_boolean_parameters
+  void onElementTap(bool isSel, PlaceType type) {
+    final filterList = _filterState.value?.toList();
+
+    if (isSel) {
+      filterList?.remove(type);
+      _filterState.accept(
+        List<PlaceType>.from(filterList ?? <PlaceType>[]),
+      );
+    } else {
+      filterList?.add(type);
+      _filterState.accept(
+        List<PlaceType>.from(filterList ?? <PlaceType>[]),
+      );
+    }
+    _loadPlaceListDebounce();
   }
 
   Future<void> _initFilterSettings() async {
     final initialFilterTypes = await model.getFilterPlaceTypes();
     final initialFilterDistance = await model.getFilterDistance();
-    _filterState.accept(initialFilterTypes ?? allPlaceType.toList());
-    _sliderState.accept(initialFilterDistance ?? _defaultSliderValue);
+    _filterState.accept(initialFilterTypes);
+    _sliderState.accept(initialFilterDistance);
   }
 
   // Загрузка данных по данным фильтра с задержкой
@@ -191,13 +214,13 @@ class FilterSettingsWidgetModel
     } on ApiException catch (error) {
       switch (error.exceptionType) {
         case ApiExceptionType.network:
-          unawaited(showSnackBar(
+          unawaited(messageController.showSnackBar(
             text: DialogStrings.networkErrorSnackBarText,
             context: context,
           ));
           break;
         case ApiExceptionType.other:
-          unawaited(showSnackBar(
+          unawaited(messageController.showSnackBar(
             text: DialogStrings.otherErrorSnackBarText,
             context: context,
           ));
@@ -205,24 +228,6 @@ class FilterSettingsWidgetModel
       }
       _listPlaceState.content([]);
     }
-  }
-
-  // Обработка нажатия на элемент фильтра
-  void _onElementTap(bool isSel, PlaceType type) {
-    final filterList = _filterState.value?.toList();
-
-    if (isSel) {
-      filterList?.remove(type);
-      _filterState.accept(
-        List<PlaceType>.from(filterList ?? <PlaceType>[]),
-      );
-    } else {
-      filterList?.add(type);
-      _filterState.accept(
-        List<PlaceType>.from(filterList ?? <PlaceType>[]),
-      );
-    }
-    _loadPlaceListDebounce();
   }
 
   Future<void> _saveSetttings() async {

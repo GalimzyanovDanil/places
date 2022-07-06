@@ -32,13 +32,13 @@ class FilterSettingsModel extends ElementaryModel {
         _placesService = placesService,
         _geopositionBloc = geopositionBloc;
 
-  Future<List<PlaceType>?> getFilterPlaceTypes() async {
+  Future<List<PlaceType>> getFilterPlaceTypes() async {
     return _appSettingsService.getFilterPlaceTypes().then(
           (value) => value.map<PlaceType>(PlaceType.fromString).toList(),
         );
   }
 
-  Future<double?> getFilterDistance() async {
+  Future<double> getFilterDistance() async {
     return _appSettingsService.getFilterDistance();
   }
 
@@ -64,7 +64,6 @@ class FilterSettingsModel extends ElementaryModel {
         lng: lng,
         radius: radius,
         typeFilter: placeTypes,
-        nameFilter: '',
       );
       result = await _placesService.getFilteredPlace(filter);
       return result;

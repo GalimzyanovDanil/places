@@ -143,7 +143,7 @@ class _AndroidAlertDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return AlertDialog(
-      backgroundColor: colorScheme.onPrimaryContainer,
+      backgroundColor: colorScheme.onInverseSurface,
       title: Text(title),
       content: SingleChildScrollView(
         child: ListBody(
@@ -224,7 +224,7 @@ class _AndroidInformDialog extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return AlertDialog(
-      backgroundColor: colorScheme.onPrimaryContainer,
+      backgroundColor: colorScheme.onInverseSurface,
       title: Text(title),
       content: SingleChildScrollView(
         child: ListBody(
