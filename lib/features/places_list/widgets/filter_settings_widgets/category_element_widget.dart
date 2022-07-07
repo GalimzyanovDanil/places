@@ -66,6 +66,8 @@ class CategoryElementWidget extends StatelessWidget {
         Text(
           placeType.filterTitle,
           style: theme.textTheme.headline5,
+          maxLines: 2,
+          softWrap: true,
         ),
       ],
     );
