@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:places/assets/themes/app_theme.dart';
 import 'package:places/features/common/domain/entity/geoposition.dart';
 import 'package:places/features/common/domain/entity/place.dart';
 import 'package:places/features/common/domain/entity/place_type.dart';
@@ -85,6 +86,7 @@ void main() {
       FloatingActionButton loadingButton;
 
       await tester.pumpWidget(MaterialApp(
+        theme: AppTheme.lightTheme,
         home: FilterSettingsScreen(
           wmFactory: (context) => FilterSettingsWidgetModel(
             model: modelMock,
@@ -148,6 +150,7 @@ void main() {
           .thenAnswer((_) => Future.value(newRadius));
 
       await tester.pumpWidget(MaterialApp(
+        theme: AppTheme.lightTheme,
         home: FilterSettingsScreen(
           wmFactory: (context) => FilterSettingsWidgetModel(
             model: modelMock,
@@ -211,6 +214,7 @@ void main() {
         );
 
         await tester.pumpWidget(MaterialApp(
+          theme: AppTheme.lightTheme,
           home: FilterSettingsScreen(
             wmFactory: (context) => wm,
           ),

@@ -25,71 +25,61 @@ class FilterSettingsScreen
         onBackButtonTap: wm.onBackButtonTap,
         onClearTap: wm.onClearTap,
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: [
-              const SizedBox(height: 25),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  PlacesListStrings.category,
-                  style: wm.theme.textTheme.headline6,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: SingleChildScrollView(
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Column(
+              children: [
+                const SizedBox(height: 25),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    PlacesListStrings.category,
+                    style: wm.theme.textTheme.headline6,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 25),
-              // TODO(me): Переделать Wrap на GridView
-              StateNotifierBuilder<List<PlaceType>>(
-                listenableState: wm.filterState,
-                builder: (_, filterList) => Wrap(
-                  alignment: WrapAlignment.spaceAround,
-                  spacing: 40,
-                  runSpacing: 40,
-                  children: PlaceType.values
-                      .map<CategoryElementWidget>(
-                        (type) => CategoryElementWidget(
-                          key: ObjectKey(type),
-                          iconPath: type.iconPath,
-                          isSelect: filterList?.contains(type) ?? false,
-                          onElementTap: wm.onElementTap,
-                          placeType: type,
+                const SizedBox(height: 25),
+                StateNotifierBuilder<List<PlaceType>>(
+                  listenableState: wm.filterState,
+                  builder: (_, filterList) => _FilterTypeSetterWidget(
+                    filterList: filterList,
+                    onElementTap: wm.onElementTap,
+                  ),
+                ),
+                const SizedBox(height: 75),
+                StateNotifierBuilder<double>(
+                  listenableState: wm.sliderState,
+                  builder: (_, value) => Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Row(
+                          children: [
+                            Text(
+                              PlacesListStrings.distance,
+                              style: wm.theme.textTheme.bodyText1,
+                            ),
+                            const Spacer(),
+                            Text(
+                              '${PlacesListStrings.distanceTo} ${value?.toStringAsFixed(2)} ${PlacesListStrings.distanceKm}',
+                              style: wm.theme.textTheme.bodyText2,
+                            ),
+                          ],
                         ),
-                      )
-                      .toList(),
-                ),
-              ),
-              const SizedBox(height: 75),
-              StateNotifierBuilder<double>(
-                listenableState: wm.sliderState,
-                builder: (_, value) => Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Row(
-                        children: [
-                          Text(
-                            PlacesListStrings.distance,
-                            style: wm.theme.textTheme.bodyText1,
-                          ),
-                          const Spacer(),
-                          Text(
-                            '${PlacesListStrings.distanceTo} ${value?.toStringAsFixed(2)} ${PlacesListStrings.distanceKm}',
-                            style: wm.theme.textTheme.bodyText2,
-                          ),
-                        ],
                       ),
-                    ),
-                    Slider(
-                      value: value ?? 0,
-                      onChanged: wm.onSliderChange,
-                      min: wm.minSliderValue,
-                      max: wm.maxSliderValue,
-                    ),
-                  ],
+                      Slider(
+                        value: value ?? 0,
+                        onChanged: wm.onSliderChange,
+                        min: wm.minSliderValue,
+                        max: wm.maxSliderValue,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -103,6 +93,43 @@ class FilterSettingsScreen
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       resizeToAvoidBottomInset: false,
+    );
+  }
+}
+
+class _FilterTypeSetterWidget extends StatelessWidget {
+  final List<PlaceType>? filterList;
+  final void Function(bool, PlaceType) onElementTap;
+
+  const _FilterTypeSetterWidget({
+    required this.filterList,
+    required this.onElementTap,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+    final elementCount = PlaceType.values.length;
+
+    return GridView(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: isLandscape ? elementCount : elementCount ~/ 2,
+      ),
+      children: PlaceType.values
+          .map<CategoryElementWidget>(
+            (type) => CategoryElementWidget(
+              key: ObjectKey(type),
+              iconPath: type.iconPath,
+              isSelect: filterList?.contains(type) ?? false,
+              onElementTap: onElementTap,
+              placeType: type,
+            ),
+          )
+          .toList(),
     );
   }
 }

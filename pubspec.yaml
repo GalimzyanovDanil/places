@@ -53,6 +53,9 @@ dev_dependencies:
   elementary_test: ^1.1.2
   flutter_test:
     sdk: flutter
+  golden_toolkit: ^0.13.0
+  integration_test:
+    sdk: flutter
   retrofit_generator: ^4.0.1
   
 environment:

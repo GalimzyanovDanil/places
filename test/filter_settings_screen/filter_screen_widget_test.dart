@@ -2,6 +2,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:places/assets/themes/app_theme.dart';
 import 'package:places/features/common/domain/entity/place.dart';
 import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_screen.dart';
@@ -86,6 +87,7 @@ void main() {
 
     testWidgets('Initial data', (tester) async {
       await tester.pumpWidget(MaterialApp(
+        theme: AppTheme.lightTheme,
         home: FilterSettingsScreen(
           wmFactory: (_) => wmMock,
         ),
@@ -139,6 +141,7 @@ void main() {
           .thenReturn(StateNotifier(initValue: newPlaceType));
 
       await tester.pumpWidget(MaterialApp(
+        theme: AppTheme.lightTheme,
         home: FilterSettingsScreen(
           wmFactory: (_) => wmMock,
         ),
@@ -177,6 +180,7 @@ void main() {
 
     testWidgets('Testing methods call', (tester) async {
       await tester.pumpWidget(MaterialApp(
+        theme: AppTheme.lightTheme,
         home: FilterSettingsScreen(
           wmFactory: (_) => wmMock,
         ),
