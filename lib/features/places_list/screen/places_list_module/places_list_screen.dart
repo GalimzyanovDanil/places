@@ -94,6 +94,7 @@ class PlacesListScreen extends ElementaryWidget<IPlacesListWidgetModel> {
                   pagingController: wm.pagingController,
                   builderDelegate: PagedChildBuilderDelegate<Place>(
                     itemBuilder: (_, place, index) => PlaceCardWidget(
+                      key: ValueKey(index),
                       onTapCard: wm.onTapCard,
                       index: index,
                       place: place,

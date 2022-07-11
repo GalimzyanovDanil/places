@@ -22,7 +22,7 @@ class MainTabsScreen extends ElementaryWidget<IMainTabsWidgetModel> {
         controller: wm.tabController,
         physics: const NeverScrollableScrollPhysics(),
         children: const [
-          PlacesListScreen(),
+          PlacesListScreen(key: ValueKey('PlacesListScreen')),
           FavoriteScreen(),
           SettingsScreen(),
         ],

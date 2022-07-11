@@ -125,6 +125,7 @@ class SearchFieldWidget extends StatelessWidget implements PreferredSizeWidget {
               ),
               const SizedBox(width: 15),
               IconButton(
+                key: const ValueKey('Filter'),
                 onPressed: onTrailingButtonTap,
                 splashRadius: 15,
                 icon: trailingButtonIcon,

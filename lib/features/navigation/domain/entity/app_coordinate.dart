@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:places/features/common/domain/entity/place.dart';
 import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/debug/screens/debug_screen/debug_screen.dart';
@@ -59,7 +60,8 @@ final Map<AppCoordinate, CoordinateBuilder> appCoordinates = {
   AppCoordinate.debugScreen: (_, __) => const DebugScreen(),
   AppCoordinate.onboardingScreen: (_, __) => const OnboardingScreen(),
   AppCoordinate.mainTabsScreen: (_, __) => const MainTabsScreen(),
-  AppCoordinate.filterSettingsScreen: (_, __) => const FilterSettingsScreen(),
+  AppCoordinate.filterSettingsScreen: (_, __) =>
+      const FilterSettingsScreen(key: ValueKey('FilterSettingsScreen')),
   AppCoordinate.detailsPlaceScreen: (_, place) =>
       PlaceDetailsScreen(place: place as Place),
   AppCoordinate.searchScreen: (_, __) => const SearchScreen(),
