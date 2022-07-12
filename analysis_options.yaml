@@ -5,6 +5,7 @@ analyzer:
     - "build/**"
     - "script/**"
     - "**/*.g.dart"
+    - "**/*.gr.dart"
     - "**/*.freezed.dart"
 
 dart_code_metrics:

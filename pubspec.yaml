@@ -4,6 +4,7 @@ description: a Flutter template project for development.
 publish_to: none
 
 dependencies:
+  auto_route: ^4.2.1
   bloc: ^8.0.3
   bloc_concurrency: ^0.2.0 
   cached_network_image: ^3.2.1
@@ -47,6 +48,7 @@ dependencies:
   
 
 dev_dependencies:
+  auto_route_generator: ^4.2.0
   build_runner: ^2.1.11
   dart_code_metrics: ^4.7.0
   drift_dev: ^1.6.0
