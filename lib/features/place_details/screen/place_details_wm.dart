@@ -4,7 +4,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:places/features/app/di/app_scope.dart';
-import 'package:places/features/navigation/service/coordinator.dart';
+import 'package:places/features/navigation/app_router.dart';
 import 'package:places/features/place_details/screen/place_details_model.dart';
 import 'package:places/features/place_details/screen/place_details_screen.dart';
 import 'package:places/features/place_details/widgets/date_picker_factory.dart';
@@ -45,7 +45,7 @@ PlaceDetailsWidgetModel defaultPlaceDetailsWidgetModelFactory(
   final model = PlaceDetailsModel(appScope.favoriteDbService);
   return PlaceDetailsWidgetModel(
     model: model,
-    coordinator: appScope.coordinator,
+    router: appScope.router,
   );
 }
 
@@ -54,7 +54,7 @@ PlaceDetailsWidgetModel defaultPlaceDetailsWidgetModelFactory(
 class PlaceDetailsWidgetModel
     extends WidgetModel<PlaceDetailsScreen, PlaceDetailsModel>
     implements IPlaceDetailsWidgetModel {
-  final Coordinator _coordinator;
+  final AppRouter _router;
   final StateNotifier<bool> _favoriteState = StateNotifier(initValue: false);
   final StateNotifier<double> _imageViewState = StateNotifier(initValue: 0.0);
   final StateNotifier<PlannedButtonState> _plannedState = StateNotifier(
@@ -93,11 +93,12 @@ class PlaceDetailsWidgetModel
 
   DateTime? _plannedDate;
   PlannedButtonState? _prevState;
+  bool _isFavoriteChange = false;
 
   PlaceDetailsWidgetModel({
     required PlaceDetailsModel model,
-    required Coordinator coordinator,
-  })  : _coordinator = coordinator,
+    required AppRouter router,
+  })  : _router = router,
         super(model) {
     _loadingImitation();
     _init();
@@ -111,11 +112,12 @@ class PlaceDetailsWidgetModel
 
   @override
   void onTapBackButton() {
-    _coordinator.pop(context, forceRebuild: true);
+    _router.pop<bool>(_isFavoriteChange);
   }
 
   @override
   void onTapFavorite() {
+    _isFavoriteChange = !_isFavoriteChange;
     final prevValue = _favoriteState.value;
 
     if (prevValue!) {

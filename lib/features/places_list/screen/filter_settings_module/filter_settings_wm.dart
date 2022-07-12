@@ -10,7 +10,7 @@ import 'package:places/features/common/domain/entity/place.dart';
 import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/common/strings/dialog_strings.dart';
 import 'package:places/features/common/widgets/ui_func.dart';
-import 'package:places/features/navigation/service/coordinator.dart';
+import 'package:places/features/navigation/app_router.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_model.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_screen.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +43,7 @@ FilterSettingsWidgetModel defaultFilterSettingsWidgetModelFactory(
   );
   return FilterSettingsWidgetModel(
     model: model,
-    coordinator: appScope.coordinator,
+    router: appScope.router,
     messageController: appScope.messageController,
   );
 }
@@ -67,7 +67,7 @@ class FilterSettingsWidgetModel
     PlaceType.cafe,
   ];
 
-  final Coordinator coordinator;
+  final AppRouter router;
   final MessageController messageController;
 
   final StateNotifier<List<PlaceType>> _filterState =
@@ -108,7 +108,7 @@ class FilterSettingsWidgetModel
 
   FilterSettingsWidgetModel({
     required FilterSettingsModel model,
-    required this.coordinator,
+    required this.router,
     required this.messageController,
   }) : super(model);
 
@@ -120,7 +120,7 @@ class FilterSettingsWidgetModel
 
   @override
   void onBackButtonTap() {
-    coordinator.pop(context);
+    router.pop(false);
   }
 
   @override
@@ -132,8 +132,7 @@ class FilterSettingsWidgetModel
 
   @override
   void onShowResultTap() {
-    _saveSetttings()
-        .whenComplete(() => coordinator.pop(context, forceRebuild: true));
+    _saveSetttings().whenComplete(() => router.pop(true));
   }
 
   @override

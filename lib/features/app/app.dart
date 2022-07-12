@@ -6,11 +6,6 @@ import 'package:places/config/debug_options.dart';
 import 'package:places/config/environment/environment.dart';
 import 'package:places/features/app/di/app_scope.dart';
 import 'package:places/features/common/widgets/di_scope/di_scope.dart';
-import 'package:places/features/navigation/app_router.dart';
-import 'package:places/features/navigation/domain/delegate/app_router_delegate.dart';
-import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
-import 'package:places/features/navigation/domain/parser/app_route_information_parses.dart';
-import 'package:places/features/navigation/service/coordinator.dart';
 
 /// App widget.
 class App extends StatefulWidget {
@@ -23,17 +18,12 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   late IAppScope _scope;
-  late AppRouter _appRouter;
 
   @override
   void initState() {
     super.initState();
 
     _scope = AppScope(applicationRebuilder: _rebuildApplication);
-
-    _setupRouting(_scope.coordinator);
-
-    _appRouter = AppRouter();
   }
 
   @override
@@ -70,8 +60,8 @@ class _AppState extends State<App> {
                 _getDebugConfig().debugShowCheckedModeBanner,
 
             /// This is for navigation.
-            routeInformationParser: _appRouter.defaultRouteParser(),
-            routerDelegate: _appRouter.delegate(),
+            routeInformationParser: _scope.router.defaultRouteParser(),
+            routerDelegate: _scope.router.delegate(),
 
             /// Theme
             theme: AppTheme.lightTheme,
@@ -87,16 +77,9 @@ class _AppState extends State<App> {
     return Environment<AppConfig>.instance().config.debugOptions;
   }
 
-  void _setupRouting(Coordinator coordinator) {
-    coordinator
-      ..initialCoordinate = AppCoordinate.initial
-      ..registerCoordinates('/', appCoordinates);
-  }
-
   void _rebuildApplication() {
     setState(() {
       _scope = AppScope(applicationRebuilder: _rebuildApplication);
-      _setupRouting(_scope.coordinator);
     });
   }
 }

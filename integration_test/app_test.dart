@@ -31,7 +31,7 @@ void main() {
     await tester.runAsync(() async {
       final sliderFinder = find.byType(Slider);
       final placeListFinder = find.byKey(const ValueKey('PlacesListScreen'));
-      final filterFibder = find.byKey(const ValueKey('Filter'));
+      final filterFinder = find.byKey(const ValueKey('Filter'));
 
       app.main();
 
@@ -44,7 +44,7 @@ void main() {
       expect(placeListFinder, findsOneWidget);
 
       // Проверка кнопки назад
-      await tester.tap(filterFibder);
+      await tester.tap(filterFinder);
       await tester.pumpAndSettle();
       // Проверка, что экран фильтра загргузился
       expect(
@@ -56,7 +56,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(placeListFinder, findsOneWidget);
 
-      await tester.tap(filterFibder);
+      await tester.tap(filterFinder);
       await tester.pumpAndSettle();
       await Future<void>.delayed(const Duration(seconds: 5));
 

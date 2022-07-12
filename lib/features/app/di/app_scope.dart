@@ -16,7 +16,7 @@ import 'package:places/features/common/service/favorite_db_service.dart';
 import 'package:places/features/common/service/geoposition_bloc/geoposition_bloc.dart';
 import 'package:places/features/common/service/places_service.dart';
 import 'package:places/features/common/widgets/ui_func.dart';
-import 'package:places/features/navigation/service/coordinator.dart';
+import 'package:places/features/navigation/app_router.dart';
 import 'package:places/features/places_list/domain/repository/image_pick_repository.dart';
 import 'package:places/features/places_list/service/image_picker_service.dart';
 import 'package:places/features/search/repository/search_query_db_repository.dart';
@@ -29,7 +29,7 @@ class AppScope implements IAppScope {
   late final Dio _dio;
   late final ErrorHandler _errorHandler;
   late final VoidCallback _applicationRebuilder;
-  late final Coordinator _coordinator;
+  late final AppRouter _router;
   late final PlacesService _placesService;
   late final AppSettingsService _appSettingsService;
   late final SearchQueryDbService _searchDbService;
@@ -58,7 +58,7 @@ class AppScope implements IAppScope {
   VoidCallback get applicationRebuilder => _applicationRebuilder;
 
   @override
-  Coordinator get coordinator => _coordinator;
+  AppRouter get router => _router;
 
   @override
   PlacesService get placesService => _placesService;
@@ -101,7 +101,7 @@ class AppScope implements IAppScope {
 
     _dio = _initDio(additionalInterceptors);
     _errorHandler = DefaultErrorHandler();
-    _coordinator = Coordinator();
+    _router = AppRouter.instance();
     _initConnectivity();
 
     // Places API service
@@ -199,9 +199,6 @@ abstract class IAppScope {
   /// Callback to rebuild the whole application.
   VoidCallback get applicationRebuilder;
 
-  /// Class that coordinates navigation for the whole app.
-  Coordinator get coordinator;
-
   /// Places service.
   PlacesService get placesService;
 
@@ -225,6 +222,9 @@ abstract class IAppScope {
 
   ///UI Function Controller
   MessageController get messageController;
+
+  // Navigation on whole app
+  AppRouter get router;
 
   /// For dispose any controllers
   void dispose();

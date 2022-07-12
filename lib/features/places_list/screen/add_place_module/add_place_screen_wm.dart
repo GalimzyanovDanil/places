@@ -10,7 +10,7 @@ import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/common/strings/dialog_strings.dart';
 import 'package:places/features/common/widgets/ui_func.dart';
 import 'package:places/features/common/widgets/widgets_factory.dart';
-import 'package:places/features/navigation/service/coordinator.dart';
+import 'package:places/features/navigation/app_router.dart';
 import 'package:places/features/places_list/screen/add_place_module/add_place_screen.dart';
 import 'package:places/features/places_list/screen/add_place_module/add_place_screen_model.dart';
 import 'package:places/features/places_list/screen/add_place_module/select_category/select_category_route.dart';
@@ -56,7 +56,7 @@ AddPlaceScreenWidgetModel defaultAddPlaceScreenWidgetModelFactory(
 
   return AddPlaceScreenWidgetModel(
     model: model,
-    coordinator: appScope.coordinator,
+    router: appScope.router,
     messageController: appScope.messageController,
   );
 }
@@ -66,7 +66,7 @@ AddPlaceScreenWidgetModel defaultAddPlaceScreenWidgetModelFactory(
 class AddPlaceScreenWidgetModel
     extends WidgetModel<AddPlaceScreen, AddPlaceScreenModel>
     implements IAddPlaceScreenWidgetModel {
-  final Coordinator coordinator;
+  final AppRouter router;
   final MessageController messageController;
 
   final _uploadImageState = StateNotifier<List<String>>(initValue: []);
@@ -108,7 +108,7 @@ class AddPlaceScreenWidgetModel
   TextEditingController get lngController => _lngController;
 
   AddPlaceScreenWidgetModel({
-    required this.coordinator,
+    required this.router,
     required AddPlaceScreenModel model,
     required this.messageController,
   }) : super(model);
@@ -192,7 +192,7 @@ class AddPlaceScreenWidgetModel
               final String title;
 
               if (isNewPlaceCreated) {
-                onConfirm = coordinator.popUntilRoot;
+                onConfirm = router.pop;
                 bodyText = PlacesListStrings.infoDialogBodyOk;
                 confirmTitle = PlacesListStrings.infoDialogConfirmOk;
                 title = PlacesListStrings.infoDialogTitleOk;
@@ -234,7 +234,7 @@ class AddPlaceScreenWidgetModel
 
   @override
   void onCancelButton() {
-    Navigator.of(context).pop();
+    router.pop();
   }
 
   @override

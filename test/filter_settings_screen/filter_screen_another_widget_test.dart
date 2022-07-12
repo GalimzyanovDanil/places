@@ -7,14 +7,14 @@ import 'package:places/features/common/domain/entity/place.dart';
 import 'package:places/features/common/domain/entity/place_type.dart';
 import 'package:places/features/common/service/geoposition_bloc/geoposition_bloc.dart';
 import 'package:places/features/common/widgets/ui_func.dart';
-import 'package:places/features/navigation/service/coordinator.dart';
+import 'package:places/features/navigation/app_router.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_model.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_screen.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_wm.dart';
 import 'package:places/features/places_list/strings/places_list_strings.dart';
 import 'package:places/features/places_list/widgets/filter_settings_widgets/category_element_widget.dart';
 
-class CoordinatorMock extends Mock implements Coordinator {}
+class AppRouterMock extends Mock implements AppRouter {}
 
 class MessageControllerMock extends Mock implements MessageController {}
 
@@ -61,12 +61,12 @@ final placeListMock = <Place>[
 void main() {
   group('FilterScreen', () {
     late FilterSettingsModelMock modelMock;
-    late CoordinatorMock coordinatorMock;
+    late AppRouterMock routerMock;
     late MessageControllerMock messageControllerMock;
 
     setUp(() {
       modelMock = FilterSettingsModelMock();
-      coordinatorMock = CoordinatorMock();
+      routerMock = AppRouterMock();
       messageControllerMock = MessageControllerMock();
 
       when(() => modelMock.getFilterPlaceTypes())
@@ -90,7 +90,7 @@ void main() {
         home: FilterSettingsScreen(
           wmFactory: (context) => FilterSettingsWidgetModel(
             model: modelMock,
-            coordinator: coordinatorMock,
+            router: routerMock,
             messageController: messageControllerMock,
           ),
         ),
@@ -154,7 +154,7 @@ void main() {
         home: FilterSettingsScreen(
           wmFactory: (context) => FilterSettingsWidgetModel(
             model: modelMock,
-            coordinator: coordinatorMock,
+            router: routerMock,
             messageController: messageControllerMock,
           ),
         ),
@@ -209,7 +209,7 @@ void main() {
       await tester.runAsync(() async {
         final wm = FilterSettingsWidgetModel(
           model: modelMock,
-          coordinator: coordinatorMock,
+          router: routerMock,
           messageController: messageControllerMock,
         );
 

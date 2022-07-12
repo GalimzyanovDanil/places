@@ -1,8 +1,7 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:places/features/app/di/app_scope.dart';
-import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
-import 'package:places/features/navigation/service/coordinator.dart';
+import 'package:places/features/navigation/app_router.dart';
 import 'package:places/features/onboarding/screen/onboarding_model.dart';
 import 'package:places/features/onboarding/screen/onboarding_screen.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +23,7 @@ OnboardingWidgetModel defaultOnboardingWidgetModelFactory(
   final model = OnboardingModel(appScope.appSettingsService);
   return OnboardingWidgetModel(
     model: model,
-    coordinator: appScope.coordinator,
+    router: appScope.router,
   );
 }
 
@@ -32,7 +31,7 @@ OnboardingWidgetModel defaultOnboardingWidgetModelFactory(
 class OnboardingWidgetModel
     extends WidgetModel<OnboardingScreen, OnboardingModel>
     implements IOnboardingWidgetModel {
-  final Coordinator coordinator;
+  final AppRouter router;
   // Количество страниц онбординга
   final int _pageCount = 3;
 
@@ -54,7 +53,7 @@ class OnboardingWidgetModel
   ListenableState<int> get currentPage => _currentPage;
 
   OnboardingWidgetModel({
-    required this.coordinator,
+    required this.router,
     required OnboardingModel model,
   }) : super(model);
 
@@ -92,18 +91,10 @@ class OnboardingWidgetModel
   }
 
   void _nextScreen() {
-    if (coordinator.pages.length > 1) {
-      coordinator.navigate(
-        context,
-        AppCoordinate.mainTabsScreen,
-        replaceRootCoordinate: true,
-      );
+    if (router.stack.length > 1) {
+      router.pop(true);
     } else {
-      coordinator.navigate(
-        context,
-        AppCoordinate.mainTabsScreen,
-        replaceCurrentCoordinate: true,
-      );
+      router.replaceNamed(RoutesStrings.mainTabs);
     }
   }
 }
