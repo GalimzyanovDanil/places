@@ -6,6 +6,7 @@ import 'package:places/config/debug_options.dart';
 import 'package:places/config/environment/environment.dart';
 import 'package:places/features/app/di/app_scope.dart';
 import 'package:places/features/common/widgets/di_scope/di_scope.dart';
+import 'package:places/features/navigation/app_router.dart';
 import 'package:places/features/navigation/domain/delegate/app_router_delegate.dart';
 import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
 import 'package:places/features/navigation/domain/parser/app_route_information_parses.dart';
@@ -22,6 +23,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   late IAppScope _scope;
+  late AppRouter _appRouter;
 
   @override
   void initState() {
@@ -30,6 +32,8 @@ class _AppState extends State<App> {
     _scope = AppScope(applicationRebuilder: _rebuildApplication);
 
     _setupRouting(_scope.coordinator);
+
+    _appRouter = AppRouter();
   }
 
   @override
@@ -66,8 +70,8 @@ class _AppState extends State<App> {
                 _getDebugConfig().debugShowCheckedModeBanner,
 
             /// This is for navigation.
-            routeInformationParser: AppRouteInformationParser(),
-            routerDelegate: AppRouterDelegate(_scope.coordinator),
+            routeInformationParser: _appRouter.defaultRouteParser(),
+            routerDelegate: _appRouter.delegate(),
 
             /// Theme
             theme: AppTheme.lightTheme,
