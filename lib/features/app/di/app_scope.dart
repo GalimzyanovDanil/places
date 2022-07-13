@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -15,11 +16,15 @@ import 'package:places/features/common/service/app_settings_service.dart';
 import 'package:places/features/common/service/favorite_db_service.dart';
 import 'package:places/features/common/service/geoposition_bloc/geoposition_bloc.dart';
 import 'package:places/features/common/service/places_service.dart';
+import 'package:places/features/common/service/redux/action_base.dart';
+import 'package:places/features/common/service/redux/store.dart';
 import 'package:places/features/common/widgets/ui_func.dart';
 import 'package:places/features/navigation/app_router.dart';
 import 'package:places/features/places_list/domain/repository/image_pick_repository.dart';
 import 'package:places/features/places_list/service/image_picker_service.dart';
 import 'package:places/features/search/repository/search_query_db_repository.dart';
+import 'package:places/features/search/service/redux/search_screen_middleware.dart';
+import 'package:places/features/search/service/redux/search_screen_reducer.dart';
 import 'package:places/features/search/service/search_query_db_service.dart';
 import 'package:places/util/default_error_handler.dart';
 import 'package:places/util/shared_preferences_helper.dart';
@@ -30,6 +35,10 @@ class AppScope implements IAppScope {
   late final ErrorHandler _errorHandler;
   late final VoidCallback _applicationRebuilder;
   late final AppRouter _router;
+
+  late final StoreDispatcher _storeDispatcher;
+  late final StreamSubscription<ActionBase> _storeDispatcherSubs;
+
   late final PlacesService _placesService;
   late final AppSettingsService _appSettingsService;
   late final SearchQueryDbService _searchDbService;
@@ -42,6 +51,7 @@ class AppScope implements IAppScope {
   late final SharedPrefsStorage _sharedPrefStorage;
   late final GeopositionBloc _geopositionBloc;
   late final SearchQueryDbRepository _searchQueryDbRepository;
+
   late final FavoriteDbRepository _favoriteDbRepository;
   late final PlacesDatabase _database;
   late final ImagePickerRepositry _imagePickerRepositry;
@@ -84,6 +94,9 @@ class AppScope implements IAppScope {
   @override
   MessageController get messageController => _messageController;
 
+  @override
+  StoreDispatcher get storeDispatcher => _storeDispatcher;
+
   late ConnectivityResult _connectivityResult;
 
   /// Create an instance [AppScope].
@@ -107,6 +120,8 @@ class AppScope implements IAppScope {
     // Places API service
     _placeApi = PlaceApi(dio);
     _placesService = _initPlacesService();
+
+    _setupReduxStore();
 
     // Shared Preference storage
     _sharedPreferencesHelper = SharedPreferencesHelper();
@@ -135,6 +150,21 @@ class AppScope implements IAppScope {
   @override
   void dispose() {
     _appSettingsService.dispose();
+    _storeDispatcherSubs.cancel();
+  }
+
+  void _setupReduxStore() {
+    _storeDispatcher = StoreDispatcher();
+    final searchReducer = SearchScreenReducer().obtainReducer();
+    final searchMiddleware = SearchScreenMiddleware(
+      queryDbRepository: _searchQueryDbRepository,
+      placesRepository: _placesRepository,
+    ).obtainMiddleware();
+    final store = AppStore.createStore(
+      reducer: searchReducer,
+      middleware: [searchMiddleware],
+    );
+    _storeDispatcherSubs = _storeDispatcher.onAction.listen(store.dispatch);
   }
 
   Dio _initDio(Iterable<Interceptor> additionalInterceptors) {
@@ -225,6 +255,9 @@ abstract class IAppScope {
 
   // Navigation on whole app
   AppRouter get router;
+
+  // Dispatcher for Redux action
+  StoreDispatcher get storeDispatcher;
 
   /// For dispose any controllers
   void dispose();
