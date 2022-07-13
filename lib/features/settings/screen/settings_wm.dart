@@ -3,8 +3,7 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:places/features/app/di/app_scope.dart';
-import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
-import 'package:places/features/navigation/service/coordinator.dart';
+import 'package:places/features/navigation/app_router.dart';
 import 'package:places/features/settings/screen/settings_model.dart';
 import 'package:places/features/settings/screen/settings_screen.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +20,7 @@ SettingsWidgetModel defaultSettingsWidgetModelFactory(BuildContext context) {
   final model = SettingsModel(appScope.appSettingsService);
   return SettingsWidgetModel(
     model: model,
-    coordinator: appScope.coordinator,
+    router: appScope.router,
   );
 }
 
@@ -29,7 +28,7 @@ SettingsWidgetModel defaultSettingsWidgetModelFactory(BuildContext context) {
 /// Default widget model for SettingsWidget
 class SettingsWidgetModel extends WidgetModel<SettingsScreen, SettingsModel>
     implements ISettingsWidgetModel {
-  final Coordinator coordinator;
+  final AppRouter router;
   final _themeState = StateNotifier<bool>();
 
   @override
@@ -38,7 +37,7 @@ class SettingsWidgetModel extends WidgetModel<SettingsScreen, SettingsModel>
   @override
   ThemeData get theme => Theme.of(context);
 
-  SettingsWidgetModel({required SettingsModel model, required this.coordinator})
+  SettingsWidgetModel({required SettingsModel model, required this.router})
       : super(model);
 
   @override
@@ -55,10 +54,7 @@ class SettingsWidgetModel extends WidgetModel<SettingsScreen, SettingsModel>
 
   @override
   void onTapInfo() {
-    coordinator.navigate(
-      context,
-      AppCoordinate.onboardingScreen,
-    );
+    router.pushNamed(RoutesStrings.onboarding);
   }
 
   void _init() {

@@ -1,10 +1,10 @@
 import 'dart:async';
+
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:places/features/app/di/app_scope.dart';
 import 'package:places/features/common/service/geoposition_bloc/geoposition_bloc.dart';
-import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
-import 'package:places/features/navigation/service/coordinator.dart';
+import 'package:places/features/navigation/app_router.dart';
 import 'package:places/features/splash_screen/screen/splash_model.dart';
 import 'package:places/features/splash_screen/screen/splash_screen.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +19,7 @@ SplashWidgetModel defaultSplashWidgetModelFactory(BuildContext context) {
     appSettingsService: appScope.appSettingsService,
     geopositionBloc: appScope.geopositionBloc,
   );
-  return SplashWidgetModel(model: model, coordinator: appScope.coordinator);
+  return SplashWidgetModel(model: model, router: appScope.router);
 }
 
 // TODO(me): cover with documentation
@@ -27,7 +27,7 @@ SplashWidgetModel defaultSplashWidgetModelFactory(BuildContext context) {
 class SplashWidgetModel extends WidgetModel<SplashScreen, SplashModel>
     with TickerProviderWidgetModelMixin
     implements ISplashWidgetModel {
-  final Coordinator coordinator;
+  final AppRouter router;
 
   late final bool isOnboardingFinish;
   late final Animation<double> _animation;
@@ -37,7 +37,7 @@ class SplashWidgetModel extends WidgetModel<SplashScreen, SplashModel>
   @override
   Animation<double> get animation => _animation;
 
-  SplashWidgetModel({required SplashModel model, required this.coordinator})
+  SplashWidgetModel({required SplashModel model, required this.router})
       : super(model);
 
   @override
@@ -92,17 +92,9 @@ class SplashWidgetModel extends WidgetModel<SplashScreen, SplashModel>
   void _navigate() {
     if (isMounted) {
       if (isOnboardingFinish) {
-        coordinator.navigate(
-          context,
-          AppCoordinate.mainTabsScreen,
-          replaceRootCoordinate: true,
-        );
+        router.replaceNamed(RoutesStrings.mainTabs);
       } else {
-        coordinator.navigate(
-          context,
-          AppCoordinate.onboardingScreen,
-          replaceRootCoordinate: true,
-        );
+        router.replaceNamed(RoutesStrings.onboarding);
       }
     }
   }

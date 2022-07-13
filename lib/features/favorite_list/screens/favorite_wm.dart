@@ -5,8 +5,7 @@ import 'package:places/features/app/di/app_scope.dart';
 import 'package:places/features/common/domain/entity/place.dart';
 import 'package:places/features/favorite_list/screens/favorite_model.dart';
 import 'package:places/features/favorite_list/screens/favorite_screen.dart';
-import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
-import 'package:places/features/navigation/service/coordinator.dart';
+import 'package:places/features/navigation/app_router.dart';
 import 'package:places/features/place_details/widgets/date_picker_factory.dart';
 import 'package:provider/provider.dart';
 import 'package:surf_lint_rules/surf_lint_rules.dart';
@@ -18,7 +17,6 @@ abstract class IFavoriteWidgetModel extends IWidgetModel {
   Future<void> onDelete(int index);
   Future<void> onTapPlanned(int index);
   void onTapCard(int index);
-  void onBackButtonTap();
 }
 
 FavoriteWidgetModel defaultFavoriteWidgetModelFactory(BuildContext context) {
@@ -27,7 +25,7 @@ FavoriteWidgetModel defaultFavoriteWidgetModelFactory(BuildContext context) {
 
   return FavoriteWidgetModel(
     model: model,
-    coordinator: appScope.coordinator,
+    router: appScope.router,
   );
 }
 
@@ -35,7 +33,7 @@ FavoriteWidgetModel defaultFavoriteWidgetModelFactory(BuildContext context) {
 /// Default widget model for FavoriteWidget
 class FavoriteWidgetModel extends WidgetModel<FavoriteScreen, FavoriteModel>
     implements IFavoriteWidgetModel {
-  final Coordinator _coordinator;
+  final AppRouter _router;
   final StateNotifier<List<Place>> _placesState = StateNotifier();
   final _dateFormat = DateFormat('d MMM y', 'ru_RU');
 
@@ -52,8 +50,8 @@ class FavoriteWidgetModel extends WidgetModel<FavoriteScreen, FavoriteModel>
 
   FavoriteWidgetModel({
     required FavoriteModel model,
-    required Coordinator coordinator,
-  })  : _coordinator = coordinator,
+    required AppRouter router,
+  })  : _router = router,
         super(model) {
     _getFavoriteList();
   }
@@ -89,19 +87,13 @@ class FavoriteWidgetModel extends WidgetModel<FavoriteScreen, FavoriteModel>
   }
 
   @override
-  void onTapCard(int index) {
+  Future<void> onTapCard(int index) async {
     assert(_placesState.value?[index] != null,
         'Cards builds from list in placesstate.value');
-    _coordinator.navigate(
-      context,
-      AppCoordinate.detailsPlaceScreen,
-      arguments: _placesState.value![index],
+    final isNeedUpdate = await _router.push<bool>(
+      PlaceDetailsPageRoute(place: _placesState.value![index]),
     );
-  }
-
-  @override
-  void onBackButtonTap() {
-    _coordinator.pop(context);
+    if (isNeedUpdate ?? false) await _getFavoriteList();
   }
 
   Future<void> _getFavoriteList() async {

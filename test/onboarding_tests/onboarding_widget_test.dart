@@ -3,12 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:places/features/navigation/service/coordinator.dart';
+import 'package:places/features/navigation/app_router.dart';
 import 'package:places/features/onboarding/screen/onboarding_model.dart';
 import 'package:places/features/onboarding/screen/onboarding_screen.dart';
 import 'package:places/features/onboarding/screen/onboarding_wm.dart';
 
-class CoordinatorMock extends Mock implements Coordinator {}
+class AppRouterMock extends Mock implements AppRouter {}
 
 class OnboardingModelMock extends Mock implements OnboardingModel {}
 
@@ -16,11 +16,11 @@ void main() async {
   group(
     'Виджет тесты - Онбординг',
     () {
-      late Coordinator coordinatorMock;
+      late AppRouter appRouterMock;
       late OnboardingModel onboardingModelMock;
 
       setUp(() {
-        coordinatorMock = CoordinatorMock();
+        appRouterMock = AppRouterMock();
         onboardingModelMock = OnboardingModelMock();
       });
 
@@ -39,7 +39,7 @@ void main() async {
             MaterialApp(
               home: OnboardingScreen(
                 wmFactory: (context) => OnboardingWidgetModel(
-                  coordinator: coordinatorMock,
+                  router: appRouterMock,
                   model: onboardingModelMock,
                 ),
               ),

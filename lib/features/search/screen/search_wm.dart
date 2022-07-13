@@ -4,8 +4,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:places/features/app/di/app_scope.dart';
 import 'package:places/features/common/domain/entity/place.dart';
-import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
-import 'package:places/features/navigation/service/coordinator.dart';
+import 'package:places/features/navigation/app_router.dart';
 import 'package:places/features/search/screen/search_model.dart';
 import 'package:places/features/search/screen/search_screen.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +30,7 @@ SearchWidgetModel defaultSearchWidgetModelFactory(BuildContext context) {
   );
   return SearchWidgetModel(
     model: model,
-    coordinator: appScope.coordinator,
+    router: appScope.router,
   );
 }
 
@@ -42,7 +41,7 @@ class SearchWidgetModel extends WidgetModel<SearchScreen, SearchModel>
   final _searchQueriesState = StateNotifier<List<String>>();
   final _listPlaceState = StateNotifier<List<Place>?>();
 
-  final Coordinator _coordinator;
+  final AppRouter _router;
 
   late final TextEditingController _searchBarController;
 
@@ -68,15 +67,15 @@ class SearchWidgetModel extends WidgetModel<SearchScreen, SearchModel>
 
   SearchWidgetModel({
     required SearchModel model,
-    required Coordinator coordinator,
-  })  : _coordinator = coordinator,
+    required AppRouter router,
+  })  : _router = router,
         super(model) {
     _init();
   }
 
   @override
   void onBackButton() {
-    _coordinator.pop(context);
+    _router.pop(context);
   }
 
   @override
@@ -101,11 +100,9 @@ class SearchWidgetModel extends WidgetModel<SearchScreen, SearchModel>
   void onTapPlace(int index) {
     FocusScope.of(context).unfocus();
     final currentPlace = _listPlaceState.value![index];
-    Future<void>.delayed(const Duration(milliseconds: 100))
-        .whenComplete(() => _coordinator.navigate(
-              context,
-              AppCoordinate.detailsPlaceScreen,
-              arguments: currentPlace,
+    Future<void>.delayed(const Duration(milliseconds: 200))
+        .whenComplete(() => _router.push(
+              PlaceDetailsPageRoute(place: currentPlace),
             ));
   }
 

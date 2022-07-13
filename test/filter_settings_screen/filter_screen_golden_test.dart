@@ -12,12 +12,12 @@ import 'package:places/features/common/service/app_settings_service.dart';
 import 'package:places/features/common/service/geoposition_bloc/geoposition_bloc.dart';
 import 'package:places/features/common/service/places_service.dart';
 import 'package:places/features/common/widgets/ui_func.dart';
-import 'package:places/features/navigation/service/coordinator.dart';
+import 'package:places/features/navigation/app_router.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_model.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_screen.dart';
 import 'package:places/features/places_list/screen/filter_settings_module/filter_settings_wm.dart';
 
-class CoordinatorMock extends Mock implements Coordinator {}
+class AppRouterMock extends Mock implements AppRouter {}
 
 class MessageControllerMock extends Mock implements MessageController {}
 
@@ -83,7 +83,7 @@ void main() {
     late PlacesService placesServiceMock;
     late ErrorHandler errorHandlerMock;
     late GeopositionBloc geopositionBlocMock;
-    late Coordinator coordinatorMock;
+    late AppRouter appRouterMock;
     late MessageController messageControllerMock;
 
     setUpAll(() {
@@ -95,7 +95,7 @@ void main() {
       placesServiceMock = PlacesServiceMock();
       errorHandlerMock = ErrorHandlerMock();
       geopositionBlocMock = GeopositionBlocMock();
-      coordinatorMock = CoordinatorMock();
+      appRouterMock = AppRouterMock();
       messageControllerMock = MessageControllerMock();
 
       when(() => appSettingsServiceMock.getFilterPlaceTypes())
@@ -114,7 +114,7 @@ void main() {
         tester.pumpWidgetBuilder(
           FilterSettingsScreen(
             wmFactory: (_) => FilterSettingsWidgetModel(
-              coordinator: coordinatorMock,
+              router: appRouterMock,
               messageController: messageControllerMock,
               model: FilterSettingsModel(
                 appSettingsService: appSettingsServiceMock,

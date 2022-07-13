@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -11,8 +12,7 @@ import 'package:places/features/common/service/geoposition_bloc/geoposition_bloc
 import 'package:places/features/common/strings/dialog_strings.dart';
 import 'package:places/features/common/widgets/ui_func.dart';
 import 'package:places/features/common/widgets/widgets_factory.dart';
-import 'package:places/features/navigation/domain/entity/app_coordinate.dart';
-import 'package:places/features/navigation/service/coordinator.dart';
+import 'package:places/features/navigation/app_router.dart';
 import 'package:places/features/places_list/screen/places_list_module/places_list_model.dart';
 import 'package:places/features/places_list/screen/places_list_module/places_list_screen.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +43,7 @@ PlacesListWidgetModel defaultPlacesListWidgetModelFactory(
 
   return PlacesListWidgetModel(
     model: model,
-    coordinator: appScope.coordinator,
+    router: appScope.router,
     messageController: appScope.messageController,
   );
 }
@@ -59,9 +59,8 @@ class PlacesListWidgetModel
 
   /// Количество загружаемых мест
   final placeCount = 15;
-
-  final Coordinator _coordinator;
   final MessageController messageController;
+  final AppRouter _router;
 
   late final PagingController<int, Place> _pagingController;
   late final AnimationController _animationController;
@@ -85,9 +84,9 @@ class PlacesListWidgetModel
 
   PlacesListWidgetModel({
     required PlacesListModel model,
-    required Coordinator coordinator,
+    required AppRouter router,
     required this.messageController,
-  })  : _coordinator = coordinator,
+  })  : _router = router,
         super(model);
 
   @override
@@ -119,17 +118,14 @@ class PlacesListWidgetModel
   }
 
   @override
-  void onTapCard(int index) {
+  Future<void> onTapCard(int index) async {
     final currentPlace = _pagingController.itemList?[index];
 
     if (currentPlace != null) {
-      final args = currentPlace;
-
-      _coordinator.navigate(
-        context,
-        AppCoordinate.detailsPlaceScreen,
-        arguments: args,
-      );
+      final place = currentPlace;
+      final isNeedUpdate =
+          await _router.push<bool>(PlaceDetailsPageRoute(place: place));
+      if (isNeedUpdate ?? false) pagingController.refresh();
     }
   }
 
@@ -140,21 +136,27 @@ class PlacesListWidgetModel
 
   @override
   void onSearchBarTap() {
-    _coordinator.navigate(context, AppCoordinate.searchScreen);
+    _router
+        .pushNamed(RoutesStrings.search)
+        .whenComplete(() => pagingController.refresh());
   }
 
   @override
   Future<void> onSettingsTap() async {
-    await _geopositionChecks().then((isEnabled) {
+    await _geopositionChecks().then((isEnabled) async {
       if (isEnabled) {
-        _coordinator.navigate(context, AppCoordinate.filterSettingsScreen);
+        final isNeedUpdate =
+            await _router.pushNamed<bool>(RoutesStrings.filterSettings);
+        if (isNeedUpdate ?? false) pagingController.refresh();
       }
     });
   }
 
   @override
   void onAddPlaceTap() {
-    _coordinator.navigate(context, AppCoordinate.addPlaceScreen);
+    _router
+        .pushNamed(RoutesStrings.addPlace)
+        .whenComplete(() => pagingController.refresh());
   }
 
   // Инициализация
