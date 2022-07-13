@@ -38,6 +38,7 @@ dependencies:
   path: ^1.8.1
   path_provider: ^2.0.11
   provider: ^6.0.2
+  redux: ^5.0.0
   retrofit: ^3.0.1+1
   shared_preferences: ^2.0.15
   shimmer: ^2.0.0
