@@ -31,8 +31,6 @@ class SearchScreenMiddleware {
       clearRequestHistoryAction: (action) =>
           _onClearRequestHistoryAction(action, store),
       fetchPlaceListAction: (action) => _onFetchPlaceListAction(action, store),
-      addRequestHistoryAction: (action) =>
-          _onAddRequstHistoryAction(action, store),
       receivedHistoryAction: (_) {},
       receivedPlacesAction: (_) {},
     );
@@ -44,17 +42,6 @@ class SearchScreenMiddleware {
     SearchAction action,
     Store<AppState> store,
   ) async {
-    store.dispatch(action);
-    await _dispatchQueryHistory(store);
-  }
-
-  Future<void> _onAddRequstHistoryAction(
-    SearchAction action,
-    Store<AppState> store,
-  ) async {
-    assert(action is AddRequestHistoryAction, 'Missmatch search action type');
-    await _queryDbRepository
-        .addSearchQuery((action as AddRequestHistoryAction).textRequest);
     await _dispatchQueryHistory(store);
   }
 
@@ -83,11 +70,15 @@ class SearchScreenMiddleware {
     Store<AppState> store,
   ) async {
     assert(action is FetchPlaceListAction, 'Missmatch search action type');
-    store.dispatch(action);
+
     final filter =
         PlaceFilter(nameFilter: (action as FetchPlaceListAction).query);
     final findedPlaces = await _placesRepository.getFilteredPlacesList(filter);
+
     store.dispatch(ReceivedPlacesAction(findedPlaces));
+    if (findedPlaces.isNotEmpty) {
+      await _queryDbRepository.addSearchQuery(action.query);
+    }
   }
 
   Future<void> _dispatchQueryHistory(Store<AppState> store) async {

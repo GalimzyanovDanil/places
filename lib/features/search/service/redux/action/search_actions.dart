@@ -10,7 +10,6 @@ abstract class SearchAction {
     required T Function(SearchAction action) deleteRequestHistoryAction,
     required T Function(SearchAction action) clearRequestHistoryAction,
     required T Function(SearchAction action) fetchPlaceListAction,
-    required T Function(SearchAction action) addRequestHistoryAction,
     required T Function(SearchAction action) receivedHistoryAction,
     required T Function(SearchAction action) receivedPlacesAction,
   });
@@ -23,31 +22,13 @@ class FetchRequestHistoryAction extends ActionBase implements SearchAction {
     required T Function(SearchAction action) deleteRequestHistoryAction,
     required T Function(SearchAction action) clearRequestHistoryAction,
     required T Function(SearchAction action) fetchPlaceListAction,
-    required T Function(SearchAction action) addRequestHistoryAction,
     required T Function(SearchAction action) receivedHistoryAction,
     required T Function(SearchAction action) receivedPlacesAction,
   }) =>
       fetchRequestHistoryAction(this);
 }
 
-class AddRequestHistoryAction implements SearchAction {
-  final String textRequest;
-  const AddRequestHistoryAction(this.textRequest);
-
-  @override
-  T map<T>({
-    required T Function(SearchAction action) fetchRequestHistoryAction,
-    required T Function(SearchAction action) deleteRequestHistoryAction,
-    required T Function(SearchAction action) clearRequestHistoryAction,
-    required T Function(SearchAction action) fetchPlaceListAction,
-    required T Function(SearchAction action) addRequestHistoryAction,
-    required T Function(SearchAction action) receivedHistoryAction,
-    required T Function(SearchAction action) receivedPlacesAction,
-  }) =>
-      addRequestHistoryAction(this);
-}
-
-class DeleteRequestHistoryAction implements SearchAction {
+class DeleteRequestHistoryAction extends ActionBase implements SearchAction {
   final String textRequest;
   const DeleteRequestHistoryAction(this.textRequest);
 
@@ -57,28 +38,26 @@ class DeleteRequestHistoryAction implements SearchAction {
     required T Function(SearchAction action) deleteRequestHistoryAction,
     required T Function(SearchAction action) clearRequestHistoryAction,
     required T Function(SearchAction action) fetchPlaceListAction,
-    required T Function(SearchAction action) addRequestHistoryAction,
     required T Function(SearchAction action) receivedHistoryAction,
     required T Function(SearchAction action) receivedPlacesAction,
   }) =>
       deleteRequestHistoryAction(this);
 }
 
-class ClearRequestHistoryAction implements SearchAction {
+class ClearRequestHistoryAction extends ActionBase implements SearchAction {
   @override
   T map<T>({
     required T Function(SearchAction action) fetchRequestHistoryAction,
     required T Function(SearchAction action) deleteRequestHistoryAction,
     required T Function(SearchAction action) clearRequestHistoryAction,
     required T Function(SearchAction action) fetchPlaceListAction,
-    required T Function(SearchAction action) addRequestHistoryAction,
     required T Function(SearchAction action) receivedHistoryAction,
     required T Function(SearchAction action) receivedPlacesAction,
   }) =>
       clearRequestHistoryAction(this);
 }
 
-class FetchPlaceListAction implements SearchAction {
+class FetchPlaceListAction extends ActionBase implements SearchAction {
   final String query;
   const FetchPlaceListAction(this.query);
 
@@ -88,7 +67,6 @@ class FetchPlaceListAction implements SearchAction {
     required T Function(SearchAction action) deleteRequestHistoryAction,
     required T Function(SearchAction action) clearRequestHistoryAction,
     required T Function(SearchAction action) fetchPlaceListAction,
-    required T Function(SearchAction action) addRequestHistoryAction,
     required T Function(SearchAction action) receivedHistoryAction,
     required T Function(SearchAction action) receivedPlacesAction,
   }) =>
@@ -105,7 +83,6 @@ class ReceivedHistoryAction implements SearchAction {
     required T Function(SearchAction action) deleteRequestHistoryAction,
     required T Function(SearchAction action) clearRequestHistoryAction,
     required T Function(SearchAction action) fetchPlaceListAction,
-    required T Function(SearchAction action) addRequestHistoryAction,
     required T Function(SearchAction action) receivedHistoryAction,
     required T Function(SearchAction action) receivedPlacesAction,
   }) =>
@@ -122,7 +99,6 @@ class ReceivedPlacesAction implements SearchAction {
     required T Function(SearchAction action) deleteRequestHistoryAction,
     required T Function(SearchAction action) clearRequestHistoryAction,
     required T Function(SearchAction action) fetchPlaceListAction,
-    required T Function(SearchAction action) addRequestHistoryAction,
     required T Function(SearchAction action) receivedHistoryAction,
     required T Function(SearchAction action) receivedPlacesAction,
   }) =>

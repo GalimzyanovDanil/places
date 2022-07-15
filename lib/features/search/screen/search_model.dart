@@ -1,37 +1,33 @@
 import 'package:elementary/elementary.dart';
-import 'package:places/features/common/domain/entity/place.dart';
-import 'package:places/features/common/domain/entity/place_filter.dart';
-import 'package:places/features/common/service/places_service.dart';
-import 'package:places/features/search/service/search_query_db_service.dart';
+
+import 'package:places/features/common/service/redux/app_state.dart';
+import 'package:places/features/common/service/redux/store.dart';
+import 'package:places/features/search/service/redux/action/search_actions.dart';
 
 // TODO(me): cover with documentation
 /// Default Elementary model for Search module
 class SearchModel extends ElementaryModel {
-  final SearchQueryDbService _queryDbService;
-  final PlacesService _placesService;
+  final StoreDispatcher _storeDispatcher;
+
+  Stream<AppState> get appStream => _storeDispatcher.stateStream;
 
   SearchModel({
-    required SearchQueryDbService queryDbService,
-    required PlacesService placesService,
-  })  : _queryDbService = queryDbService,
-        _placesService = placesService;
+    required StoreDispatcher storeDispatcher,
+  }) : _storeDispatcher = storeDispatcher;
 
   /// Получение списка всех удачных поисковых запросов на запрос
-  Future<List<String>> searchQueryEntries({int? limit}) =>
-      _queryDbService.searchQueryEntries(limit: limit);
+  void searchQueryEntries() =>
+      _storeDispatcher.dispatch(FetchRequestHistoryAction());
 
   ///Удаление конкретной позиции
-  Future<void> deleteSearchQuery(String queryText) =>
-      _queryDbService.deleteSearchQuery(queryText);
+  void deleteSearchQuery(String queryText) =>
+      _storeDispatcher.dispatch(DeleteRequestHistoryAction(queryText));
 
   /// Очистка всей базы запросов
-  Future<void> clearSearchQueries() => _queryDbService.clearSearchQueries();
-
-  /// Добавление удачной поисковой строки
-  Future<void> addSearchQuery(String queryText) =>
-      _queryDbService.addSearchQuery(queryText);
+  void clearSearchQueries() =>
+      _storeDispatcher.dispatch(ClearRequestHistoryAction());
 
   /// Поиск мест по имени
-  Future<List<Place>> searchPlaceByName(String name) =>
-      _placesService.getFilteredPlace(PlaceFilter(nameFilter: name));
+  void searchPlaceByName(String name) =>
+      _storeDispatcher.dispatch(FetchPlaceListAction(name));
 }

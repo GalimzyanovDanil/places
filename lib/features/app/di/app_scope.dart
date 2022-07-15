@@ -121,8 +121,6 @@ class AppScope implements IAppScope {
     _placeApi = PlaceApi(dio);
     _placesService = _initPlacesService();
 
-    _setupReduxStore();
-
     // Shared Preference storage
     _sharedPreferencesHelper = SharedPreferencesHelper();
     _sharedPrefStorage = SharedPrefsStorage(_sharedPreferencesHelper);
@@ -144,6 +142,8 @@ class AppScope implements IAppScope {
     _imagePickerService = ImagePickerService(_imagePickerRepositry);
 
     _messageController = MessageController();
+
+    _setupReduxStore();
   }
 
   // For dispose any controllers
@@ -154,7 +154,6 @@ class AppScope implements IAppScope {
   }
 
   void _setupReduxStore() {
-    _storeDispatcher = StoreDispatcher();
     final searchReducer = SearchScreenReducer().obtainReducer();
     final searchMiddleware = SearchScreenMiddleware(
       queryDbRepository: _searchQueryDbRepository,
@@ -164,6 +163,7 @@ class AppScope implements IAppScope {
       reducer: searchReducer,
       middleware: [searchMiddleware],
     );
+    _storeDispatcher = StoreDispatcher()..onChange = store.onChange;
     _storeDispatcherSubs = _storeDispatcher.onAction.listen(store.dispatch);
   }
 

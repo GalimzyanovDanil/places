@@ -17,9 +17,13 @@ abstract class AppStore {
 }
 
 class StoreDispatcher {
-  final _controller = StreamController<ActionBase>.broadcast();
+  final _controller = StreamController<ActionBase>();
+  late final Stream<AppState> _onChange;
+
+  set onChange(Stream<AppState> stream) => _onChange = stream;
 
   Stream<ActionBase> get onAction => _controller.stream;
+  Stream<AppState> get stateStream => _onChange;
 
   void dispatch(ActionBase action) {
     _controller.add(action);

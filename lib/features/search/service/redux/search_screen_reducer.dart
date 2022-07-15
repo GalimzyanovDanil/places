@@ -10,7 +10,7 @@ class SearchScreenReducer {
     AppState state,
     SearchAction action,
   ) {
-    return action.map<AppState>(
+    final result = action.map<AppState>(
       fetchRequestHistoryAction: (_) => state.copyWith(
         searchScreenState:
             state.searchScreenState.copyWith(isHistoryLoading: true),
@@ -21,7 +21,6 @@ class SearchScreenReducer {
         searchScreenState:
             state.searchScreenState.copyWith(isPlacesLoading: true),
       ),
-      addRequestHistoryAction: (_) => state,
       receivedHistoryAction: (action) => state.copyWith(
         searchScreenState: state.searchScreenState.copyWith(
           queryHistory: (action as ReceivedHistoryAction).queryHistory,
@@ -35,5 +34,7 @@ class SearchScreenReducer {
         ),
       ),
     );
+
+    return result;
   }
 }

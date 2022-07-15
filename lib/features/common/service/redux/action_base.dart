@@ -1,2 +1,4 @@
 /// Базовый класс для реализации Redux Action
-abstract class ActionBase {}
+abstract class ActionBase {
+  const ActionBase();
+}

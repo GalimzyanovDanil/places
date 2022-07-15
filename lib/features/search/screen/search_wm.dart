@@ -4,6 +4,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:places/features/app/di/app_scope.dart';
 import 'package:places/features/common/domain/entity/place.dart';
+import 'package:places/features/common/service/redux/app_state.dart';
 import 'package:places/features/navigation/app_router.dart';
 import 'package:places/features/search/screen/search_model.dart';
 import 'package:places/features/search/screen/search_screen.dart';
@@ -15,9 +16,9 @@ abstract class ISearchWidgetModel extends IWidgetModel {
   ListenableState<List<Place>?> get listPlaceState;
   ListenableState<List<String>> get searchQueriesState;
   TextEditingController get searchBarController;
-  Future<void> onClearText();
+  void onClearText();
   void onClearHistory();
-  Future<void> onDeleteQuery(int index);
+  void onDeleteQuery(int index);
   void onTapPlace(int index);
   void onBackButton();
 }
@@ -25,8 +26,7 @@ abstract class ISearchWidgetModel extends IWidgetModel {
 SearchWidgetModel defaultSearchWidgetModelFactory(BuildContext context) {
   final appScope = context.read<IAppScope>();
   final model = SearchModel(
-    queryDbService: appScope.searchDbService,
-    placesService: appScope.placesService,
+    storeDispatcher: appScope.storeDispatcher,
   );
   return SearchWidgetModel(
     model: model,
@@ -44,6 +44,7 @@ class SearchWidgetModel extends WidgetModel<SearchScreen, SearchModel>
   final AppRouter _router;
 
   late final TextEditingController _searchBarController;
+  late final StreamSubscription<AppState> _streamSubscription;
 
   @override
   ThemeData get theme => Theme.of(context);
@@ -69,8 +70,31 @@ class SearchWidgetModel extends WidgetModel<SearchScreen, SearchModel>
     required SearchModel model,
     required AppRouter router,
   })  : _router = router,
-        super(model) {
-    _init();
+        super(model);
+
+  @override
+  void initWidgetModel() {
+    super.initWidgetModel();
+
+    _searchBarController = TextEditingController()
+      ..addListener(_onChangeSearchField);
+
+    _streamSubscription = model.appStream.listen((event) {
+      if (_searchBarController.text.isNotEmpty &&
+          !event.searchScreenState.isPlacesLoading) {
+        _queryText = _searchBarController.text;
+        _listPlaceState.accept(event.searchScreenState.findedPlaces);
+      } else {
+        _searchQueriesState.accept(event.searchScreenState.queryHistory);
+      }
+    });
+    model.searchQueryEntries();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _streamSubscription.cancel();
   }
 
   @override
@@ -79,21 +103,19 @@ class SearchWidgetModel extends WidgetModel<SearchScreen, SearchModel>
   }
 
   @override
-  Future<void> onClearHistory() async {
-    await model.clearSearchQueries();
-    await _acceptSearhQueriesState();
+  void onClearHistory() {
+    model.clearSearchQueries();
   }
 
   @override
-  Future<void> onClearText() async {
+  void onClearText() {
     _searchBarController.clear();
   }
 
   @override
-  Future<void> onDeleteQuery(int index) async {
+  void onDeleteQuery(int index) {
     final queryText = _searchQueriesState.value![index];
-    await model.deleteSearchQuery(queryText);
-    await _acceptSearhQueriesState();
+    model.deleteSearchQuery(queryText);
   }
 
   @override
@@ -106,38 +128,18 @@ class SearchWidgetModel extends WidgetModel<SearchScreen, SearchModel>
             ));
   }
 
-  Future<void> _init() async {
-    _searchBarController = TextEditingController()
-      ..addListener(() async {
-        await _onChangeSearchField();
-      });
-    await _acceptSearhQueriesState();
-  }
-
-  Future<void> _onChangeSearchField() async {
+  void _onChangeSearchField() {
     _searchDebounced?.cancel();
     _searchDebounced = Timer(
       const Duration(milliseconds: 700),
-      () async {
-        if (_searchBarController.value.text.isNotEmpty) {
-          await _searchPlaces(_searchBarController.value.text);
+      () {
+        if (_searchBarController.text.isNotEmpty) {
+          model.searchPlaceByName(_searchBarController.text);
         } else if (_listPlaceState.value != null) {
           _listPlaceState.accept(null);
-          await _acceptSearhQueriesState();
+          model.searchQueryEntries();
         }
       },
     );
-  }
-
-  Future<void> _acceptSearhQueriesState() async {
-    final prevQueries = await model.searchQueryEntries();
-    _searchQueriesState.accept(prevQueries);
-  }
-
-  Future<void> _searchPlaces(String query) async {
-    final places = await model.searchPlaceByName(query);
-    _queryText = query;
-    _listPlaceState.accept(places);
-    if (places.isNotEmpty) unawaited(model.addSearchQuery(query));
   }
 }
