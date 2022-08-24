@@ -8,7 +8,7 @@ class CommonAppBarWidget extends StatelessWidget
     implements PreferredSizeWidget {
   /// AppBar height. Default 56.
   final double? toolbarHeight;
-  final AsyncCallback onTrailingButtonTap;
+  final VoidCallback onTrailingButtonTap;
   final VoidCallback? onSearchBarTap;
   final Widget trailingButtonIcon;
   final bool? autofocusOnSearchFiled;

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/assets/res/app_assets.dart';
@@ -7,7 +6,7 @@ import 'package:places/features/search/strings/search_screen_strings.dart';
 class QueryListWidget extends StatelessWidget {
   final List<String>? queries;
   final VoidCallback onClearHistory;
-  final AsyncValueSetter<int> onDeleteQuery;
+  final ValueSetter<int> onDeleteQuery;
 
   const QueryListWidget({
     required this.queries,
@@ -36,7 +35,7 @@ class QueryListWidget extends StatelessWidget {
         ),
         ListView.separated(
           shrinkWrap: true,
-          padding: const EdgeInsets.only(top: 16),
+          padding: const EdgeInsets.only(top: 10),
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (_, index) => Row(
             children: [
@@ -45,7 +44,7 @@ class QueryListWidget extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () => onDeleteQuery(index),
-                splashRadius: 16,
+                splashRadius: 10,
                 icon: SvgPicture.asset(
                   AppAssets.iconDelete,
                   color: theme.disabledColor,
